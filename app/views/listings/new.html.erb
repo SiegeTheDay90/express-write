@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CL Helper</title>
+</head>
+<body>
+    <h1>New Job Listing</h1>
+    <form action=<%= listings_url %> method="POST" style="width: 50%; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;">
+    <h2>Listing Details</h2>
+        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+        
+        <label>Company:
+            <input type="text" required name="listing[company]" id="company" value=<%= @listing.company %>>
+        </label>
+        <label>Job Title
+            <input type="text" required name="listing[job_title]" id="job-title" value<%= @listing.job_title %>>
+        </label>
+        <label>Description
+            <textarea name="listing[job_description]" id="job-description"><%= @listing.job_description %></textarea>
+        </label>
+        <label>Requirements & Qualifications
+            <textarea name="listing[requirements]" cols="100", rows="5" id="requirements"><%= @listing.requirements.join "\n" %></textarea>
+        </label>
+        <label>Benefits/Other
+            <textarea name="listing[benefits]" id="benefits" cols="100", rows="5"><%= @listing.benefits.join "\n" %></textarea>        
+        </label>
+        <input type="submit" value="Save">
+    </form>
+    <hr>
+
+    <h2>Generate with AI</h2>
+    <h6>If you have trouble using an url, copy and paste the posting as plain text.</h6>
+    <form action=<%= generate_listing_url %> method="POST"> 
+        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+        <span>Generate from:</span>
+        <label for="type-url">URL</label>
+        <input type="radio" name="type" id="type-url" value="url">
+        <label for="type-text">Text</label>
+        <input type="radio" name="type" id="type-text" value="text"><br>
+        <label for="input">Paste here:</label>
+        <textarea name="input" id="input" cols="100", rows="5"></textarea><br>
+        <input type="submit" value="Generate">
+    </form>
+</body>
+</html>

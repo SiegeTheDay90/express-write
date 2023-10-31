@@ -1,0 +1,60 @@
+<script>
+function toggleOpen(){
+  event.currentTarget.parentElement.parentElement.toggleAttribute("open")
+}
+</script>
+<main class="pt-2 mx-auto">
+  <section id="user-info-container">
+  <span class="d-flex align-items-end"><h1 class="me-3">Candidate Profile</h1> <%= link_to 'Back', _back_url %></span>
+  <form method="POST" action=<%= user_url(@user.id)%> class="d-flex flex-column">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="redirect" value="bio">
+      
+      <div class="mb-3">
+        <label for="industry">Industry:</label>
+        <input type="text" value="<%= @user.industry %>" name="user[industry]" id="industry" class="w-25"><br>
+      </div>
+
+      <details open>
+        <summary><label onClick="toggleOpen()" for="about-me"><h3>About Me:</h3></label></summary>
+        <textarea id="about-me" cols="100" rows="5" name="user[aboutme]"><%= @user.aboutme %></textarea>
+      </details><br>
+
+      <details open>
+        <summary><label onClick="toggleOpen()" for="education"><h3>Education:</h3></label></summary>
+        <textarea id="education" cols="100" rows="3" name="user[education]"><%= @user.education.join("\n") %></textarea><br>
+      </details><br>
+
+      <details open>
+      <summary><label onClick="toggleOpen()" for="skills"><h3>Skills:</h3></label></summary>
+      <textarea id="skills" cols="100" rows="5" name="user[skills]"><%= @user.skills.join("\n") %></textarea>
+      </details><br>
+
+      <details open>
+        <summary><label onClick="toggleOpen()" for="work-experience"><h3>Work Experience:</h3></label></summary>
+        <textarea id="work-experience" cols="100" rows="5" name="user[experience]"><%= @user.experience.join("\n") %></textarea>
+      </details><br>
+
+      <details open>
+        <summary><label onClick="toggleOpen()" for="projects"><h3>Projects & Accolades:</h3></label></summary>
+        <textarea id="projects" cols="100" rows="5" name="user[projects]"><%= @user.projects.join("\n") %></textarea><br>
+      </details><br>
+      <input type="submit" value="Save Changes" class="btn btn-primary">
+  </form>
+  <div id="generate-bio-container">
+    <h5>Update Bio with PDF Resume (Beta)</h5>
+    <form method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <%# <label for="file">PDF Link</label>
+      <input type="text" name="link" id="file">
+      <br>
+      <small>OR</small>
+      <br> %>
+      <label for="file-upload">Upload PDF</label>
+      <input type="file" name="pdf" id="file" accept=".pdf" class="mb-3"><br>
+      <input type="submit" value="Generate Bio" class="btn btn-primary">
+    </form>
+  </div>
+</section>
+</main>

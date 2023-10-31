@@ -1,0 +1,116 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+ .test {
+   border: 1px solid red;
+ }
+ #banner {
+    height: 15vh;
+    max-height: 100px;
+    background-color: #5555ba;
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 10px 15px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.368);   
+    z-index: 2;
+    position: sticky;
+ }
+
+ #logo{
+    box-sizing: border-box;
+    height: 80%;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 1px rgb(255, 255, 255);
+    opacity: 0.85;
+ }
+
+ #fp-hero{
+    display: flex;
+    justify-content: center;
+    gap: 10vw;
+ }
+
+ #fp-hero img{
+    border-radius: 10px;
+    width: 90%;
+    max-height: 350px;
+ }
+
+ main{
+    width: 95%;
+ }
+#bug-report{
+    position: sticky;
+    bottom: 0px;
+    width: fit-content;
+    background-color: white;
+    font-size: smaller;
+    padding: 2px;
+ }
+
+ summary h3{
+    cursor: pointer;
+    user-select: none;
+ }
+
+ textarea {
+   display: block;
+   width: 80%;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+input[type="submit"]{
+   width: min-content;
+}
+
+#user-info-container{
+   position:relative;
+}
+
+#generate-bio-container{
+   border-top: 1px solid rgb(196, 196, 196);
+   margin-top: 20px;
+}
+
+@media screen and (min-width:750px){
+   #generate-bio-container{
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: x-small;
+      border-width: 0;
+   }
+ }
+
+ .nav{
+   background-color: white;
+   padding: 5px 10px;
+ }
+
+ #nav-buttons{
+   width: 30%;
+   min-width: fit-content;
+   display: flex;
+   justify-content: space-between;
+ }
+
+ #strength-container{
+   font-size: smaller;
+   color: #aaa;
+ }

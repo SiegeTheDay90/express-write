@@ -1,0 +1,34 @@
+<body>
+    <h1>Edit Job Listing</h1>
+    <form action=<%= listing_url(@listing) %> method="POST" style="width: 50%; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;">
+    <h2>Listing Details</h2>
+        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+        <input type="hidden" name="_method" value="PATCH">
+        
+        <label>Company:
+            <input type="text" name="listing[company]" id="company" value=<%= @listing.company %> required>
+        </label>
+        <label>Job Title
+            <input type="text" name="listing[job_title]" id="job-title" value=<%= @listing.job_title %> required>
+        </label>
+        <label>Description
+            <textarea name="listing[job_description]" cols="80", rows="5" id="job-description"><%= @listing.job_description %></textarea>
+        </label>
+        <label>Requirements & Qualifications
+            <textarea name="listing[requirements]" cols="80", rows="5" id="requirements"><%= @listing.requirements.join "\n" %></textarea>
+        </label>
+        <label>Benefits/Other
+            <textarea name="listing[benefits]" id="benefits" cols="80", rows="5"><%= @listing.benefits.join "\n" %></textarea>        
+        </label>
+        <input type="submit" value="Save Changes">
+    </form>
+    <hr>
+
+    <h2>Delete Listing</h2>
+    <form action=<%= listing_url(@listing.id) %> method="POST"> 
+        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>

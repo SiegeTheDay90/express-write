@@ -1,0 +1,90 @@
+<script>
+  function passwordChanged() {
+      var strength = document.getElementById('strength');
+      var strongRegex = new RegExp("^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+      var mediumRegex = new RegExp("^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+      var enoughRegex = new RegExp("(?=.{8,}).*", "g");
+      var pwd = document.getElementById("inputPassword");
+      if (pwd.value.length == 0) {
+          strength.innerHTML = 'Type Password';
+      } else if (false == enoughRegex.test(pwd.value)) {
+          strength.innerHTML = 'More Characters';
+      } else if (strongRegex.test(pwd.value)) {
+          strength.innerHTML = '<span style="color:green">Strong!</span>';
+          return "Strong";
+      } else if (mediumRegex.test(pwd.value)) {
+          strength.innerHTML = '<span style="color:orange">Medium!</span>';
+          return "Medium";
+      } else {
+          strength.innerHTML = '<span style="color:red">Weak!</span>';
+      }
+  }
+  function confirmPassword(){
+    const s = document.getElementById("inputPassword").value
+    const strength = passwordChanged()
+    const confirm = document.getElementById("inputConfirmPassword").value
+    debugger
+    if(strength !== "Medium" && strength !== "Strong"){
+      event.preventDefault();
+      alert('Strengthen your password. Try symbols or numbers?')
+    }
+    else if(s !== confirm){
+      event.preventDefault();
+      alert('Passwords do not match.')
+    }
+  }
+</script>
+
+<div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 text-center ">
+  <span class="text-center ">
+    <h1 class="display-5 fw-bold text-body-emphasis">Sign Up</h1>
+    <%= link_to "With LinkedIn", "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV["OAUTH_CLIENT_ID"]}&redirect_uri=#{Rack::Utils.escape(ENV["OAUTH_CALLBACK_URI"])}&scope=profile%20email%20openid" %>
+    <hr>
+    <img src="https://cl-helper-development.s3.amazonaws.com/sign-up-small.jpg">
+  </span>
+
+  <span >
+      <form onSubmit="confirmPassword()" method="POST" action=<%= users_url %> class="">
+        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+        <div class="mb-3 d-flex flex-column align-items-start">
+          <label for="inputEmail" class="form-label">Email address</label>
+          <input name="user[email]" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" required>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3 d-flex flex-column align-items-start">
+          <label for="inputPassword" class="form-label">Password</label>
+          <input name="user[password]" type="password" class="form-control" id="inputPassword" onkeyup="passwordChanged();" required>
+          <span id="strength-container">Strength: <span id="strength">Type Password</span></span>
+        </div>
+        <div class="mb-3 d-flex flex-column align-items-start">
+          <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
+          <input name="user[password]" type="password" class="form-control" id="inputConfirmPassword" required>
+        </div>
+        <div class="mb-3 d-flex flex-column align-items-start">
+          <label for="inputFirstName" class="form-label">First Name</label>
+          <input name="user[first_name]" type="text" class="form-control" id="inputFirstName" required>
+        </div>
+        <div class="mb-3 d-flex flex-column align-items-start">
+          <label for="inputLastName" class="form-label">Last Name</label>
+          <input name="user[last_name]" type="text" class="form-control" id="inputLastName" required>
+        </div>
+        <div class="mb-3 d-flex flex-column align-items-start">
+          <label for="inputIndustry" class="form-label">Industry <small>(Optional)</small></label>
+          <input name="user[industry]" type="text" class="form-control" id="inputIndustry">
+        </div>
+
+        <button type="submit" class="btn btn-primary bg-success">Submit</button>
+      </form>
+    <%# <span>Password Requirements
+      <ul>
+        <li>Length</li>
+        <li>Length</li>
+        <li>Length</li>
+        <li>Length</li>
+      </ul>
+    </span> %>
+  </span>
+
+</div>
+
+<%= link_to "Back", _back_url %>

@@ -1,0 +1,16 @@
+<main class="pl-1 pt-2 mx-auto">
+    <h1>Letter for <%= @listing["job_title"] + " @ " + @listing["company"] %></h1>
+    <h5 style="color: #4444a9">Consider signing up to generate future letters faster!</h5>
+    <section id="letter-body" class="w-75">
+        <div>
+            <% @letter.body.split("\n").each do |line| %>
+                <%= line %><br>
+            <% end %>
+        </div>
+        <hr>
+        <h5>Copy and edit in another application.</h5>
+        <h6>Thanks :&#41;</h6>
+        <%= link_to "Back", _back_url %>
+        <hr>
+    </section class="w-75">
+</main>

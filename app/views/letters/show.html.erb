@@ -1,0 +1,34 @@
+<script>
+    async function helpfulClick(){
+        event.preventDefault();
+        helpful = event.target.value
+        const url = event.currentTarget.getAttribute("action")
+        const auth = event.currentTarget.getAttribute("auth")
+        const response = await fetch(url+`/helpful?status=${helpful}`, {method: "PATCH", headers:{"X-CSRF-Token": auth}})
+        console.log(await response.text())
+    }
+</script>
+<main class="pl-1 pt-2 mx-auto">
+    <div id="helpful">
+        Was this letter helpful?<br>
+        <label for="helpful-positive">Yes</label>
+        <span onChange=<%='helpfulClick()'%> auth=<%= form_authenticity_token %> action=<%= letter_url(@letter) %>>
+        <input type="radio" name="helpful" id="helpful-positive" value="true"  <%= @letter.helpful ? 'checked' : '' %>> |
+        <label for="helpful-negative">No</label>
+        <input type="radio" name="helpful" id="helpful-negative" value="false" <%= @letter.helpful ? '' : 'checked' %>>
+        </span>
+    </div>
+    <h1>Letter for <%= @letter.listing.job_title + " @ " + @letter.listing.company %></h1>
+    <section id="letter-body" class="w-75">
+        <div>
+            <% @letter.body.split("\n").each do |line| %>
+                <%= line %><br>
+            <% end %>
+        </div>
+        <hr>
+        <h5><%= link_to 'Edit', edit_letter_url(@letter) %></h5>
+        <h6>Thanks for using CLH :&#41;</h6>
+        <%= link_to "Back", _back_url %>
+        <hr>
+    </section>
+</main>

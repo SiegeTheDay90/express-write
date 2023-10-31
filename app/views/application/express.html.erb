@@ -1,0 +1,25 @@
+<h1>Express Write</h1>
+<h4 class="mb-3">Please consider signing up!</h4>
+<main class="mx-auto">
+    <form method="POST" action=<%= express_letter_url %> enctype="multipart/form-data">
+        <h5>Resume (PDF Only)</h5>
+
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <label for="file-upload">Upload PDF</label>
+        <input type="file" name="pdf" id="file" accept=".pdf" class="mb-3"><br>
+
+        <h5>Listing (Link or Text)</h5>
+        <h6>If you have trouble using an url, copy and paste the posting as plain text.</h6>
+
+        <span>Generate from:</span>
+        <label for="type-url">URL</label>
+        <input type="radio" name="type" id="type-url" value="url">
+        <label for="type-text">Text</label>
+        <input type="radio" name="type" id="type-text" value="text"><br>
+        <label for="input">Paste here:</label>
+        <textarea name="input" id="input" cols="100", rows="5"></textarea><br>
+
+        <input type="submit" value="Generate">
+    </form>
+</main>
+<%= link_to "Back", _back_url %>

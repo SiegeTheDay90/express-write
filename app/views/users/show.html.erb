@@ -1,0 +1,40 @@
+<script>
+function toggleOpen(){
+  event.currentTarget.parentElement.parentElement.toggleAttribute("open")
+}
+</script>
+<main class="pt-2 mx-auto">
+  <section id="user-info-container">
+     <span class="d-flex align-items-end"><h1 class="me-3">Candidate Profile</h1> <%= link_to 'Edit', edit_user_url(@user)%></span>
+
+    <div class="mb-3">
+        <strong >Industry:</strong>
+        <p id="industry"><%= @user.industry %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>About Me:</h3></strong>
+        <p id="about-me"><%= @user.aboutme %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Education:</h3></strong>
+        <p id="education"><%= @user.education.join("<br>") %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Skills:</h3></strong>
+        <p id="skills"><%= @user.skills.join("<br>") %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Work Experience:</h3></strong>
+        <p id="work-experience"><%= @user.experience.join("<br>") %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Projects & Accolades:</h3></strong>
+        <p id="projects"><%= @user.projects.join("<br>") %></p>
+    </div>
+  </section>
+</main>

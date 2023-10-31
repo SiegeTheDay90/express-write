@@ -1,0 +1,20 @@
+<main class="pt-2 mx-auto">
+    <h1>My Stuff</h1>
+    <h2>Your Listings</h2>
+    <%= link_to "Add a Listing", new_listing_path %>
+    <ol class="listings-list">
+        <% @listings.each do |listing| %>
+            <li class="listings-list-item">
+                <%= link_to listing.job_title() +" @ "+ listing.company(), edit_listing_url(listing) %><br>
+                <span class="d-flex gap-3"><%= "Last Updated: " + listing.updated_at.inspect[0..24] %> <%= button_to "Delete", listing_url(listing), method: :delete, class: "btn btn-danger", onclick: "confirm(\"Are you sure?\")" %></span>
+
+                <ul class="mb-2">
+                    <% listing.letters.each do |letter| %>
+                        <li class="mb-1">Letter from <%= link_to letter.created_at.inspect[0..24], letter_url(letter) %></li>
+                    <% end %>
+                </ul>
+                <%= button_to "Generate New Letter", {controller: "letters", action: "generate", listing_id: listing.id.to_s},class: "btn btn-primary" %>
+            </li>
+        <% end %>
+    </ol>
+</main>

@@ -1,0 +1,46 @@
+<%= javascript_importmap_tags 'hitcounter' %>
+<div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 mb-5 text-center">
+  <span class="text-center">
+    <h1 class="display-5 fw-bold text-body-emphasis">Cover Letters</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">made easy</p>
+      <p>Sign Up with</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <a href=<%="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV["OAUTH_CLIENT_ID"]}&redirect_uri=#{Rack::Utils.escape(ENV["OAUTH_CALLBACK_URI"])}&scope=profile%20email%20openid"%>>
+        <button value="LinkedIn" class="btn btn-primary btn-lg px-4 gap-3">LinkedIn</button>
+      </a> 
+        <%= button_to "Email", new_user_url, class: "btn btn-outline-secondary btn-lg px-4", method: :get %>
+      </div>
+      <p style="font-size: smaller; margin-top: 8px; margin-bottom: 1px; min-width: max-content">Already have an account?</p> <%= link_to "Sign In", new_session_url %>
+    </div>
+  </span>
+  <span>
+    <img src="https://cl-helper-development.s3.amazonaws.com/mascot_small.jpg">
+  </span>
+</div>
+<div style="background-color: #eef" class="px-4 py-5 my-5 text-center">
+    <h2 class="display-5 fw-bold text-body-emphasis">Express Write</h2>
+    <div class="col-lg-6 mx-auto">
+      <%# <p class="lead mb-4">Generate a letter without signing in.</p> %>
+      <p class="lead mb-4">Currently Disabled</p>
+      <p>You'll need a resume (pdf) and a job listing.</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <%= button_to "Try it Now", "/express", class: "btn btn-outline-secondary btn-lg px-4 disabled", method: :get %>
+      </div>
+    </div>
+</div>
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold text-body-emphasis">Powered by AI</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">CL-Helper is still in development. Want to contribute?</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        <%= button_to "Contact Us", bug_report_url, method: :get, class: "btn btn-primary btn-lg px-4 me-sm-3" %>
+        <%= button_to "Report Bug", bug_report_url, method: :get, class: "btn btn-outline-secondary btn-lg px-4" %>
+      </div>
+    </div>
+    <div class="overflow-hidden" style="max-height: 30vh;">
+      <div class="container px-5">
+        <%# <img src="bootstrap-docs.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy"> %>
+      </div>
+    </div>
+  </div>
