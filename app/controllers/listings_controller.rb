@@ -76,7 +76,8 @@ class ListingsController < ApplicationController
             render :new 
         else
             if @listing.save
-                redirect_to edit_listing_url(@listing)
+                # redirect_to edit_listing_url(@listing)
+                render json: {id: @listing.id}
             else
                 flash.now["errors"] = @listing.errors.full_messages.to_s
                 render :new   

@@ -104,7 +104,8 @@ class LettersController < ApplicationController
         @letter = Letter.new(body: @message, listing_id: @listing.id, user_id: current_user.id)
         @letter.content.body = @letter.body.gsub("\n", "<br>")
         if @letter.save
-            render :show
+            # render :show
+            render json: {id: @letter.id}
         else
             render plain: "An Error Occured"
         end

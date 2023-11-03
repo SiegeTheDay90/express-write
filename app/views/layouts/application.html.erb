@@ -8,6 +8,127 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application" %>
+    <script>
+      class LoadingBar {
+        constructor(form, url, options={}, action, completionCallback){
+            this.bar = document.createElement('progress');
+            this.status = document.createElement('p');
+            this.container = form.parentElement;
+            this.originalForm = form;
+            form.remove();
+            this.action = action;
+            this.complete = 0;
+
+            this.completionCallback ||= completionCallback;
+
+            this.container.append(this.bar);
+            this.container.append(this.status);
+
+            this.bar.innerText = 0;
+            this.bar.max = 100;
+
+            this.interval = setInterval(()=>{if(this.complete<90)this.incComplete(1)}, 750);
+
+            this.status.innerText = "In Progress..."
+            options["authenticity_token"] = "<%= form_authenticity_token %>";
+            // console.log("LoadingBar: ",options["authenticity_token"]);
+            fetch(url, options).then((res) => this.completionCallback(res)).catch(this.failureCallback);
+        }
+
+        incComplete(num){
+            this.complete += num;
+            this.bar.innerText = this.complete;
+            this.bar.value = this.complete;
+        }
+
+        async completionCallback(response){
+            
+          this.complete = 100;
+          this.bar.innerText = 100;
+          this.bar.value = 100;
+          if(response.ok){
+              let count = 5;
+              this.status.innerText = `Complete! Redirecting in ${count}.....`
+              let data = await response.json();
+              let id = data.id;
+              switch(this.action){
+                case "listings#generate":
+                  this.nextPath = `/listings/${id}/edit`;
+                  break;
+
+                case "letters#generate":
+                  this.nextPath = `/letters/${id}/edit`;
+                  break;
+
+                case "users#generate":
+                  const parameters = new URLSearchParams(data);
+                  debugger
+                  this.nextPath = `/users/${id}/edit`;
+                  break;
+
+                default:
+                  this.nextPath = "/";
+              }
+
+              setTimeout(() => {
+                window.location = window.location.origin + this.nextPath;
+              }, 5000);
+              setInterval(() => {
+                this.status.innerText = `Complete! Redirecting ${--count}`+'.'.repeat(count);
+              }, 990);
+            } else {
+                this.status.innerText = "ERROR"
+                const tryAgain = document.createElement("button");
+                tryAgain.classList.add("btn");
+                tryAgain.classList.add("btn-primary");
+                tryAgain.innerText = "Try Again?";
+                tryAgain.addEventListener("click", (e) => {
+                  this.container.append(this.originalForm);
+                  this.bar.remove();
+                  this.status.remove();
+                  tryAgain.remove();
+                })
+                this.container.append(tryAgain);
+
+            }
+
+        }
+
+        failureCallback(error){
+            console.error("Request Failed: ", error);
+            console.log(this);
+        }
+    }
+    function ajaxSubmit(e){
+        e.preventDefault();
+        const form = e.target;
+        const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method;
+        const options = { method, body: {}, headers: {} };
+        const inputs = form.querySelectorAll("input, textarea");
+        inputs.forEach((input) => {
+            if(input.type === "radio" && input.checked){options.body[input.name] = input.value;}
+            else if(input.type === "file"){
+              options.body["file"] = new FormData();
+              options.body["file"].append('file', input.files[0]);
+              options.headers["Content-Type"] = 'application/pdf';
+              debugger
+              console.log("hit");
+            }
+            else if(input.type !== "radio" && input.name){
+              if (input.name === "authenticity_token"){
+                options.headers["X-CSRF-Token"] = input.value
+                debugger
+              } else {
+                options.body[input.name] = input.value
+              }
+            };
+        });
+        options.headers["Content-Type"] ||= "application/json";
+        if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
+        debugger
+        new LoadingBar(form, form.action, options, form.dataset?.action);
+    }
+  </script>
   </head>
 
   <body id="main">
