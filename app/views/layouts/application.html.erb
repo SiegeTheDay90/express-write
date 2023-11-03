@@ -27,11 +27,8 @@
             this.bar.innerText = 0;
             this.bar.max = 100;
 
-            this.interval = setInterval(()=>{if(this.complete<90)this.incComplete(1)}, 750);
-
             this.status.innerText = "In Progress..."
             options["authenticity_token"] = "<%= form_authenticity_token %>";
-            // console.log("LoadingBar: ",options["authenticity_token"]);
             fetch(url, options).then((res) => this.completionCallback(res)).catch(this.failureCallback);
         }
 
@@ -62,7 +59,6 @@
 
                 case "users#generate":
                   const parameters = new URLSearchParams(data);
-                  debugger
                   this.nextPath = `/users/${id}/edit`;
                   break;
 
@@ -74,7 +70,7 @@
                 window.location = window.location.origin + this.nextPath;
               }, 5000);
               setInterval(() => {
-                this.status.innerText = `Complete! Redirecting ${--count}`+'.'.repeat(count);
+                this.status.innerText = `Complete! Redirecting in ${--count}`+'.'.repeat(count);
               }, 990);
             } else {
                 this.status.innerText = "ERROR"
@@ -99,35 +95,45 @@
             console.log(this);
         }
     }
+
     function ajaxSubmit(e){
         e.preventDefault();
         const form = e.target;
         const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method;
         const options = { method, body: {}, headers: {} };
+        options.headers["Content-Type"] = "application/json";
+        
         const inputs = form.querySelectorAll("input, textarea");
         inputs.forEach((input) => {
-            if(input.type === "radio" && input.checked){options.body[input.name] = input.value;}
-            else if(input.type === "file"){
+          if(!input.name) return;
+          switch(input.type){
+            case "radio":
+              if(input.checked) options.body[input.name] = input.value;
+              break;
+
+            case "file":
               options.body["file"] = new FormData();
               options.body["file"].append('file', input.files[0]);
               options.headers["Content-Type"] = 'application/pdf';
-              debugger
-              console.log("hit");
-            }
-            else if(input.type !== "radio" && input.name){
+              break;
+
+            default:
               if (input.name === "authenticity_token"){
                 options.headers["X-CSRF-Token"] = input.value
-                debugger
-              } else {
-                options.body[input.name] = input.value
-              }
-            };
+              } 
+              else {options.body[input.name] = input.value};
+          }
         });
-        options.headers["Content-Type"] ||= "application/json";
         if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
-        debugger
-        new LoadingBar(form, form.action, options, form.dataset?.action);
+        
+        new LoadingBar(
+          form, //Form Element to be relplaced
+          form.action, // Fetch URL
+          options, // Method, Body, Headers
+          form.dataset?.action // i.e. data-action="letters#generate"
+        );
     }
+
   </script>
   </head>
 

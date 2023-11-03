@@ -95,7 +95,6 @@ class ApplicationController < ActionController::Base
                 # top_p: 0.25
             }
         )
-        # debugger
         @message = response["choices"][0]["message"]["content"]
         render plain: @message
         # @letter = Letter.new(body: @message, listing_id: @listing.id, user_id: current_user.id)

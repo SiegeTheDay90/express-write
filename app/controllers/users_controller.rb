@@ -62,7 +62,6 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.email = @user.email.downcase
     @user.password = params["user"]["password"]
-    debugger
 
     if @user.save
       login!(@user)

@@ -64,13 +64,13 @@ class LettersController < ApplicationController
         client = OpenAI::Client.new
         response = client.chat(
             parameters: {
-                model: "gpt-3.5-turbo-16k",
+                model: "gpt-3.5-turbo",
                 messages: [
                     {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
                     {role: "user", content: "Job: #{listing_obj}\nCandidate: #{bio}"}
                 ],
                 temperature: 1.1,
-                max_tokens: 10000
+                max_tokens: 3600
             }
         )
         @message = response["choices"][0]["message"]["content"]
@@ -91,13 +91,13 @@ class LettersController < ApplicationController
         
         response = client.chat(
             parameters: {
-                model: "gpt-3.5-turbo-16k",
+                model: "gpt-3.5-turbo",
                 messages: [
                     {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
                     {role: "user", content: "Job: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ""))}\nCandidate: #{JSON.parse(@listing.user.to_json(except: :id).gsub("\r", ""))}"}
                 ],
                 temperature: 1.1,
-                max_tokens: 10000
+                max_tokens: 3600
             }
         )
         @message = response["choices"][0]["message"]["content"]
