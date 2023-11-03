@@ -13,7 +13,12 @@
                         <li class="mb-1">Letter from <%= link_to letter.created_at.inspect[0..24], letter_url(letter) %></li>
                     <% end %>
                 </ul>
-                <%= button_to "Generate New Letter", {controller: "letters", action: "generate", listing_id: listing.id.to_s},class: "btn btn-primary" %>
+                <form action=<%= generate_letter_url %> method="post" onSubmit="ajaxSubmit(event)" data-action="letters#generate">
+                    <input type="hidden" name="listing_id" value=<%=listing.id%>>
+                    <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+                    <input type="submit" value="Generate New Letter" class="btn btn-primary">
+                </form>
+                <%# <%= button_to "Generate New Letter", {controller: "letters", action: "generate", listing_id: listing.id.to_s},class: "btn btn-primary" %>
             </li>
         <% end %>
     </ol>

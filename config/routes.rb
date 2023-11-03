@@ -8,7 +8,6 @@ Rails.application.routes.draw do
   resources :listings, only: [:show, :new, :create, :edit, :update, :destroy]
   resources :letters, only: [:show, :edit, :update, :destroy]
   resources :users, only: [:new, :create, :show, :edit, :update] do
-    # resources :letters, only: [:index]
     resources :listings, only: [:index]
   end
 
@@ -21,6 +20,6 @@ Rails.application.routes.draw do
   post '/users/generate', to: 'users#generate', as: 'generate_bio'
   post '/express', to: 'letters#express', as: 'express_letter'
   get '/express', to: 'application#express'
-  # get '/test', to: 'application#test'
+  get '/test', to: 'application#test'
   get '*path', to: 'errors#not_found', via: :all
 end
