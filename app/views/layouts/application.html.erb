@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CoverLetterHelper</title>
+    <title>WriteWise</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="icon" href="https://cl-helper-development.s3.amazonaws.com/logo.png" type="image/png">
@@ -9,138 +9,139 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application" %>
     <script>
-      class LoadingBar {
-        constructor(form, url, options={}, action, completionCallback){
-            this.bar = document.createElement('progress');
-            this.status = document.createElement('p');
-            this.container = form.parentElement;
-            this.originalForm = form;
-            form.remove();
-            this.action = action;
-            this.complete = 0;
+        class LoadingBar {
+          constructor(form, url, options={}, action, completionCallback){
+              this.bar = document.createElement('progress');
+              this.status = document.createElement('p');
+              this.container = form.parentElement;
+              this.originalForm = form;
+              form.remove();
+              this.action = action;
+              this.complete = 0;
 
-            this.completionCallback ||= completionCallback;
+              this.completionCallback ||= completionCallback;
 
-            this.container.append(this.bar);
-            this.container.append(this.status);
+              this.container.append(this.bar);
+              this.container.append(this.status);
 
-            this.bar.innerText = 0;
-            this.bar.max = 100;
+              this.bar.innerText = 0;
+              this.bar.max = 100;
 
-            this.status.innerText = "In Progress..."
-            options["authenticity_token"] = "<%= form_authenticity_token %>";
-            fetch(url, options).then((res) => this.completionCallback(res)).catch(this.failureCallback);
-        }
+              this.status.innerText = "In Progress..."
+              options["authenticity_token"] = "<%= form_authenticity_token %>";
+              fetch(url, options).then((res) => this.completionCallback(res)).catch(this.failureCallback);
+          }
 
-        incComplete(num){
-            this.complete += num;
-            this.bar.innerText = this.complete;
-            this.bar.value = this.complete;
-        }
+          incComplete(num){
+              this.complete += num;
+              this.bar.innerText = this.complete;
+              this.bar.value = this.complete;
+          }
 
-        async completionCallback(response){
-            
-          this.complete = 100;
-          this.bar.innerText = 100;
-          this.bar.value = 100;
-          if(response.ok){
-              let count = 5;
-              this.status.innerText = `Complete! Redirecting in ${count}.....`
-              let data = await response.json();
-              let id = data.id;
-              switch(this.action){
-                case "listings#generate":
-                  this.nextPath = `/listings/${id}/edit`;
-                  break;
+          async completionCallback(response){
+              
+            this.complete = 100;
+            this.bar.innerText = 100;
+            this.bar.value = 100;
+            if(response.ok){
+                let count = 5;
+                this.status.innerText = `Complete! Redirecting in ${count}.....`
+                let data = await response.json();
+                let id = data.id;
+                switch(this.action){
+                  case "listings#generate":
+                    this.nextPath = `/listings/${id}/edit`;
+                    break;
 
-                case "letters#generate":
-                  this.nextPath = `/letters/${id}/edit`;
-                  break;
+                  case "letters#generate":
+                    this.nextPath = `/letters/${id}/edit`;
+                    break;
 
-                case "users#generate":
-                  const parameters = new URLSearchParams(data);
-                  this.nextPath = `/users/${id}/edit`;
-                  break;
+                  case "users#generate":
+                    const parameters = new URLSearchParams(data);
+                    this.nextPath = `/users/${id}/edit`;
+                    break;
 
-                default:
-                  this.nextPath = "/";
+                  default:
+                    this.nextPath = "/";
+                }
+
+                setTimeout(() => {
+                  window.location = window.location.origin + this.nextPath;
+                }, 5000);
+                setInterval(() => {
+                  this.status.innerText = `Complete! Redirecting in ${--count}`+'.'.repeat(count);
+                }, 990);
+              } else {
+                  this.status.innerText = "ERROR"
+                  const tryAgain = document.createElement("button");
+                  tryAgain.classList.add("btn");
+                  tryAgain.classList.add("btn-primary");
+                  tryAgain.innerText = "Try Again?";
+                  tryAgain.addEventListener("click", (e) => {
+                    this.container.append(this.originalForm);
+                    this.bar.remove();
+                    this.status.remove();
+                    tryAgain.remove();
+                  })
+                  this.container.append(tryAgain);
+
               }
 
-              setTimeout(() => {
-                window.location = window.location.origin + this.nextPath;
-              }, 5000);
-              setInterval(() => {
-                this.status.innerText = `Complete! Redirecting in ${--count}`+'.'.repeat(count);
-              }, 990);
-            } else {
-                this.status.innerText = "ERROR"
-                const tryAgain = document.createElement("button");
-                tryAgain.classList.add("btn");
-                tryAgain.classList.add("btn-primary");
-                tryAgain.innerText = "Try Again?";
-                tryAgain.addEventListener("click", (e) => {
-                  this.container.append(this.originalForm);
-                  this.bar.remove();
-                  this.status.remove();
-                  tryAgain.remove();
-                })
-                this.container.append(tryAgain);
-
-            }
-
-        }
-
-        failureCallback(error){
-            console.error("Request Failed: ", error);
-            console.log(this);
-        }
-    }
-
-    function ajaxSubmit(e){
-        e.preventDefault();
-        const form = e.target;
-        const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method;
-        const options = { method, body: {}, headers: {} };
-        options.headers["Content-Type"] = "application/json";
-        
-        const inputs = form.querySelectorAll("input, textarea");
-        inputs.forEach((input) => {
-          if(!input.name) return;
-          switch(input.type){
-            case "radio":
-              if(input.checked) options.body[input.name] = input.value;
-              break;
-
-            case "file":
-              options.body["file"] = new FormData();
-              options.body["file"].append('file', input.files[0]);
-              options.headers["Content-Type"] = 'application/pdf';
-              break;
-
-            default:
-              if (input.name === "authenticity_token"){
-                options.headers["X-CSRF-Token"] = input.value
-              } 
-              else {options.body[input.name] = input.value};
           }
-        });
-        if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
-        
-        new LoadingBar(
-          form, //Form Element to be relplaced
-          form.action, // Fetch URL
-          options, // Method, Body, Headers
-          form.dataset?.action // i.e. data-action="letters#generate"
-        );
-    }
 
-  </script>
+          failureCallback(error){
+              console.error("Request Failed: ", error);
+              console.log(this);
+          }
+      }
+
+      function ajaxSubmit(e){
+          e.preventDefault();
+          const form = e.target;
+          const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method;
+          const options = { method, body: {}, headers: {} };
+          options.headers["Content-Type"] = "application/json";
+          
+          const inputs = form.querySelectorAll("input, textarea");
+          inputs.forEach((input) => {
+            if(!input.name) return;
+            switch(input.type){
+              case "radio":
+                if(input.checked) options.body[input.name] = input.value;
+                break;
+
+              case "file":
+                options.body["file"] = new FormData();
+                options.body["file"].append('file', input.files[0]);
+                options.headers["Content-Type"] = 'application/pdf';
+                break;
+
+              default:
+                if (input.name === "authenticity_token"){
+                  options.headers["X-CSRF-Token"] = input.value
+                } 
+                else {options.body[input.name] = input.value};
+            }
+          });
+          if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
+          
+          new LoadingBar(
+            form, //Form Element to be relplaced
+            form.action, // Fetch URL
+            options, // Method, Body, Headers
+            form.dataset?.action // i.e. data-action="letters#generate"
+          );
+      }
+
+    </script>
   </head>
 
   <body id="main">
     <header id="banner" style="height: content-min">
     <span style="height: 100%;">
-      <a href=<%= root_url %>><img id="logo" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo"></a><br>
+      <a href=<%= root_url %> class="logo"><img id="logo-img" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise</a>
+      <br>
       <a href="https://linkedin.com/in/clarence-smith-nyc" class="link-light">Developed by Clarence Smith</a>
     </span>
       <span id="notices">
