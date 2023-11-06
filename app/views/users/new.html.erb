@@ -23,7 +23,6 @@
     const s = document.getElementById("inputPassword").value
     const strength = passwordChanged()
     const confirm = document.getElementById("inputConfirmPassword").value
-    debugger
     if(strength !== "Medium" && strength !== "Strong"){
       event.preventDefault();
       alert('Strengthen your password. Try symbols or numbers?')
