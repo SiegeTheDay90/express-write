@@ -30,7 +30,7 @@ class OpenAiJob < ApplicationJob
             request.complete!(false, @letter.errors.full_messages.to_s)
         end
       rescue
-        @message = response["choices"][0]["message"]
+        @message = response.to_json
         request.complete!(false, @message)
       end
   end
