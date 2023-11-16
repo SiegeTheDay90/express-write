@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :listings, only: [:index]
   end
 
+  get '/check/:id', to: 'requests#check', as: 'check'
   get '/details', to: 'users#details', as: 'details'
   get '/bugreport', to: 'application#bug', as: 'bug_report'
   patch '/letters/:id/helpful', to: 'letters#helpful', as: 'helpful_letter'
