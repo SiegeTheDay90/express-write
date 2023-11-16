@@ -81,34 +81,14 @@ class LettersController < ApplicationController
     end
 
     def generate
+        # debugger
         @listing = Listing.includes(:user).find_by(id: params["listing_id"])
         return redirect_to edit_user_url(current_user) unless @listing
 
-         OpenAI.configure do |config|
-            config.access_token = ENV["OPENAI"]
-        end
-        client = OpenAI::Client.new
-        
-        response = client.chat(
-            parameters: {
-                model: "gpt-3.5-turbo",
-                messages: [
-                    {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
-                    {role: "user", content: "Job: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ""))}\nCandidate: #{JSON.parse(@listing.user.to_json(except: :id).gsub("\r", ""))}"}
-                ],
-                temperature: 1.1,
-                max_tokens: 3600
-            }
-        )
-        @message = response["choices"][0]["message"]["content"]
-        @letter = Letter.new(body: @message, listing_id: @listing.id, user_id: current_user.id)
-        @letter.content.body = @letter.body.gsub("\n", "<br>")
-        if @letter.save
-            # render :show
-            render json: {id: @letter.id}
-        else
-            render plain: "An Error Occured"
-        end
+
+        request = Request.create!(resource_type: "letter")
+        OpenAiJob.perform_later(request, @listing, current_user)
+        render json: {ok: true, message: "Letter Started", id: request.id}
     end
 
     def helpful
