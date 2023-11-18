@@ -33,30 +33,27 @@ class UsersController < ApplicationController
   def edit
     @listings = @user.listings || []
     @letters = @user.letters || []
-    # if params["updated_bio"]
-    #   bio = params["updated_bio"]
-    #   @user.bio_update(bio)
-    # end
     render :edit
   end
 
   def generate
-    @user = current_user
-    pdf = nil
-    if params["pdf"]
-      pdf = params["pdf"].tempfile
-    elsif params["link"]
-      pdf = URI.open(params["link"])
+    r = Request.create!(resource_type: "bio", resource_id: current_user.id)
+    
+    if params["link"]
+      payload = URI.open(params["link"])
+    else
+      payload = request.body
     end
 
-    bio = helpers.pdf_to_bio(pdf)
-    if !bio
-      flash["errors"] = "Error while generating bio."
-    else
-      flash["messages"] = "Changes are unsaved. Click Update to save."
-    end
-    redirect_to edit_user_path(@user, updated_bio: bio)
+
+    payload = helpers.pdf_to_text(payload)
+    
+    
+    GenerateBioJob.perform_later(r, current_user, payload)
+    render json: {ok: true, message: "Bio Started", id: r.id}
   end
+
+
 
   def create
     @user = User.new(user_params)

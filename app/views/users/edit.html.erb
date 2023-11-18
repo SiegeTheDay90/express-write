@@ -13,41 +13,41 @@ function toggleOpen(){
       
       <div class="mb-3">
         <label for="industry">Industry:</label>
-        <input type="text" value="<%= @user.industry %>" name="user[industry]" id="industry" class="w-25"><br>
+        <input type="text" value="<%= params["industry"] || @user.industry %>" name="user[industry]" id="industry" class="w-25"><br>
       </div>
 
       <details open>
         <summary><label onClick="toggleOpen()" for="about-me"><h3>About Me:</h3></label></summary>
-        <textarea id="about-me" cols="100" rows="5" name="user[aboutme]"><%= @user.aboutme %></textarea>
+        <textarea id="about-me" cols="100" rows="5" name="user[aboutme]"><%= params["aboutme"] || @user.aboutme %></textarea>
       </details><br>
 
       <details open>
         <summary><label onClick="toggleOpen()" for="education"><h3>Education:</h3></label></summary>
-        <textarea id="education" cols="100" rows="3" name="user[education]"><%= @user.education.join("\n") %></textarea><br>
+        <textarea id="education" cols="100" rows="3" name="user[education]"><%= params["education"] ? params["education"].split(",").join("\n") : @user.education.join("\n") %></textarea><br>
       </details><br>
 
       <details open>
       <summary><label onClick="toggleOpen()" for="skills"><h3>Skills:</h3></label></summary>
-      <textarea id="skills" cols="100" rows="5" name="user[skills]"><%= @user.skills.join("\n") %></textarea>
+      <textarea id="skills" cols="100" rows="5" name="user[skills]"><%= params["skills"] ? params["skills"].split(",").join("\n") : @user.skills.join("\n") %></textarea>
       </details><br>
 
       <details open>
         <summary><label onClick="toggleOpen()" for="work-experience"><h3>Work Experience:</h3></label></summary>
-        <textarea id="work-experience" cols="100" rows="5" name="user[experience]"><%= @user.experience.join("\n") %></textarea>
+        <textarea id="work-experience" cols="100" rows="5" name="user[experience]"><%= params["experience"] ? params["experience"].split(",").join("\n") : @user.experience.join("\n") %></textarea>
       </details><br>
 
       <details open>
         <summary><label onClick="toggleOpen()" for="projects"><h3>Projects & Accolades:</h3></label></summary>
-        <textarea id="projects" cols="100" rows="5" name="user[projects]"><%= @user.projects.join("\n") %></textarea><br>
+        <textarea id="projects" cols="100" rows="5" name="user[projects]"><%= params["projects"] ? params["projects"].split(",").join("\n") : @user.projects.join("\n") %></textarea><br>
       </details><br>
       <input type="submit" value="Save Changes" class="btn btn-primary">
   </form>
   <div id="generate-bio-container">
     <h5>Update Bio with PDF Resume (Beta)</h5>
-    <form method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data">
+    <form data-action="users#generate" method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data" onSubmit="ajaxSubmit(event)">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <%# <label for="file">PDF Link</label>
-      <input type="text" name="link" id="file">
+      <input type="text" name="link" id="link-to-file">
       <br>
       <small>OR</small>
       <br> %>

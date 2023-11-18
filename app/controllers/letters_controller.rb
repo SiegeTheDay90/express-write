@@ -81,13 +81,12 @@ class LettersController < ApplicationController
     end
 
     def generate
-        # debugger
         @listing = Listing.includes(:user).find_by(id: params["listing_id"])
         return redirect_to edit_user_url(current_user) unless @listing
 
 
         request = Request.create!(resource_type: "letter")
-        OpenAiJob.perform_later(request, @listing, current_user)
+        GenerateLetterJob.perform_later(request, @listing, current_user)
         render json: {ok: true, message: "Letter Started", id: request.id}
     end
 

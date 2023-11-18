@@ -59,30 +59,21 @@ class ListingsController < ApplicationController
                 render :new and return
             else
                 begin
-                    listing_obj = helpers.http_to_listing(http_response)
+                    request = Request.create!(resource_type: "listing")
+                    GenerateListingJob.perform_later(request, "http", http_response.body.to_s, current_user)
+                    render json: {ok: true, message: "Listing Started", id: request.id}
                 rescue
                     flash['errors'] = "There was an error while parsing the response. Please try again."
                 end
             end
+       
         else
-            listing_obj = helpers.text_to_listing(params["input"])
+            request = Request.create!(resource_type: "listing")
+            GenerateListingJob.perform_later(request, "text", params["input"], current_user)
+            render json: {ok: true, message: "Listing Started", id: request.id}
         end
 
-        begin
-            @listing = Listing.new(**listing_obj, user_id: current_user.id)
-        rescue => e
-            flash.now["errors"] = e
-            @Listing = Listing.new
-            render :new 
-        else
-            if @listing.save
-                # redirect_to edit_listing_url(@listing)
-                render json: {id: @listing.id}
-            else
-                flash.now["errors"] = @listing.errors.full_messages.to_s
-                render :new   
-            end 
-        end
+        
     end
 
     def create

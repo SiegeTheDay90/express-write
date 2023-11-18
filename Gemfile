@@ -80,3 +80,4 @@ gem "open-uri", "~> 0.3.0"
 
 gem "bootstrap", "~> 5.3"
 
+gem "annotate", "~> 3.2"
