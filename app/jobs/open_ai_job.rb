@@ -15,7 +15,7 @@ class OpenAiJob < ApplicationJob
               {role: "user", content: "Job: #{JSON.parse(listing.to_json(except: :id).gsub("\r", ""))}\nCandidate: #{JSON.parse(listing.user.to_json(except: :id).gsub("\r", ""))}"}
           ],
           temperature: 1.1,
-          max_tokens: 3200
+          max_tokens: 10000
         }
       )
       begin

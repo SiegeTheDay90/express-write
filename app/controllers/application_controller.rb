@@ -92,7 +92,6 @@ class ApplicationController < ActionController::Base
                 ],
                 max_tokens: 15200,
                 temperature: 1.1
-                # top_p: 0.25
             }
         )
         @message = response["choices"][0]["message"]["content"]
