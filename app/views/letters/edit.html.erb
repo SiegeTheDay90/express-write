@@ -1,6 +1,9 @@
 <%= stylesheet_link_tag "actiontext" %>
 <%= javascript_importmap_tags "trix"%>
 <body>
+    <script>
+    console.log("edit page")
+    </script>
     <h2>Letter for <%= @letter.listing.job_title %> @ <%= @letter.listing.company %></h2>
         <%= form_with scope: :letter, url: letter_url(@letter), method: :patch, class: "mx-5 my-3" do |form|%>
             <%= form.trix_editor :content %>

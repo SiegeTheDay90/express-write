@@ -9,6 +9,7 @@
 #  updated_at :datetime         not null
 #  listing_id :bigint
 #  user_id    :bigint
+#  helpful    :boolean
 #
 class Letter < ApplicationRecord
    belongs_to :listing

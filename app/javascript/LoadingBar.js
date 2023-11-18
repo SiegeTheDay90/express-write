@@ -19,7 +19,7 @@ class LoadingBar {
         this.bar.max = 100;
 
         this.status.innerText = "In Progress..."
-        options["authenticity_token"] = "<%= form_authenticity_token %>";
+        // options["authenticity_token"] = "<%= form_authenticity_token %>";
         fetch(url, options).then((res) => this.loadingCallback(res)).catch(this.failureCallback);
     }
 
@@ -35,15 +35,16 @@ class LoadingBar {
             if(data.ok){
                 this.request_id = data.id;
                 this.interval = setInterval(async () => {
-                    const response = await fetch(window.origin + `/check/${this.request_id}`)
+                  const response = await fetch(`/check/${this.request_id}`)
                     const data = await response.json();
                     if(data.complete && data.ok){
+                      this.messages = data.messages
                         clearInterval(this.interval);
                         this.completionCallback(data.resource_id);
                     } else if(data.complete && !data.ok){
                         clearInterval(this.interval);
                         this.failureCallback(data.errors);
-                    } else if(this.timeElapsed > 200){
+                    } else if(this.timeElapsed > 240){
                         clearInterval(this.interval);
                         this.failureCallback("Timeout");
                     }
@@ -60,29 +61,31 @@ class LoadingBar {
         this.bar.value = 100;
         let count = 5;
         this.status.innerText = `Complete! Redirecting in ${count}.....`
-        debugger
         switch(this.action){
-            case "listings#generate":
-                this.nextPath = `/listings/${id}/edit`;
-                break;
+          case "listings#generate":
+            this.nextPath = `/listings/${id}/edit`;
+          break;
 
-            case "letters#generate":
-                this.nextPath = `/letters/${id}/edit`;
-                break;
+          case "letters#generate":
+            this.nextPath = `/letters/${id}/edit`;
+          break;
 
-            case "users#generate":
-                this.nextPath = `/users/${id}/edit`;
-                break;
+          case "users#generate":
+            const bio = JSON.parse(this.messages);
+            const params = new URLSearchParams(bio).toString();
+            this.nextPath = `/users/${id}/edit?`+params;
+            console.log("")
+          break;
 
-            default:
-                this.nextPath = "/";
+          default:
+            this.nextPath = "/";
         }
 
         setTimeout(() => {
-        window.location = window.location.origin + this.nextPath;
+          window.location.href = window.location.origin + this.nextPath;
         }, 5000);
         setInterval(() => {
-        this.status.innerText = `Complete! Redirecting in ${--count}`+'.'.repeat(count);
+          this.status.innerText = `Complete! Redirecting in ${--count}`+'.'.repeat(count);
         }, 990);
 
     }
@@ -121,8 +124,8 @@ function ajaxSubmit(e){
           break;
 
         case "file":
-          options.body["file"] = new FormData();
-          options.body["file"].append('file', input.files[0]);
+          options.body = new FormData();
+          options.body.append('file', input.files[0]);
           options.headers["Content-Type"] = 'application/pdf';
           break;
 
@@ -130,7 +133,9 @@ function ajaxSubmit(e){
           if (input.name === "authenticity_token"){
             options.headers["X-CSRF-Token"] = input.value
           } 
-          else {options.body[input.name] = input.value};
+          else {
+            options.body[input.name] = input.value
+          };
       }
     });
     if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
