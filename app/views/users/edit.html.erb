@@ -1,60 +1,60 @@
-<script>
-function toggleOpen(){
-  event.currentTarget.parentElement.parentElement.toggleAttribute("open")
-}
-</script>
 <main class="pt-2 mx-auto">
-  <section id="user-info-container">
-  <span class="d-flex align-items-end"><h1 class="me-3">Candidate Profile</h1> <%= link_to 'Back', _back_url %></span>
-  <form method="POST" action=<%= user_url(@user.id)%> class="d-flex flex-column">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <input type="hidden" name="_method" value="patch">
-      <input type="hidden" name="redirect" value="bio">
+  <section id="user-info-container" >
+    <span class="d-flex mb-4"><h1 class="me-3">Editing Profile</h1> <%= link_to 'Back', _back_url %></span>
+    <div class="ms-2 col-12 col-lg-9" >
+      <form method="POST" action=<%= user_url(@user.id)%> class="mb-3">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <input type="hidden" name="_method" value="patch" />
+          
+        <div class="mb-3 form-floating"> 
+          <input type="text" value="<%= params["industry"] || @user.industry %>" name="user[industry]" id="industry" class="pt-5 pb-3 form-control w-50" placeholder="Industry" />
+          <label class="fs-5 fw-bolder" for="industry">Industry</label>
+        </div>
+        
+        <div class="mb-3 form-floating"> 
+          <textarea id="about-me" name="user[aboutme]" class="pt-5 pb-3 form-control" placeholder="About Me" style="height: 10em"><%= params["aboutme"] || @user.aboutme %></textarea>
+          <label class="fs-5 fw-bolder" for="about-me">About Me</label>
+        </div>
+        
+        <div class="mb-3 form-floating"> 
+          <textarea id="education" name="user[education]" class="pt-5 pb-3 form-control" placeholder="Education" style="height: 10em"><%= params["education"] ? params["education"].split(",").join("\n") : @user.education.join("\n") %></textarea>
+          <label class="fs-5 fw-bolder" for="education">Education</label>
+        </div>
+        
+        <div class="mb-3 form-floating"> 
+          <textarea id="skills" name="user[skills]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["skills"] ? params["skills"].split(",").join("\n") : @user.skills.join("\n") %></textarea>
+          <label class="fs-5 fw-bolder" for="skills">Skills</label>
+        </div>
+
+        <div class="mb-3 form-floating"> 
+          <textarea id="work-experience" name="user[experience]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["experience"] ? params["experience"].split(",").join("\n") : @user.experience.join("\n") %></textarea>
+          <label class="fs-5 fw-bolder" for="work-experience">Work Experience</label>
+        </div>
+
+        <div class="mb-3 form-floating"> 
+          <textarea id="projects" name="user[projects]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["projects"] ? params["projects"].split(",").join("\n") : @user.projects.join("\n") %></textarea>
+          <label class="fs-5 fw-bolder" for="projects">Other Details</label>
+        </div>
       
-      <div class="mb-3">
-        <label for="industry">Industry:</label>
-        <input type="text" value="<%= params["industry"] || @user.industry %>" name="user[industry]" id="industry" class="w-25"><br>
-      </div>
+        <input type="submit" value="Save Changes" class="btn btn-primary">
+      </form>
+    </div>
 
-      <details open>
-        <summary><label onClick="toggleOpen()" for="about-me"><h3>About Me:</h3></label></summary>
-        <textarea id="about-me" cols="100" rows="5" name="user[aboutme]"><%= params["aboutme"] || @user.aboutme %></textarea>
-      </details><br>
-
-      <details open>
-        <summary><label onClick="toggleOpen()" for="education"><h3>Education:</h3></label></summary>
-        <textarea id="education" cols="100" rows="3" name="user[education]"><%= params["education"] ? params["education"].split(",").join("\n") : @user.education.join("\n") %></textarea><br>
-      </details><br>
-
-      <details open>
-      <summary><label onClick="toggleOpen()" for="skills"><h3>Skills:</h3></label></summary>
-      <textarea id="skills" cols="100" rows="5" name="user[skills]"><%= params["skills"] ? params["skills"].split(",").join("\n") : @user.skills.join("\n") %></textarea>
-      </details><br>
-
-      <details open>
-        <summary><label onClick="toggleOpen()" for="work-experience"><h3>Work Experience:</h3></label></summary>
-        <textarea id="work-experience" cols="100" rows="5" name="user[experience]"><%= params["experience"] ? params["experience"].split(",").join("\n") : @user.experience.join("\n") %></textarea>
-      </details><br>
-
-      <details open>
-        <summary><label onClick="toggleOpen()" for="projects"><h3>Projects & Accolades:</h3></label></summary>
-        <textarea id="projects" cols="100" rows="5" name="user[projects]"><%= params["projects"] ? params["projects"].split(",").join("\n") : @user.projects.join("\n") %></textarea><br>
-      </details><br>
-      <input type="submit" value="Save Changes" class="btn btn-primary">
-  </form>
-  <div id="generate-bio-container">
-    <h5>Update Bio with PDF Resume (Beta)</h5>
-    <form data-action="users#generate" method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data" onSubmit="ajaxSubmit(event)">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <%# <label for="file">PDF Link</label>
-      <input type="text" name="link" id="link-to-file">
-      <br>
-      <small>OR</small>
-      <br> %>
-      <label for="file-upload">Upload PDF</label>
-      <input type="file" name="pdf" id="file" accept=".pdf" class="mb-3"><br>
-      <input type="submit" value="Generate Bio" class="btn btn-primary">
-    </form>
-  </div>
-</section>
+    <div id="generate-bio-container">
+      <h5>Update Bio with PDF Resume</h5>
+      <form data-action="users#generate" method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column" onSubmit="ajaxSubmit(event)">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <%# <div class="mb-3 form-floating">
+          <input name="link" id="link-to-file" class="pt-5 pb-3 form-control">
+          <label class="fs-5 fw-bolder" for="link-to-file">PDF Link</label>
+        </div>
+        <br>
+        <small>OR</small> %>
+        <br>
+        <label for="file">Upload PDF</label>
+        <input type="file" name="pdf" id="file" accept=".pdf" class="mb-3"><br>
+        <input type="submit" value="Generate Bio" class="btn btn-primary">
+      </form>
+    </div>
+  </section>
 </main>

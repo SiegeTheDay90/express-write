@@ -1,7 +1,6 @@
 <script>
   function convertToEdit(e=event){
     
-    // <form method="POST" action="user_url(@user)">
     const editForm = document.createElement('form');
     editForm.setAttribute("method", "POST");
     editForm.setAttribute("action", "<%= user_url(@user) %>" );
