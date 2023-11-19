@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -13,7 +14,6 @@
  *= require_tree .
  *= require_self
  */
- @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
 
  .logo{
    user-select: none;
@@ -77,17 +77,6 @@
     user-select: none;
  }
 
- textarea {
-   display: block;
-   width: 80%;
-   -webkit-box-sizing: border-box;
-   -moz-box-sizing: border-box;
-   box-sizing: border-box;
-}
-
-input[type="submit"]{
-   width: min-content;
-}
 
 #user-info-container{
    position:relative;
@@ -95,10 +84,9 @@ input[type="submit"]{
 
 #generate-bio-container{
    border-top: 1px solid rgb(196, 196, 196);
-   margin-top: 20px;
 }
 
-@media screen and (min-width:750px){
+@media screen and (min-width: 992px){
    #generate-bio-container{
       position: absolute;
       right: 0;
@@ -124,3 +112,30 @@ input[type="submit"]{
    font-size: smaller;
    color: #aaa;
  }
+
+ #user-info-container{
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+   justify-content: start;
+   width: 100%;
+ }
+
+ /* .form-control{
+   overflow: hidden;
+ }
+ .form-floating {
+   /* overflow: visible;
+   transition: 0.5s;
+   border: 1px solid green;
+   height: 5px;
+ }
+
+ .form-floating:has(.form-control:focus, textarea.form-control:hover) {
+   height: max-content;
+   transition: 0.5s;
+ }
+
+ input[type=text].form-control {
+   height: min-content;
+ } */
