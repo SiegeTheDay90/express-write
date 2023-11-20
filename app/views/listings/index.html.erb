@@ -36,9 +36,11 @@
     <%= link_to "Add a Listing", new_listing_path %>
     <div id="listings-container">
         <ol id="list" class="p-2 m-2" start="1" data-length=<%= @listings.length %> data-page="1">
-            <% @listings.each_with_index do |listing, idx| %>
+            <% @listings.reverse.each_with_index do |listing, idx| %>
                 <li class="<%= "list-item my-3 " + (idx > 4 ? "hidden" : "visible") %>" data-index=<%= idx %>>
                     <%= link_to listing.job_title() +" @ "+ listing.company(), listing_url(listing), {alt: listing.job_title() +" @ "+ listing.company()} %>
+                    <br>
+                    <b>Added on:</b> <%= listing.created_at.strftime('%D') %>
                     <form action=<%= generate_letter_url %> method="post" class="ajaxForm" data-action="letters#generate">
                         <input type="hidden" name="listing_id" value=<%=listing.id%>>
                         <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
