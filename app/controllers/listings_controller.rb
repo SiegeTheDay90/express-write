@@ -1,5 +1,6 @@
 class ListingsController < ApplicationController
     before_action :require_logged_in
+    skip_before_action :require_logged_out
     def new
         @listing = Listing.new
         render :new
@@ -8,8 +9,10 @@ class ListingsController < ApplicationController
     def show
         @listing = Listing.find(params[:id])
 
-        if @listing
-            render :edit
+        if @listing && @listing.user_id != current_user.id
+            redirect_to root_url
+        elsif @listing
+            render :show
         else
             flash["errors"] = "Listing not found."
             redirect_to root_url
@@ -27,7 +30,7 @@ class ListingsController < ApplicationController
         @listing = Listing.find_by(id: params["id"])
         if @listing.update(listing_params)
             flash["messages"] = "Listing Updated Succesfully"
-            redirect_to edit_listing_url(@listing)
+            redirect_to listing_url(@listing)
         else
             flash["errors"] = @listing.errors.full_messages.join("\n")
             redirect_to user_listings_path(current_user)

@@ -1,0 +1,36 @@
+<main class="ps-3 pt-2 pb-5">
+    <span class="d-flex mb-4"><h1 class="me-3">Listing Details</h1> <%= link_to 'Edit', edit_listing_url(@listing)%></span>
+    <div class="ps-3">
+        <h4><%= @listing.job_title + " @ " + @listing.company %></h4>
+        <span><form action=<%= generate_letter_url %> method="post" class="ajaxForm" data-action="letters#generate">
+            <input type="hidden" name="listing_id" value=<%= @listing.id%>>
+            <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+            <input type="submit" value="Generate New Letter" class="btn btn-success">
+        </form></span>       
+        <p><strong>Company:</strong> <%= @listing.company %></p>
+        <p><strong>Job Title:</strong> <%= @listing.job_title %></p>
+        <p><strong>Description:</strong></p>
+        <p><%= @listing.job_description %></p>
+        <p><strong>Requirements & Qualifications:</strong></p>
+        <ul>
+            <% @listing.requirements.each do |requirement| %>
+                <li><%= requirement %></li>
+            <% end %>
+        </ul>
+        <p><strong>Benefits/Other:</strong></p>
+        <ul>
+            <% @listing.benefits.each do |benefit| %>
+                <li><%= benefit %></li>
+            <% end %>
+        </ul>
+    </div>
+    <hr>
+    <div class="ps-3">
+        <h4><%= @listing.letters.count == 1 ? "Cover Letter" : "Cover Letters" %></h4>
+        <ol class="mb-2">
+            <% @listing.letters.each do |letter| %>
+                <li class="mb-1">Letter from <%= link_to letter.created_at.inspect[0..24], letter_url(letter) %></li>
+            <% end %>
+        </ol>
+    </div>
+</main>

@@ -1,24 +1,57 @@
-<main class="pt-2 mx-auto">
-    <h1>My Stuff</h1>
-    <h2>Listings</h2>
-    <%= link_to "Add a Listing", new_listing_path %>
-    <ol class="listings-list">
-        <% @listings.each do |listing| %>
-            <li class="listings-list-item my-4">
-                <%= link_to listing.job_title() +" @ "+ listing.company(), edit_listing_url(listing) %><br>
-                <span class="d-flex gap-3"><%= "Last Updated: " + listing.updated_at.inspect[0..24] %> <%= button_to "Delete", listing_url(listing), method: :delete, class: "btn btn-danger", onclick: "confirm(\"Are you sure?\")" %></span>
+<script>
+    const back = document.getElementById("list-back");
+    const forward = document.getElementById("list-forward");
 
-                <ul class="mb-2">
-                    <% listing.letters.each do |letter| %>
-                        <li class="mb-1">Letter from <%= link_to letter.created_at.inspect[0..24], letter_url(letter) %></li>
-                    <% end %>
-                </ul>
-                <form action=<%= generate_letter_url %> method="post" onSubmit="ajaxSubmit(event)" data-action="letters#generate">
-                    <input type="hidden" name="listing_id" value=<%=listing.id%>>
-                    <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
-                    <input type="submit" value="Generate New Letter" class="btn btn-primary">
-                </form>
-            </li>
-        <% end %>
-    </ol>
+    function handleBack(e){
+        const list = document.getElementById("list");
+        if(list.dataset.page > 1){
+            changePage(--list.dataset.page);
+            document.getElementById("page-num").innerText--;
+        }
+    }
+
+    function handleForward(e){
+        const list = document.getElementById("list");
+        const length = list.dataset.length;
+        if(Number(list.dataset.page)*5 < length){
+            changePage(++list.dataset.page);
+            document.getElementById("page-num").innerText++;
+        }
+    }
+
+    function changePage(pageNum){
+        const list = document.getElementById("list");
+        list.start = (pageNum*5 - 4)
+        const items = document.getElementsByClassName("list-item");
+        const visible = document.getElementsByClassName("visible");
+        Array.from(visible).forEach((item) => {item.classList.remove("visible"); item.classList.add("hidden");});
+        Array.from(items).slice((list.dataset.page * 5)-5, (list.dataset.page * 5)).forEach((item) => {
+            item.classList.remove("hidden");
+            item.classList.add("visible");
+        })
+    }
+</script>
+<main class="pt-2 mx-auto">
+    <h1>My Listings</h1>
+    <%= link_to "Add a Listing", new_listing_path %>
+    <div id="listings-container">
+        <ol id="list" class="p-2 m-2" start="1" data-length=<%= @listings.length %> data-page="1">
+            <% @listings.each_with_index do |listing, idx| %>
+                <li class="<%= "list-item my-3 " + (idx > 4 ? "hidden" : "visible") %>" data-index=<%= idx %>>
+                    <%= link_to listing.job_title() +" @ "+ listing.company(), listing_url(listing), {alt: listing.job_title() +" @ "+ listing.company()} %>
+                    <form action=<%= generate_letter_url %> method="post" class="ajaxForm" data-action="letters#generate">
+                        <input type="hidden" name="listing_id" value=<%=listing.id%>>
+                        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+                        <input type="submit" value="Generate New Letter" class="btn btn-success">
+                    </form>
+                </li>
+            <% end %>
+        </ol>
+        <div id="list-controls-container" class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-secondary list-control" id="list-back" onClick="handleBack(event)">Prev</button>
+            <span class="list-detail mx-5" id="page-label">Page <span id="page-num">1</span></span>
+            <button class="btn btn-secondary list-control" id="list-forward" onClick="handleForward(event)">Next</button>
+        </div>
+    </div>
+
 </main>

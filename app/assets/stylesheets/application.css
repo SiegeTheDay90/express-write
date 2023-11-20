@@ -64,7 +64,7 @@
     width: 95%;
  }
 #bug-report{
-    position: sticky;
+    position: fixed;
     bottom: 0px;
     width: fit-content;
     background-color: white;
@@ -139,3 +139,7 @@
  input[type=text].form-control {
    height: min-content;
  } */
+
+ .hidden {
+  display: none;
+ }
