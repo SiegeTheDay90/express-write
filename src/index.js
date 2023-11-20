@@ -1,3 +1,5 @@
- //= require turbolinks
 import { ajaxSubmit } from "./LoadingBar";
-console.log("Hello World!");
+
+document.addEventListener("DOMContentLoaded", () => {
+    Array.from(document.getElementsByClassName('ajaxForm')).forEach(form => form.addEventListener('submit', ajaxSubmit));
+})

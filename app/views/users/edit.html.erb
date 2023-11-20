@@ -42,7 +42,7 @@
 
     <div id="generate-bio-container">
       <h5>Update Bio with PDF Resume</h5>
-      <form data-action="users#generate" method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column" onSubmit="ajaxSubmit(event)">
+      <form data-action="users#generate" method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <%# <div class="mb-3 form-floating">
           <input name="link" id="link-to-file" class="pt-5 pb-3 form-control">
