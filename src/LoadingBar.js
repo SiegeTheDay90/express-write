@@ -22,7 +22,6 @@ class LoadingBar {
 
       this.status.innerText = "Getting Started..."
       // options["authenticity_token"] = "<%= form_authenticity_token %>";
-      debugger
       fetch(url, options).then((res) => this.loadingCallback(res)).catch(this.failureCallback);
   }
 
@@ -33,9 +32,7 @@ class LoadingBar {
   }
 
   async loadingCallback(response){
-    debugger
     if(response.ok){
-      debugger
       const data = await response.json(); // Parse API response
       this.request_id = data.id; // Request_id from backend
       
