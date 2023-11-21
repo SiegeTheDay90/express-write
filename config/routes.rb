@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/bugreport', to: 'application#bug', as: 'bug_report'
   patch '/letters/:id/helpful', to: 'letters#helpful', as: 'helpful_letter'
   get '/session/linkedin', to: 'sessions#linkedin'
+  get '/session/demo', to: 'sessions#demo', as: 'demo_session'
   post '/letters/generate', to: 'letters#generate', as: 'generate_letter'
   post '/listings/generate', to: 'listings#generate', as: 'generate_listing'
   post '/users/generate', to: 'users#generate', as: 'generate_bio'

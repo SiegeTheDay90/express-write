@@ -1,6 +1,4 @@
 <script>
-    const back = document.getElementById("list-back");
-    const forward = document.getElementById("list-forward");
 
     function handleBack(e){
         const list = document.getElementById("list");
@@ -12,24 +10,24 @@
 
     function handleForward(e){
         const list = document.getElementById("list");
-        const length = list.dataset.length;
-        if(Number(list.dataset.page)*5 < length){
+        const length = list.dataset.length; // Number of list-items
+        if(Number(list.dataset.page)*5 < length){ // Only go forward if there are more list-items
             changePage(++list.dataset.page);
             document.getElementById("page-num").innerText++;
         }
     }
 
     function changePage(pageNum){
-        const list = document.getElementById("list");
-        list.start = (pageNum*5 - 4)
-        const items = document.getElementsByClassName("list-item");
-        const visible = document.getElementsByClassName("visible");
+        const list = document.getElementById("list").start = (pageNum*5 - 4) // Start <ol> from appropriate list number
+        const items = document.getElementsByClassName("list-item"); // All list-items
+        const visible = document.getElementsByClassName("visible"); // Currently visible list-items
         Array.from(visible).forEach((item) => {item.classList.remove("visible"); item.classList.add("hidden");});
         Array.from(items).slice((list.dataset.page * 5)-5, (list.dataset.page * 5)).forEach((item) => {
             item.classList.remove("hidden");
             item.classList.add("visible");
         })
     }
+
 </script>
 <main class="pt-2 mx-auto">
     <h1>My Listings</h1>

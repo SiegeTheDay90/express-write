@@ -2,6 +2,13 @@ class SessionsController < ApplicationController
     before_action :require_logged_out, only: [:new, :linkedin, :create]
     before_action :require_logged_in, only: :destroy
     
+
+    def demo
+      @user = User.find_by(email: "demo@user.io")
+      login!(@user)
+      redirect_to user_url(@user)
+    end
+
     def linkedin
         code = params["code"]
         unless code
@@ -12,12 +19,12 @@ class SessionsController < ApplicationController
         
         response = HTTP.auth("Bearer #{access_token}").get("https://api.linkedin.com/v2/userinfo")
         info = JSON.parse(response.body.to_param)
-        sign_up = User.exists?(uid: info["sub"])
+        is_returning_user = User.exists?(uid: info["sub"])
         @user = User.omni_authorize(info)
         if @user
             login!(@user)
             flash["messages"] = "Successfully Logged In as #{@user.first_name}"
-            redirect_to sign_up ? user_listings_path(@user) : edit_user_path(@user)
+            redirect_to is_returning_user ? user_listings_path(@user) : edit_user_path(@user)
         else
             @user = nil
             flash.now["errors"] = "Could not Login with LinkedIn"
@@ -29,7 +36,7 @@ class SessionsController < ApplicationController
       @user = User.find_by_credentials(session_params[:credential].downcase, session_params[:password])
       if @user
         login!(@user)
-        redirect_to edit_user_path(@user)
+        redirect_to user_path(@user)
       else
         @user = nil
         flash.now["errors"] = "Email or Password was incorrect"

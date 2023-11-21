@@ -11,7 +11,11 @@
       </a> 
         <%= button_to "Email", new_user_url, class: "btn btn-outline-secondary btn-lg px-4", method: :get %>
       </div>
-      <p style="font-size: smaller; margin-top: 8px; margin-bottom: 1px; min-width: max-content">Already have an account?</p> <%= link_to "Sign In", new_session_url %>
+      <p style="font-size: smaller; margin-top: 8px; margin-bottom: 1px; min-width: max-content">Already have an account?</p>
+      <%= link_to "Sign In", new_session_url %>
+      <p style="font-size: smaller; margin-top: 8px; margin-bottom: 1px; min-width: max-content">Try our Demo Account</p>
+      <%= link_to "DEMO", demo_session_url %>
+
     </div>
   </span>
   <span>
