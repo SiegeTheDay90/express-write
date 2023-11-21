@@ -103,6 +103,7 @@ class LettersController < ApplicationController
     end
 
     def update
+        #TODO What is this?
         render plain: (params.to_json)
     end
 end
