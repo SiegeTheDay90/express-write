@@ -25,7 +25,7 @@
     <hr>
 
     <h2>Delete Listing</h2>
-    <form action=<%= listing_url(@listing.id) %> method="POST"> 
+    <form class="ajaxForm" action=<%= listing_url(@listing.id) %> method="POST"> 
         <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
         <input type="hidden" name="_method" value="DELETE">
         <input type="submit" value="Delete">
