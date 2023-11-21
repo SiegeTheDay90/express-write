@@ -27,7 +27,7 @@
     <h2>Generate with AI</h2>
     <h6>If you have trouble using an url, copy and paste the posting as plain text.</h6>
     
-    <form action=<%= generate_listing_url %> method="POST" onSubmit="ajaxSubmit(event)" data-action="listings#generate"> 
+    <form class="ajaxForm" action=<%= generate_listing_url %> method="POST" data-action="listings#generate"> 
         <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
         <span>Generate from:</span>
 
