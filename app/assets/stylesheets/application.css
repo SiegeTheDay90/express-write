@@ -67,6 +67,7 @@
 #bug-report{
     position: fixed;
     bottom: 0px;
+    right: 0px;
     width: fit-content;
     background-color: white;
     font-size: smaller;
