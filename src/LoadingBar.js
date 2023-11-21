@@ -31,26 +31,28 @@ class LoadingBar {
 
   async loadingCallback(response){
       if(response.ok){
-          const data = await response.json();
-          if(data.ok){
-              this.request_id = data.id;
-              this.interval = setInterval(async () => {
-                const response = await fetch(`/check/${this.request_id}`)
-                  const data = await response.json();
-                  if(data.complete && data.ok){
-                    this.messages = data.messages
-                      clearInterval(this.interval);
-                      this.completionCallback(data.resource_id);
-                  } else if(data.complete && !data.ok){
-                      clearInterval(this.interval);
-                      this.failureCallback(data.errors);
-                  } else if(this.timeElapsed > 240){
-                      clearInterval(this.interval);
-                      this.failureCallback("Timeout");
-                  }
-                  this.timeElapsed += 5;
-              }, 5000)
-          }
+        const data = await response.json(); // Parse API response
+        this.request_id = data.id; // Request_id from backend
+        
+        this.interval = setInterval(async () => { // Ping backend until request is complete
+          const response = await fetch(`/check/${this.request_id}`)
+            const data = await response.json();
+
+            if(data.complete){ // Request complete
+              if(data.ok){ // Success
+                this.messages = data.messages
+                  clearInterval(this.interval);
+                  this.completionCallback(data.resource_id);
+              } else{ // Failure
+                  clearInterval(this.interval);
+                  this.failureCallback(data.errors);
+              this.timeElapsed += 5;
+              }
+            } else if(this.timeElapsed > 240){ // Timeout
+                clearInterval(this.interval);
+                this.failureCallback("Timeout");
+            }
+        }, 5000)
       }
   }
 
@@ -63,11 +65,11 @@ class LoadingBar {
       this.status.innerText = `Complete! Redirecting in ${count}.....`
       switch(this.action){
         case "listings#generate":
-          this.nextPath = `/listings/${id}/edit`;
+          this.nextPath = `/listings/${id}/`;
         break;
 
         case "letters#generate":
-          this.nextPath = `/letters/${id}/edit`;
+          this.nextPath = `/letters/${id}/`;
         break;
 
         case "users#generate":
