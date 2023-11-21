@@ -103,7 +103,10 @@ class LettersController < ApplicationController
     end
 
     def update
-        #TODO What is this?
-        render plain: (params.to_json)
+        @letter = Letter.find(params["id"])
+        @letter.update(content: params["letter"]["content"])
+        @letter.body = params["letter"]["content"].gsub("<br>", "\n").gsub("&nbsp;", "").gsub(/<[^>]*>/, "")
+        flash.now["messages"] = "Letter saved!"
+        render :show
     end
 end

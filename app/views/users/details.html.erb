@@ -8,13 +8,13 @@
     editForm.innerHTML = (`
       <input type="hidden" name="authenticity_token" value=${"<%= form_authenticity_token %>"}>
       <input type="hidden" name="_method" value="PATCH">
-      <label>First Name 
-        <input id='firstNameInput' type='text' name='user[first_name]' value=${"<%= @user.first_name %>"}>
+      <label class="mb-3">First Name 
+        <input class="form-control" id='firstNameInput' type='text' name='user[first_name]' value=${"<%= @user.first_name %>"}>
       </label><br>
-      <label>Last Name 
-        <input id='lastNameInput' type='text' name='user[last_name]' value=${"<%= @user.last_name %>"}>
-      </label>
-      <input type='submit' value='Update'>
+      <label class="mb-3">Last Name 
+        <input class="form-control" id='lastNameInput' type='text' name='user[last_name]' value=${"<%= @user.last_name %>"}>
+      </label><br>
+      <input type='submit' value='Update' class="btn btn-primary">
     `);
 
     e.target.parentElement.appendChild(editForm);

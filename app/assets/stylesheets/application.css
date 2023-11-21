@@ -46,7 +46,16 @@
     position: sticky;
  }
 
-
+ .form-control{
+  background-color: #0000FF0D;
+  transition: background-color 0.3s;
+ }
+ .form-control ~ label::after {
+  background-color: transparent !important;
+ }
+ .form-control:focus{
+  background-color: transparent;
+ }
 
  #fp-hero{
     display: flex;
@@ -63,6 +72,7 @@
  main{
     width: 95%;
     padding-bottom: 100px;
+    margin: 0 auto;
  }
 #bug-report{
     position: fixed;

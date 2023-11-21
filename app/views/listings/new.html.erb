@@ -1,27 +1,37 @@
-<body>
+<main>
 <!-- <%= javascript_importmap_tags 'loadingbar' %> -->
     <h1>New Job Listing</h1>
-    <form action=<%= listings_url %> method="POST" style="width: 50%; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;">
-    <h2>Listing Details</h2>
-        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+    <form action="<%= listings_url %>" method="POST" style="max-width: 800px" class="ms-3" >
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         
-        <label>Company:
-            <input type="text" required name="listing[company]" id="company" value=<%= @listing.company %>>
-        </label>
-        <label>Job Title
-            <input type="text" required name="listing[job_title]" id="job-title" value<%= @listing.job_title %>>
-        </label>
-        <label>Description
-            <textarea name="listing[job_description]" id="job-description"><%= @listing.job_description %></textarea>
-        </label>
-        <label>Requirements & Qualifications
-            <textarea name="listing[requirements]" cols="100", rows="5" id="requirements"><%= @listing.requirements.join "\n" %></textarea>
-        </label>
-        <label>Benefits/Other
-            <textarea name="listing[benefits]" id="benefits" cols="100", rows="5"><%= @listing.benefits.join "\n" %></textarea>        
-        </label>
-        <input type="submit" value="Save">
+        <div class="mb-3 form-floating">
+            <input placeholder type="text" required name="listing[company]" id="company" class="form-control" value="<%= @listing.company %>">
+            <label for="company" class="fs-7 fw-bolder">Company</label>
+        </div>
+        
+        <div class="mb-3 form-floating">
+            <input placeholder type="text" required name="listing[job_title]" id="job-title" class="form-control" value="<%= @listing.job_title %>">
+            <label for="job-title" class="fs-7 fw-bolder">Job Title</label>
+        </div>
+        
+        <div class="mb-3 form-floating">
+            <textarea placeholder name="listing[job_description]" id="job-description" class="form-control" style="height: 7em"><%= @listing.job_description %></textarea>
+            <label for="job-description" class="fs-5 fw-bolder">Description</label>
+        </div>
+        
+        <div class="mb-3 form-floating">
+            <textarea placeholder name="listing[requirements]" id="requirements" class="form-control" style="height: 7em"><%= @listing.requirements.join("\n") %></textarea>
+            <label for="requirements" class="fs-5 fw-bolder">Requirements & Qualifications</label>
+        </div>
+        
+        <div class="mb-3 form-floating">
+            <textarea placeholder name="listing[benefits]" id="benefits" class="form-control" style="height: 7em"><%= @listing.benefits.join("\n") %></textarea>
+            <label for="benefits" class="fs-5 fw-bolder">Benefits/Other</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
+
     <hr>
 
     <h2>Generate with AI</h2>
@@ -45,5 +55,4 @@
 
 
 
-</body>
-</html>
+</main>

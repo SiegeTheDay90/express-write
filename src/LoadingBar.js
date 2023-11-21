@@ -9,6 +9,8 @@ class LoadingBar {
       this.complete = 0;
       this.timeElapsed = 0;
       this.resourceId;
+      this.progressMessages = ["Dipping pen...", "Mixing Ink...", "Ruffling paper..."]
+      this.defaultMessage = "Writing... This can take a few minutes."
 
       this.completionCallback ||= completionCallback;
 
@@ -18,8 +20,9 @@ class LoadingBar {
       this.bar.innerText = 0;
       this.bar.max = 100;
 
-      this.status.innerText = "In Progress..."
+      this.status.innerText = "Getting Started..."
       // options["authenticity_token"] = "<%= form_authenticity_token %>";
+      debugger
       fetch(url, options).then((res) => this.loadingCallback(res)).catch(this.failureCallback);
   }
 
@@ -30,30 +33,34 @@ class LoadingBar {
   }
 
   async loadingCallback(response){
-      if(response.ok){
-        const data = await response.json(); // Parse API response
-        this.request_id = data.id; // Request_id from backend
-        
-        this.interval = setInterval(async () => { // Ping backend until request is complete
-          const response = await fetch(`/check/${this.request_id}`)
-            const data = await response.json();
+    debugger
+    if(response.ok){
+      debugger
+      const data = await response.json(); // Parse API response
+      this.request_id = data.id; // Request_id from backend
+      
+      this.interval = setInterval(async () => { // Ping backend until request is complete
+        const response = await fetch(`/check/${this.request_id}`)
+        const data = await response.json();
 
-            if(data.complete){ // Request complete
-              if(data.ok){ // Success
-                this.messages = data.messages
-                  clearInterval(this.interval);
-                  this.completionCallback(data.resource_id);
-              } else{ // Failure
-                  clearInterval(this.interval);
-                  this.failureCallback(data.errors);
-              this.timeElapsed += 5;
-              }
-            } else if(this.timeElapsed > 240){ // Timeout
-                clearInterval(this.interval);
-                this.failureCallback("Timeout");
-            }
-        }, 5000)
-      }
+        if(data.complete){ // Request complete
+          if(data.ok){ // Success
+            this.messages = data.messages
+            clearInterval(this.interval);
+            this.completionCallback(data.resource_id);
+          } else{ // Failure
+            clearInterval(this.interval);
+            this.failureCallback(data.errors);
+          }
+        } else if(this.timeElapsed > 240){ // Timeout
+          clearInterval(this.interval);
+          this.failureCallback("Timeout");
+        }
+        
+        this.status.innerText = this.progressMessages.length ? this.progressMessages.pop() : this.defaultMessage;
+        this.timeElapsed += 5;
+      }, 5000)
+    }
   }
 
   async completionCallback(id){
