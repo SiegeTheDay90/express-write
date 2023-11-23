@@ -28,6 +28,6 @@
     <form action=<%= listing_url(@listing.id) %> method="POST"> 
         <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
         <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger">
     </form>
 </main>

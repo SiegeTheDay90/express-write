@@ -31,7 +31,7 @@
 </script>
 <main class="pt-2 mx-auto">
     <h1>My Listings</h1>
-    <%= link_to "Add a Listing", new_listing_path, class: "btn btn-primary" %>
+    <%= link_to "Add a Listing", new_listing_path, class: "btn btn-success" %>
     <div id="listings-container">
         <ol id="list" class="p-2 m-2" start="1" data-length=<%= @listings.length %> data-page="1">
             <% @listings.reverse.each_with_index do |listing, idx| %>

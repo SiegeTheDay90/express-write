@@ -46,6 +46,10 @@
     position: sticky;
  }
 
+ .btn {
+  height: min-content;
+ }
+
  .form-control{
   background-color: #0000FF0D;
   transition: background-color 0.3s;

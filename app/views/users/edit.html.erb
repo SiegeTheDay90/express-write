@@ -1,6 +1,6 @@
 <main class="pt-2 mx-auto">
   <section id="user-info-container" >
-    <span class="d-flex mb-4"><h1 class="me-3">Editing Profile</h1> <%= link_to 'Back', _back_url %></span>
+    <span class="d-flex mb-4"><h1 class="me-3">Editing Profile</h1> <%= link_to 'Back', _back_url, class: "btn btn-secondary" %></span>
     <div class="ms-2 col-12 col-lg-9" >
       <form method="POST" action=<%= user_url(@user.id)%> class="mb-3">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
@@ -36,7 +36,7 @@
           <label class="fs-5 fw-bolder" for="projects">Other Details</label>
         </div>
       
-        <input type="submit" value="Save Changes" class="btn btn-primary">
+        <input type="submit" value="Save Changes" class="btn btn-success">
       </form>
     </div>
 
@@ -53,7 +53,7 @@
         <br>
         <label for="file">Upload PDF</label>
         <input type="file" name="pdf" id="file" accept=".pdf" class="mb-3"><br>
-        <input type="submit" value="Generate Bio" class="btn btn-primary">
+        <input type="submit" value="Generate Bio" class="btn btn-success">
       </form>
     </div>
   </section>

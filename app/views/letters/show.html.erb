@@ -17,10 +17,10 @@
         <label for="helpful-negative">No</label>
         <input type="radio" name="helpful" id="helpful-negative" value="false" <%= @letter.helpful ? '' : 'checked' %>>
         </span>
-        <%= link_to "Back", _back_url %>
+        <%= link_to "Back", _back_url, class:"btn btn-secondary" %>
 
     </div>
-    <h2 style="display: inline" class="me-5" >Letter for <%= @letter.listing.job_title + " @ " + @letter.listing.company %></h2><%= link_to 'Edit', edit_letter_url(@letter) %>
+    <h2 style="display: inline" class="me-5" >Letter for <%= @letter.listing.job_title + " @ " + @letter.listing.company %></h2><%= link_to 'Edit', edit_letter_url(@letter), class:"btn btn-primary" %>
     <section id="letter-body" class="w-75"><hr>
         <div>
             <% @letter.body.split("\n").each do |line| %>
@@ -28,7 +28,7 @@
             <% end %>
         </div>
         <hr>
-        <h5><%= link_to 'Edit', edit_letter_url(@letter) %></h5>
+        <h5><%= link_to 'Edit', edit_letter_url(@letter), class:"btn btn-primary" %></h5>
         <h6>Thank you! :&#41;</h6>
         <hr>
     </section>
