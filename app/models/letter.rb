@@ -17,5 +17,6 @@ class Letter < ApplicationRecord
 
    has_one :author,
    through: :listing,
-   source: :user
+   source: :user,
+   dependent: :destroy
 end

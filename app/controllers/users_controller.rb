@@ -62,6 +62,7 @@ class UsersController < ApplicationController
 
     if @user.save
       login!(@user)
+      UserMailer.with(user: @user).welcome_email.deliver_now
       redirect_to edit_user_path(@user), notice: "User was successfully created."
     else
       flash["errors"] = @user.errors.full_messages.join("\n")

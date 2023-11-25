@@ -24,6 +24,9 @@ class SessionsController < ApplicationController
         if @user
             login!(@user)
             flash["messages"] = "Successfully Logged In as #{@user.first_name}"
+            if !is_returning_user
+              UserMailer.with(user: @user).welcome_email.deliver_now
+            end
             redirect_to is_returning_user ? user_listings_path(@user) : edit_user_path(@user)
         else
             @user = nil

@@ -30,7 +30,7 @@ class User < ApplicationRecord
     has_secure_password
 
     has_many :listings, dependent: :destroy
-    has_many :letters, through: :listings, source: :letters
+    has_many :letters, through: :listings, source: :letters, dependent: :destroy
 
     def ensure_username
         self.username = self.email
