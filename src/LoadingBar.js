@@ -96,19 +96,19 @@ class LoadingBar {
   }
 
   failureCallback(error){
-      console.error("Request Failed: ", error);
-      this.status.innerText = "ERROR";
-      const tryAgain = document.createElement("button");
-      tryAgain.classList.add("btn");
-      tryAgain.classList.add("btn-primary");
-      tryAgain.innerText = "Try Again?";
-      tryAgain.addEventListener("click", (e) => {
-          this.container.append(this.originalForm);
-          this.bar.remove();
-          this.status.remove();
-          tryAgain.remove();
-      })
-      this.container.append(tryAgain);
+    console.error("Request Failed: ", error);
+    this.status.innerText = "ERROR";
+    const tryAgain = document.createElement("button");
+    tryAgain.classList.add("btn");
+    tryAgain.classList.add("btn-primary");
+    tryAgain.innerText = "Try Again?";
+    tryAgain.addEventListener("click", (e) => {
+      this.container.append(this.originalForm);
+      this.bar.remove();
+      this.status.remove();
+      tryAgain.remove();
+    })
+    this.container.append(tryAgain);
   }
 }
 
