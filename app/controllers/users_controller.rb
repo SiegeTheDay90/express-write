@@ -101,7 +101,6 @@ class UsersController < ApplicationController
   end
   
   def reset_password
-    debugger
     password = params[:password]
     @user = User.find_by(reset_password_token: params[:token])
 
