@@ -1,0 +1,21 @@
+<div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 text-center ">
+  <span class="text-center ">
+    <h1 class="display-5 fw-bold text-body-emphasis">Reset Password</h1>
+  </span>
+
+  <span >
+    <div class="form-container px-4 py-5 bg-light bg-gradient rounded-4" >
+    <form method="POST" action=<%= request_reset_url %> class="d-flex flex-column align-items-start">
+      <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+      <div class="form-floating mb-3 d-flex flex-column align-items-start">
+        <input name="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+        <label for="inputEmail" class="form-label">Email address</label>
+      </div> 
+      <button type="submit" class="btn btn-success align-self-end">Submit</button>
+    </form>
+    </div>
+  </span>
+
+</div>
+
+<%= link_to "Back", _back_url, class:"btn btn-secondary ms-3" %>

@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     
 
     def demo
-      @user = User.find_by(email: "demo@user.io")
+      @user = User.create_with(password:"password", first_name:"Demo", last_name:"User").find_or_create_by(email:"demo@user.io")
       login!(@user)
       redirect_to user_url(@user)
     end
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     def linkedin
         code = params["code"]
         unless code
-            render plain: "Unauthorized 401"
+            render plain: "Unauthorized", status: 401
         end
         response = HTTP.post("https://www.linkedin.com/oauth/v2/accessToken", params: {grant_type: "authorization_code", code: code, client_id: ENV["OAUTH_CLIENT_ID"], client_secret: ENV["OAUTH_CLIENT_SECRET"], redirect_uri: ENV["OAUTH_CALLBACK_URI"]})
         access_token = JSON.parse(response.body.to_param)["access_token"]

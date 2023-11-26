@@ -1,17 +1,12 @@
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <h2>Hi, <%= @user.first_name %>. You've chosen to reset your password for WriteWise.</h2>
-    <p>
-      Use the code <%= @confirmation.code %> to reset your password.
-    </p>
-    <p>
-      To reset your password follow this link: <%= @url %>.
-    </p>
-    <p>
-      If you did not request this reset, please contact admin: ClarenceSmith90@gmail.com
-    </p>
-  </body>
-</html>
+<main>
+  <h2>Hi, <%= @user.first_name %>. You've chosen to reset your password for WriteWise.</h2>
+  <p>
+    Follow <%= link_to "this link", user_confirmation_url(@user.reset_password_token) %> to reset your password. <br>
+    Alternatively you can paste this link into your browser: <br>
+    <%= user_confirmation_url(@user.reset_password_token) %>
+  </p>
+
+  <p>
+    If you did not request this reset, please <%= link_to "Report a Bug", bug_report_url %>
+  </p>
+</main>

@@ -1,0 +1,41 @@
+<script>
+    function checkMatch(event){
+        debugger
+        const password = document.getElementById("inputPassword").value;
+        const match = document.getElementById("inputMatch").value;
+
+        if(match.length && match === password){
+            document.getElementById("submit").classList.remove("disabled");
+            document.getElementById("matchNotice").innerText = ""
+        } else {
+            document.getElementById("submit").classList.add("disabled");
+            document.getElementById("matchNotice").innerText = "Passwords must match."
+        }
+    }
+</script>
+<div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 text-center ">
+  <span class="text-center ">
+    <h1 class="display-5 fw-bold text-body-emphasis">Reset Password</h1>
+  </span>
+
+  <span >
+    <div class="form-container px-4 py-5 bg-light bg-gradient rounded-4" >
+    <form method="POST" action=<%= user_reset_url(@token) %> class="d-flex flex-column align-items-start">
+      <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+      <div class="form-floating mb-3 d-flex flex-column align-items-start">
+        <input name="password" type="password" class="form-control" id="inputPassword">
+        <label for="inputPassword" class="form-label">New Password:</label>
+      </div> 
+      <div class="form-floating mb-3 d-flex flex-column align-items-start">
+        <input name="match" type="password" class="form-control" id="inputMatch" onChange="checkMatch(event)">
+        <label for="inputMatch" class="form-label" >Confirm Password:</label>
+      </div> 
+      <div id="matchNotice" class="small text-danger"></div>
+      <button id="submit" type="submit" class="btn btn-success align-self-end disabled">Submit</button>
+    </form>
+    </div>
+  </span>
+
+</div>
+
+<%= link_to "Back", _back_url, class:"btn btn-secondary ms-3" %>

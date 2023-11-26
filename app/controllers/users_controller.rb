@@ -2,14 +2,9 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
   before_action :require_ownership, only: %i[ edit update_details destroy ]
   before_action :require_logged_in, only: [:edit, :details]
-  skip_before_action :require_logged_out, only: :show
+  skip_before_action :require_logged_out, only: [:show]
 
-  def index
-    @users = User.all
-  end
-
-  def show
-  end
+  
 
   def new
     @user = User.new
@@ -17,7 +12,6 @@ class UsersController < ApplicationController
 
   def details
     @user = current_user
-    render :details
   end
 
   def update_details
@@ -37,7 +31,7 @@ class UsersController < ApplicationController
   end
 
   def generate
-    r = Request.create!(resource_type: "bio", resource_id: current_user.id)
+    req = Request.create!(resource_type: "bio", resource_id: current_user.id)
     
     if params["link"]
       payload = URI.open(params["link"])
@@ -49,8 +43,8 @@ class UsersController < ApplicationController
     payload = helpers.pdf_to_text(payload)
     
     
-    GenerateBioJob.perform_later(r, current_user, payload)
-    render json: {ok: true, message: "Bio Started", id: r.id}
+    GenerateBioJob.perform_later(req, current_user, payload)
+    render json: {ok: true, message: "Bio Started", id: req.id}
   end
 
 
@@ -85,6 +79,62 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     redirect_to users_url, notice: "User was successfully destroyed."
+  end
+  
+  ### Password Reset
+
+  def confirm
+    @token = params[:token]
+
+    if !@token
+      redirect_to root_url and return
+    end
+
+    @user = User.find_by(reset_password_token: @token)
+
+    if !@user
+      flash["messages"] = "Invalid Token"
+      redirect_to root_url and return
+    end
+
+    render :confirm    
+  end
+  
+  def reset_password
+    debugger
+    password = params[:password]
+    @user = User.find_by(reset_password_token: params[:token])
+
+    if @user
+      @user.password = password
+      if @user.save
+        flash["messages"] = "Password updated successfully. You may now log in."
+      else
+        flash["errors"] = @user.errors.full_messages.to_s
+      end
+    else
+      flash["errors"] = "Invalid Token"
+    end
+    redirect_to root_url
+  end
+
+  def request_reset
+    @user = User.find_by(email: params[:email])
+    if @user
+      @user.reset_password_token = SecureRandom.alphanumeric(10)
+      @user.reset_password_sent_at = Date.today
+      if @user.save
+        UserMailer.with(user: @user).reset_request.deliver_now
+        flash["messages"] = "Reset initiated. Check your email inbox for instructions."
+        redirect_to root_url
+      else
+        flash.now[:errors] = "Something went wrong."
+        render :reset
+      end
+    else
+      flash.now[:errors] = "User not found."
+      render :reset
+    end
   end
 
   private
