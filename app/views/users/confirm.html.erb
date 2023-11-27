@@ -26,7 +26,7 @@
         <label for="inputPassword" class="form-label">New Password:</label>
       </div> 
       <div class="form-floating mb-3 d-flex flex-column align-items-start">
-        <input name="match" type="password" class="form-control" id="inputMatch" onChange="checkMatch(event)">
+        <input name="match" type="password" class="form-control" id="inputMatch" onInput="checkMatch(event)">
         <label for="inputMatch" class="form-label" >Confirm Password:</label>
       </div> 
       <div id="matchNotice" class="small text-danger"></div>
