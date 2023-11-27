@@ -127,6 +127,7 @@
  #strength-container{
    font-size: smaller;
    color: #aaa;
+   margin-top: 5px;
  }
 
  #user-info-container{
@@ -136,26 +137,49 @@
    justify-content: start;
    width: 100%;
  }
-
- /* .form-control{
-   overflow: hidden;
- }
- .form-floating {
-   /* overflow: visible;
-   transition: 0.5s;
-   border: 1px solid green;
-   height: 5px;
- }
-
- .form-floating:has(.form-control:focus, textarea.form-control:hover) {
-   height: max-content;
-   transition: 0.5s;
- }
-
- input[type=text].form-control {
-   height: min-content;
- } */
-
+ 
  .hidden {
-  display: none;
- }
+   display: none;
+  }
+  
+  #pw-info-icon{
+    cursor: help;
+    color: #5555ff;
+  }
+
+  #pw-info{
+    width: max-content;
+    background-color: #b3b3ff;
+    border: 1px solid black;
+    color: #060607;
+    padding: 10px 20px;
+    right: 0;
+    font-weight: lighter;
+    font-family: arial, sans-serif;
+    border-radius: 10px;
+    line-height: 2rem;
+    list-style-position: inside;
+    text-align: start;
+  }
+  #pw-info-icon:hover #pw-info{
+    display: block;
+  }
+
+  /* .form-control{
+    overflow: hidden;
+  }
+  .form-floating {
+    /* overflow: visible;
+    transition: 0.5s;
+    border: 1px solid green;
+    height: 5px;
+  }
+ 
+  .form-floating:has(.form-control:focus, textarea.form-control:hover) {
+    height: max-content;
+    transition: 0.5s;
+  }
+ 
+  input[type=text].form-control {
+    height: min-content;
+  } */
