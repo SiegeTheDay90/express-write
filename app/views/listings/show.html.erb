@@ -1,5 +1,5 @@
 <main class="ps-3 pt-2 pb-5">
-    <span class="d-flex mb-4"><h1 class="me-3">Listing Details</h1> <%= link_to 'Edit', edit_listing_url(@listing) class:"btn btn-primary"%></span>
+    <span class="d-flex mb-4"><h1 class="me-3">Listing Details</h1> <%= link_to 'Edit', edit_listing_url(@listing), class:"btn btn-primary"%></span>
     <div class="ps-3">
         <h4><%= @listing.job_title + " @ " + @listing.company %></h4>
         <span><form action=<%= generate_letter_url %> method="post" class="ajaxForm" data-action="letters#generate">
