@@ -1,4 +1,26 @@
 <script>
+  function passwordChanged() {
+    var strength = document.getElementById('strength');
+    var strongRegex = new RegExp("^(?=.{11,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+    var mediumRegex = new RegExp("^(?=.{9,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+    var enoughRegex = new RegExp("(?=.{8,}).*", "g");
+    var pwd = document.getElementById("inputPassword");
+    if (pwd.value.length == 0) {
+        strength.innerHTML = 'Type Password';
+    } else if (false == enoughRegex.test(pwd.value)) {
+        strength.innerHTML = 'More Characters';
+    } else if (strongRegex.test(pwd.value)) {
+        strength.innerHTML = '<span style="color:green">Strong!</span>';
+        return "Strong";
+    } else if (mediumRegex.test(pwd.value)) {
+        strength.innerHTML = '<span style="color:orange">Medium!</span>';
+        return "Medium";
+    } else {
+        strength.innerHTML = '<span style="color:red">Weak!</span>';
+    }
+  }
+</script>
+<script>
     function checkMatch(event){
         const password = document.getElementById("inputPassword").value;
         const match = document.getElementById("inputMatch").value;
@@ -22,8 +44,20 @@
     <form method="POST" action=<%= user_reset_url(@token) %> class="d-flex flex-column align-items-start">
       <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
       <div class="form-floating mb-3 d-flex flex-column align-items-start">
-        <input name="password" type="password" class="form-control" id="inputPassword">
+        <input name="password" type="password" class="form-control" id="inputPassword" onInput="passwordChanged(event)">
         <label for="inputPassword" class="form-label">New Password:</label>
+                  <span id="strength-container">Strength: <span id="strength">Type Password</span>
+            <i class="fa-solid fa-circle-question position-relative" id="pw-info-icon">
+              <ul id="pw-info" class="hidden position-absolute">
+                Strong Passwords Contain:
+                <li>11+ Characters</li>
+                <li>At least one uppercase letter</li>
+                <li>At least one lowercase letter</li>
+                <li>At least one digit 0-9</li>
+                <li>At least one special character</li>
+              </ul>
+            </i>
+          </span>
       </div> 
       <div class="form-floating mb-3 d-flex flex-column align-items-start">
         <input name="match" type="password" class="form-control" id="inputMatch" onInput="checkMatch(event)">

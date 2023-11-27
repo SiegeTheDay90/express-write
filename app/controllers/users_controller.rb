@@ -106,6 +106,8 @@ class UsersController < ApplicationController
 
     if @user
       @user.password = password
+      @user.reset_password_token = nil
+      @user.reset_password_sent_at = nil
       if @user.save
         flash["messages"] = "Password updated successfully. You may now log in."
       else
