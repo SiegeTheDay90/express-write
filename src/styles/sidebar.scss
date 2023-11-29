@@ -27,7 +27,7 @@ $background-light: #6e6ebe;
         color: whitesmoke;
         width: 100%;
     }
-    li{
+    .menu-item{
         padding: 5px 20px;
         margin: 5px 0;
         font-size: large;
@@ -35,6 +35,18 @@ $background-light: #6e6ebe;
         cursor: pointer;
         list-style: none;
         transition: 0.2s;
+        min-width: 200px;
+    }
+    button.menu-item{
+        padding: 5px 20px;
+        border: none;
+        margin: 5px 0;
+        font-size: large;
+        font-weight: bolder;
+        cursor: pointer;
+        list-style: none;
+        transition: 0.2s;
+        min-width: 200px;
     }
     li:hover{
         background-color: #5555ba;
