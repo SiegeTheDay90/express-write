@@ -20,8 +20,21 @@ ApplicationRecord.transaction do
     ApplicationRecord.connection.reset_pk_sequence!('letters')
   
     puts "Creating demo user..."
-    User.create!(first_name: "Demo", last_name: "User", email: "DemoUser@gmail.com", industry:"SWE", password: "password")
+    User.create!(first_name: "Demo", last_name: "User", email: "demo@user.io", industry:"SWE", password: "password")
     puts "Creating demo listing..."
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
+    Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
     Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
     puts "Creating demo letter..."
     Letter.create!(body: "Seeded this body. This would normally be written by ChatGPT. The following is from GPT: I hope this letter finds you in good health and high spirits. It has been quite some time since we last caught up, and I wanted to take a moment to send you my warmest greetings and well wishes.

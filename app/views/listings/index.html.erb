@@ -18,7 +18,8 @@
     }
 
     function changePage(pageNum){
-        const list = document.getElementById("list").start = (pageNum*5 - 4) // Start <ol> from appropriate list number
+        const list = document.getElementById("list");
+        list.start = (pageNum*5 - 4) // Start <ol> from appropriate list number
         const items = document.getElementsByClassName("list-item"); // All list-items
         const visible = document.getElementsByClassName("visible"); // Currently visible list-items
         Array.from(visible).forEach((item) => {item.classList.remove("visible"); item.classList.add("hidden");});
