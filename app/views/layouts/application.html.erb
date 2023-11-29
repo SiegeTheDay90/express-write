@@ -47,7 +47,7 @@
               <a href=<%= user_listings_url(current_user) %>><li class="menu-item" >Listings</li></a>
               <a href=<%= user_url(current_user) %>><li class="menu-item" >Profile</li></a>
               <a href=<%= details_url() %>><li>Account</li class="menu-item" ></a>
-              <form action=<%= session_url() %> method="POST">
+              <form action=<%= session_url() %> method="POST" class="menu-item" >
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
                 <input type="hidden" name="_method" value="DELETE">
                 <input  class="menu-item" type="submit" value="Logout">
