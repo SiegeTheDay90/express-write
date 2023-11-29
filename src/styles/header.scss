@@ -1,0 +1,15 @@
+#banner {
+    height: 15vh;
+    max-height: 100px;
+    width: 100%;
+    margin: 0;
+    background-color: #5555ba;
+    padding: 10px 40px 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.368);   
+    z-index: 2;
+    position: sticky;
+    top: 0;
+}

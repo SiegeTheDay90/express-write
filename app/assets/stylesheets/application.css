@@ -32,20 +32,6 @@
    margin-right: 1vw;
 }
 
- #banner {
-    height: 15vh;
-    max-height: 100px;
-    background-color: #5555ba;
-    padding: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px 10px 15px;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.368);   
-    z-index: 2;
-    position: sticky;
- }
-
  .btn {
   height: min-content;
  }
@@ -164,6 +150,7 @@
   #pw-info-icon:hover #pw-info{
     display: block;
   }
+  
 
   /* .form-control{
     overflow: hidden;

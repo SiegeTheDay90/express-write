@@ -12,7 +12,7 @@
   </head>
 
   <body id="main">
-    <header id="banner" style="height: content-min">
+    <header id="banner">
     <span style="height: 100%;">
       <a href=<%= root_url %> class="logo"><img id="logo-img" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise</a>
       <br>
@@ -31,12 +31,25 @@
         <% end %>
       </span>
       <% if current_user %>
-      <div id="nav-buttons">
+      <!-- <div id="nav-buttons">
         <%= button_to "Listings", user_listings_url(current_user), method: :get, class: "btn btn-light"%>
         <%= button_to "Profile", user_url(current_user), method: :get, class: "btn btn-light" %>
         <%= button_to "Account", details_url(), method: :get, class: "btn btn-light" %>
         <%= button_to "Logout", session_url(), method: :delete, class: "btn btn-light" %>
-      </div>
+      </div> -->
+      <span id="hamburger-container">
+        <span id="hamburger">
+        </span>
+      </span>
+        <div id="sidebar">
+            <span class="sidebar-header">Navigation</span>
+            <nav class="menu-options">
+              <a href=<%= user_listings_url(current_user) %>><li>Listings</li></a>
+              <a href=<%= user_url(current_user) %>><li>Profile</li></a>
+              <a href=<%= details_url() %>><li>Account</li></a>
+              <a href=<%= session_url() %>><li>Logout</li></a>
+            </nav>
+        </div>
       <% end %>
     </header>
 

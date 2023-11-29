@@ -1,0 +1,30 @@
+#hamburger{
+  position: absolute;
+  top: 12px;
+  width: 40px;
+  border: 1px solid whitesmoke;
+  &::after{
+    content: '';
+    width: 40px;
+    position: absolute;
+    left: -1px;
+    top: 8px;
+    border: inherit;
+  }
+  &::before{
+    content: '';
+    width: 40px;
+    position: absolute;
+    left: -1px;
+    bottom: 8px;
+    border: inherit;
+  }
+}
+
+
+#hamburger-container{
+    width: 45px;
+    height: 25px;
+    position: relative;
+    cursor: pointer;
+}
