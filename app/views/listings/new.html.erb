@@ -1,5 +1,4 @@
 <main>
-<!-- <%= javascript_importmap_tags 'loadingbar' %> -->
     <h1>New Job Listing</h1>
     <form action="<%= listings_url %>" method="POST" style="max-width: 800px" class="ms-3" >
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -34,24 +33,22 @@
 
     <hr>
 
+    <div id="generate-listing-container">
     <h2>Generate with AI</h2>
-    <h6>If you have trouble using an url, copy and paste the posting as plain text.</h6>
-    
-    <form class="ajaxForm" action=<%= generate_listing_url %> method="POST" data-action="listings#generate"> 
-        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
-        <span>Generate from:</span>
+        <form class="ajaxForm" id="generate-listing-form" action=<%= generate_listing_url %> method="POST" data-action="listings#generate"> 
+            <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+            <label for="type">Generate from:</label>
+            <select id="type" name="type" style="width: max-content">
+                <option value="url">URL</option>
+                <option value="text">Plain Text</option>
+            </select>
 
-        <label for="type-url">URL</label>
-        <input type="radio" name="type" id="type-url" value="url">
+            <label for="input">Paste here:</label>
+            <textarea name="input" id="input" cols="50", rows="5"></textarea><br>
 
-        <label for="type-text">Text</label>
-        <input type="radio" name="type" id="type-text" value="text"><br>
-
-        <label for="input">Paste here:</label>
-        <textarea name="input" id="input" cols="100", rows="5"></textarea><br>
-
-        <input type="submit" value="Generate" class="btn btn-success">
-    </form>
+            <input type="submit" value="Generate" class="btn btn-success">
+        </form>
+    </div>
 
 
 
