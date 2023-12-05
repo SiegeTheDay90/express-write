@@ -27,7 +27,7 @@ class GenerateBioJob < ApplicationJob
                   {role: "system", content:"Return JSON with values that summarize this document. Use exactly these keys: {'aboutme': 'string', 'skills': str[], 'education': str[], 'projects': str[], 'experience': str[]}. Your response must be only valid JSON."},
                   {role: "user", content: text[0]}
               ],
-              temperature: 1.5,
+              temperature: 1.4,
               max_tokens: 10000
           }
       )

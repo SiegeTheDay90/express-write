@@ -5,7 +5,6 @@
         const url = event.currentTarget.getAttribute("action")
         const auth = event.currentTarget.getAttribute("auth")
         const response = await fetch(url+`/helpful?status=${helpful}`, {method: "PATCH", headers:{"X-CSRF-Token": auth}})
-        console.log(await response.text())
     }
 </script>
 <main class="pl-1 pt-2 mx-auto">

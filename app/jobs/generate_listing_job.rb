@@ -39,7 +39,7 @@ class GenerateListingJob < ApplicationJob
                   {role: "system", content:"Summarize. Respond with only valid JSON with exact keys: {'company': 'string', 'job_title': 'string', 'job_description': 'string', 'requirements': str[], 'benefits': str[]}. Ensure there is no trailing comma after the last value."},
                   {role: "user", content: text}
               ],
-              temperature: 1.1,
+              temperature: 0.9,
               max_tokens: 10000
           }
       )
