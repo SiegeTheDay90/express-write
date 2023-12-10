@@ -1,56 +1,67 @@
 <script>
-function toggleOpen(){
-  event.currentTarget.parentElement.parentElement.toggleAttribute("open")
-}
+  function convertToEdit(e=event){
+    
+    const editForm = document.createElement('form');
+    editForm.setAttribute("method", "POST");
+    editForm.setAttribute("action", "<%= user_url(@user) %>" );
+
+    if(e.target.id === "edit-name"){
+      editForm.innerHTML = (`
+        <input type="hidden" name="authenticity_token" value=${"<%= form_authenticity_token %>"}>
+        <input type="hidden" name="_method" value="PATCH">
+        <label class="mb-3">First Name 
+          <input class="form-control" id='firstNameInput' type='text' name='user[first_name]' value=${"<%= @user.first_name %>"}>
+        </label><br>
+        <label class="mb-3">Last Name 
+          <input class="form-control" id='lastNameInput' type='text' name='user[last_name]' value=${"<%= @user.last_name %>"}>
+        </label><br>
+        <input type='submit' value='Update' class="btn btn-primary">
+      `);
+      e.target.parentElement.appendChild(editForm);
+      document.getElementById("full-name").remove();
+      document.getElementById("edit-name").remove();
+    } else if(e.target.id === "edit-email"){
+      editForm.innerHTML = (`
+        <input type="hidden" name="authenticity_token" value=${"<%= form_authenticity_token %>"}>
+        <input type="hidden" name="_method" value="PATCH">
+        <label class="mb-3">New Email 
+          <input class="form-control" id='newEmailInput' type='text' name='user[email]' >
+        </label><br>
+        <label class="mb-3">Confirm New Email
+          <input class="form-control" id='confirmEmailInput' type='text' >
+        </label><br>
+        <label class="mb-3">Password
+          <input class="form-control" id='passwordInput' type='password' name='user[password]' >
+        </label><br>
+        <input type='submit' value='Send Confirmation Email' class="btn btn-primary">
+      `);
+      e.target.parentElement.appendChild(editForm);
+      document.getElementById("edit-email").remove();
+      document.getElementById("email").remove();
+    }
+  }
 </script>
 <main class="pt-2 mx-auto">
-  <section id="user-info-container">
-     <span class="d-flex mb-4"><h1 class="me-3">My Profile</h1> <%= link_to 'Edit', edit_user_url(@user), class:"btn btn-primary"%></span>
+  <section id="user-info-container" style="flex-direction: row; border: 1px solid red;" class="col-4">
+    <span id="details-container" style="border: 1px solid green" class="col-4">
+      <h1>Account Details</h1>
 
-    <div class="mb-3">
-        <strong >Industry:</strong>
-        <p id="industry"><%= @user.industry %></p>
-    </div>
+      <div class="mb-3">
+          <strong>Name </strong><a href="#" id="edit-name" onClick="convertToEdit()" style="font-size: small; padding: 3px 10px;" class="btn btn-secondary ms-3">Edit</a>
+          <p id="full-name"><%= @user.full_name %></p>
+      </div>
 
-    <div class="mb-3">
-        <strong ><h3>About Me:</h3></strong>
-        <p id="about-me"><%= @user.aboutme %></p>
-    </div>
+      <div class="mb-3">
+          <strong>Email Address</strong><a href="#" id="edit-email" onClick="convertToEdit()" style="font-size: small; padding: 3px 10px;" class="btn btn-secondary ms-3">Change</a>
+          <p id="email"><%= @user.email %></p>
+      </div>
+    </span>
 
-    <div class="mb-3">
-        <strong ><h3>Education:</h3></strong>
-        <p id="education">
-            <% @user.education.map do |item| %>
-                <li><%= item %></li>
-            <% end %>
-        </p>
-    </div>
-
-    <div class="mb-3">
-        <strong ><h3>Skills:</h3></strong>
-        <p id="skills">
-            <% @user.skills.map do |item| %>
-                <li><%= item %></li>
-            <% end %>
-        </p>
-    </div>
-
-    <div class="mb-3">
-        <strong ><h3>Work Experience:</h3></strong>
-        <p id="work-experience">
-            <% @user.experience.map do |item| %>
-                <li><%= item %></li>
-            <% end %>
-        </p>
-    </div>
-
-    <div class="mb-3">
-        <strong ><h3>Other Details:</h3></strong>
-        <p id="projects">
-            <% @user.projects.map do |item| %>
-                <li><%= item %></li>
-            <% end %>
-        </p>
-    </div>
+    <span class="p-3" style="height: 100%; border: 1px solid blue; border-radius: 10px; text-align: center;">
+      <h4>Listings Saved: <%= @user.listings.count %></h4>
+      <h4>Letters Saved: <%= @user.letters.count %></h4>
+      <h4>Candidate Profiles: <%= @user.profiles.count %></h4>
+    </span>
+    
   </section>
 </main>

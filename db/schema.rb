@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_16_021417) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_10_162820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_16_021417) do
     t.index ["user_id"], name: "index_listings_on_user_id"
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "industry", default: ""
+    t.text "aboutme", default: ""
+    t.text "skills", default: [], array: true
+    t.text "education", default: [], array: true
+    t.text "experience", default: [], array: true
+    t.string "projects", default: [], array: true
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
   create_table "requests", force: :cascade do |t|
     t.boolean "complete", default: false
     t.boolean "ok"
@@ -107,7 +121,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_16_021417) do
     t.string "session_token"
     t.text "aboutme", default: ""
     t.string "projects", default: [], array: true
+    t.integer "active_profile"
+    t.string "email_token"
+    t.string "unconfirmed_email"
+    t.datetime "email_token_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email_token"], name: "index_users_on_email_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["session_token"], name: "index_users_on_session_token"
     t.index ["username"], name: "index_users_on_username"

@@ -10,11 +10,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def details
-    @user = current_user
-  end
-
-  def update_details
+  def update
     if @user.update_details(params["updated_details"])
       render :details
     else
@@ -22,7 +18,6 @@ class UsersController < ApplicationController
       render :details
     end
   end
-
 
   def edit
     @listings = @user.listings || []
@@ -65,14 +60,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    success_target = params["redirect"] == 'bio' ? user_url(@user) : details_url()
-    failure_target = params["redirect"] == 'bio' ? :edit : :details
     if @user.update(user_params)
-      flash["messages"] = "User was successfully updated."
-      redirect_to success_target
+      flash["messages"].now = "User was successfully updated."
+      render :show
     else
       flash.now[:errors] = @user.errors.full_messages
-      render failure_target, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 

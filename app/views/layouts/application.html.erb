@@ -31,12 +31,6 @@
         <% end %>
       </span>
       <% if current_user %>
-      <!-- <div id="nav-buttons">
-        <%= button_to "Listings", user_listings_url(current_user), method: :get, class: "btn btn-light"%>
-        <%= button_to "Profile", user_url(current_user), method: :get, class: "btn btn-light" %>
-        <%= button_to "Account", details_url(), method: :get, class: "btn btn-light" %>
-        <%= button_to "Logout", session_url(), method: :delete, class: "btn btn-light" %>
-      </div> -->
       <span id="hamburger-container">
         <span id="hamburger">
         </span>
@@ -46,7 +40,7 @@
             <nav class="menu-options">
               <a href=<%= user_listings_url(current_user) %>><li class="menu-item" >Listings</li></a>
               <a href=<%= user_url(current_user) %>><li class="menu-item" >Profile</li></a>
-              <a href=<%= details_url() %>><li class="menu-item" >Account</li></a>
+              <a href=<%= user_url(current_user) %>><li class="menu-item" >Account</li></a>
               <form action=<%= session_url() %> method="POST" class="menu-item" >
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
                 <input type="hidden" name="_method" value="DELETE">

@@ -20,9 +20,6 @@ Rails.application.routes.draw do
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
   
-  # User Details
-  get '/details', to: 'users#details', as: 'details'
-
   # Bug Report
   get '/bugreport', to: 'application#bug', as: 'bug_report'
 
