@@ -8,6 +8,15 @@ class ApplicationController < ActionController::Base
 
     before_action :snake_case_params, :attach_authenticity_token
 
+    def stress_test
+        stress = params["amount"] || 10
+
+        stress.times do |i|
+            StressTestJob.perform_later(i)
+        end
+
+        render plain: "Stressing with #{stress} jobs. Check server logs."
+    end
     def current_user
         @current_user ||= User.includes(:listings, :letters).find_by(session_token: session['_clhelper_session'])
     end

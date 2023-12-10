@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_12_10_162820) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -125,6 +126,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_10_162820) do
     t.string "email_token"
     t.string "unconfirmed_email"
     t.datetime "email_token_sent_at"
+
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["email_token"], name: "index_users_on_email_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

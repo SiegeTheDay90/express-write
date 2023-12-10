@@ -34,11 +34,8 @@ class UsersController < ApplicationController
       payload = request.body
     end
 
-
     payload = helpers.pdf_to_text(payload)
     
-    
-    GenerateBioJob.perform_later(req, current_user, payload)
     render json: {ok: true, message: "Bio Started", id: req.id}
   end
 

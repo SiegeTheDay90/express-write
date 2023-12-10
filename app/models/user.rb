@@ -32,6 +32,11 @@ class User < ApplicationRecord
     has_many :profiles, dependent: :destroy
     has_many :listings, dependent: :destroy
     has_many :letters, through: :listings, source: :letters, dependent: :destroy
+    has_many :profiles
+    has_one :active_profile,
+      class_name: :Profile,
+      primary_key: :id,
+      foreign_key: :user_id
 
     def ensure_username
         self.username = self.email

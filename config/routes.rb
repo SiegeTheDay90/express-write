@@ -5,11 +5,16 @@ Rails.application.routes.draw do
   root "application#show"
 
   resource :session, only: [:new, :create, :destroy]
-  resources :listings, only: [:show, :new, :create, :edit, :update, :destroy]
+  resources :listings
   resources :letters, only: [:show, :edit, :update, :destroy]
+  resources :profiles, only: [:new, :create, :edit, :update, :destroy]
   resources :users, only: [:new, :create, :show, :edit, :update] do
+    resources :profiles, only: [:show]
     resources :listings, only: [:index]
   end
+
+  # Stress Test
+  get '/stresstest', to: 'application#stress_test'
 
   # Password Reset
   get '/reset', to: 'application#reset', as: 'reset_form'
