@@ -39,11 +39,8 @@ class UsersController < ApplicationController
       payload = request.body
     end
 
-
     payload = helpers.pdf_to_text(payload)
     
-    
-    GenerateBioJob.perform_later(req, current_user, payload)
     render json: {ok: true, message: "Bio Started", id: req.id}
   end
 
@@ -64,17 +61,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def update
-    success_target = params["redirect"] == 'bio' ? user_url(@user) : details_url()
-    failure_target = params["redirect"] == 'bio' ? :edit : :details
-    if @user.update(user_params)
-      flash["messages"] = "User was successfully updated."
-      redirect_to success_target
-    else
-      flash.now[:errors] = @user.errors.full_messages
-      render failure_target, status: :unprocessable_entity
-    end
-  end
+
 
   def destroy
     @user.destroy

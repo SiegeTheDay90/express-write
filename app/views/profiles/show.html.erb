@@ -1,0 +1,56 @@
+<script>
+function toggleOpen(){
+  event.currentTarget.parentElement.parentElement.toggleAttribute("open")
+}
+</script>
+<main class="pt-2 mx-auto">
+  <section id="user-info-container">
+     <span class="d-flex mb-4"><h1 class="me-3">My Profile</h1> <%= link_to 'Edit', edit_user_url(@user), class:"btn btn-primary"%></span>
+
+    <div class="mb-3">
+        <strong >Industry:</strong>
+        <p id="industry"><%= @user.industry %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>About Me:</h3></strong>
+        <p id="about-me"><%= @user.aboutme %></p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Education:</h3></strong>
+        <p id="education">
+            <% @user.education.map do |item| %>
+                <li><%= item %></li>
+            <% end %>
+        </p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Skills:</h3></strong>
+        <p id="skills">
+            <% @user.skills.map do |item| %>
+                <li><%= item %></li>
+            <% end %>
+        </p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Work Experience:</h3></strong>
+        <p id="work-experience">
+            <% @user.experience.map do |item| %>
+                <li><%= item %></li>
+            <% end %>
+        </p>
+    </div>
+
+    <div class="mb-3">
+        <strong ><h3>Other Details:</h3></strong>
+        <p id="projects">
+            <% @user.projects.map do |item| %>
+                <li><%= item %></li>
+            <% end %>
+        </p>
+    </div>
+  </section>
+</main>
