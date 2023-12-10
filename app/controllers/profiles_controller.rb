@@ -5,8 +5,12 @@ class ProfilesController < ApplicationController
   end
   
   def show
-    @user = params["user_id"]
+    @user = User.find(params["user_id"])
     @profile = Profile.find(params["id"])
+    if @user.id != @profile.user_id
+      flash["errors"] = "Invalid Profile"
+      redirect_to root_url and return
+    end
   end
 
   def edit

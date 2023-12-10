@@ -39,7 +39,7 @@
             <span class="sidebar-header">Navigation</span>
             <nav class="menu-options">
               <a href=<%= user_listings_url(current_user) %>><li class="menu-item" >Listings</li></a>
-              <a href=<%= user_url(current_user) %>><li class="menu-item" >Profile</li></a>
+              <a href=<%= user_profile_url(current_user, current_user.active_profile) %>><li class="menu-item" >Profiles</li></a>
               <a href=<%= user_url(current_user) %>><li class="menu-item" >Account</li></a>
               <form action=<%= session_url() %> method="POST" class="menu-item" >
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">

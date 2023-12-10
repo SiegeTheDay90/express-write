@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
     rescue_from StandardError, with: :unhandled_error
     rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
     helper_method :current_user
-    before_action :require_logged_out, only: :show
 
     before_action :snake_case_params, :attach_authenticity_token
 
@@ -16,6 +15,11 @@ class ApplicationController < ActionController::Base
         end
 
         render plain: "Stressing with #{stress} jobs. Check server logs."
+    end
+
+    def show
+        require_logged_out()
+
     end
     def current_user
         @current_user ||= User.includes(:listings, :letters).find_by(session_token: session['_clhelper_session'])

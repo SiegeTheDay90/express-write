@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
   before_action :require_ownership, only: %i[ edit update_details destroy ]
   before_action :require_logged_in, only: [:edit, :details]
-  skip_before_action :require_logged_out, only: [:show]
 
   
 
@@ -58,7 +57,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      flash["messages"].now = "User was successfully updated."
+      flash.now["messages"] = "User was successfully updated."
       render :show
     else
       flash.now[:errors] = @user.errors.full_messages

@@ -42,8 +42,8 @@
   }
 </script>
 <main class="pt-2 mx-auto">
-  <section id="user-info-container" style="flex-direction: row; border: 1px solid red;" class="col-4">
-    <span id="details-container" style="border: 1px solid green" class="col-4">
+  <section id="user-info-container" style="flex-direction: row;" class="col-4">
+    <span id="details-container" class="col-4">
       <h1>Account Details</h1>
 
       <div class="mb-3">
@@ -57,10 +57,18 @@
       </div>
     </span>
 
-    <span class="p-3" style="height: 100%; border: 1px solid blue; border-radius: 10px; text-align: center;">
-      <h4>Listings Saved: <%= @user.listings.count %></h4>
-      <h4>Letters Saved: <%= @user.letters.count %></h4>
-      <h4>Candidate Profiles: <%= @user.profiles.count %></h4>
+    <span class="p-3" style="height: 100%; border-radius: 10px; ">
+      <h5>Listings Saved: <%= @user.listings.count %></h5>
+      <h5>Letters Saved: <%= @user.letters.count %></h5>
+      <h5>Candidate Profiles: <%= @user.profiles.count %></h5>
+      <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
+        <h5>Active Profile <a href=<%= edit_profile_url(@user.active_profile) %> class="btn btn-light ms-3" style="font-size: small">Edit</a></h5>
+        <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
+        <h6><%= @user.active_profile.title %></h6>
+        <p>Industry: <%= @user.active_profile.industry.empty? ? "None Listed" : @user.active_profile.industry %></p>
+        <p>Last Updated: <%= @user.active_profile.updated_at %></p>
+        </div>
+      </div>
     </span>
     
   </section>

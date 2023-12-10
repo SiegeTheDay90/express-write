@@ -1,6 +1,5 @@
 class ListingsController < ApplicationController
     before_action :require_logged_in
-    skip_before_action :require_logged_out
     def new
         @listing = Listing.new
         render :new
