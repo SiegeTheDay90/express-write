@@ -10,8 +10,8 @@ class GenerateLetterJob < ApplicationJob
         parameters: {
           model: "gpt-3.5-turbo-16k",
           messages: [
-              {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
-              {role: "user", content: "Job: #{JSON.parse(listing.to_json(except: :id).gsub("\r", ""))}\nCandidate: #{JSON.parse(listing.user.to_json(except: :id).gsub("\r", ""))}"}
+              {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate. Include details about education and work experience from the users resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing."},
+              {role: "user", content: "Job-Listing: #{JSON.parse(listing.to_json(except: :id).gsub("\r", ""))}\nResume: #{JSON.parse(listing.user.to_json(except: :id).gsub("\r", ""))}"}
           ],
           temperature: 1.3,
           max_tokens: 10000
