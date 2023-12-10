@@ -10,11 +10,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def details
-    @user = current_user
-  end
-
-  def update_details
+  def update
     if @user.update_details(params["updated_details"])
       render :details
     else
@@ -22,7 +18,6 @@ class UsersController < ApplicationController
       render :details
     end
   end
-
 
   def edit
     @listings = @user.listings || []
@@ -61,7 +56,15 @@ class UsersController < ApplicationController
     end
   end
 
-
+  def update
+    if @user.update(user_params)
+      flash["messages"].now = "User was successfully updated."
+      render :show
+    else
+      flash.now[:errors] = @user.errors.full_messages
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   def destroy
     @user.destroy
