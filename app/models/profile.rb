@@ -1,5 +1,5 @@
 class Profile < ApplicationRecord
-    validates :title, presence: true, length: {minimum: 3, message: "must be at least 3 characters."}
+    # validates :title, presence: true, length: {minimum: 3, message: "must be at least 3 characters."}
     
     belongs_to :user
 
