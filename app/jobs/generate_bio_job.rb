@@ -1,14 +1,14 @@
 class GenerateBioJob < ApplicationJob
   queue_as :default
 
-  def perform(request, current_user, payload)
+  def perform(request, user, payload)
     bio = text_to_user_bio(payload)
     
     
     if !bio
       request.complete!(false, nil, "Error while generating bio.")
     else
-      request.complete!(true, current_user.id, bio)
+      request.complete!(true, user.id, bio)
     end
 
   end

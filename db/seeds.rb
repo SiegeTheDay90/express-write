@@ -9,6 +9,8 @@
 ApplicationRecord.transaction do 
     # Unnecessary if using `rails db:seed:replant`
     puts "Destroying tables..."
+    Request.destroy_all
+    Profile.destroy_all
     Letter.destroy_all
     Listing.destroy_all
     User.destroy_all
@@ -18,10 +20,26 @@ ApplicationRecord.transaction do
     ApplicationRecord.connection.reset_pk_sequence!('users')
     ApplicationRecord.connection.reset_pk_sequence!('listings')
     ApplicationRecord.connection.reset_pk_sequence!('letters')
-  
+    ApplicationRecord.connection.reset_pk_sequence!('profiles')
+    ApplicationRecord.connection.reset_pk_sequence!('requests')
+    puts
     puts "Creating demo user..."
-    User.create!(first_name: "Demo", last_name: "User", email: "demo@user.io", industry:"SWE", password: "password")
-    puts "Creating demo listing..."
+    User.create!(first_name: "Demo", last_name: "User", email: "demo@user.io", password: "password")
+    puts "Creating demo profiles..."
+    first_profile = Profile.create!(
+        title: "Frontend",
+        industry: "Web Development",
+        skills: ["Next.js", "CSS", "Rails"],
+        user_id: 1
+    )
+    first_profile.set_active()
+    second = Profile.create!(
+        title: "Backend",
+        industry: "Data Analysis",
+        skills: ["Node.js", "Express.js", "MySQL"],
+        user_id: 1
+    )
+    puts "Creating demo listings..."
     Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
     Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
     Listing.create!(company: "Seed Company", job_title: "Job", job_description: "Seed Job", requirements: ["Req 1", "Req 2", "Req 3"], benefits: [], user_id: 1)
@@ -51,6 +69,8 @@ ApplicationRecord.transaction do
         
         Warmest regards,
         
-        John", listing_id: 1, user_id: 1)
+        John", listing_id: 1, user_id: 1
+    )
+    puts
    
-  end
+end

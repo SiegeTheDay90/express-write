@@ -1,6 +1,5 @@
 class LettersController < ApplicationController
     before_action :require_logged_in, except: :express
-    skip_before_action :require_logged_out
     def new
         render :new
     end

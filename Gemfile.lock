@@ -131,6 +131,7 @@ GEM
     importmap-rails (1.2.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
+    llama_cpp (0.10.0)
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
@@ -288,6 +289,7 @@ DEPENDENCIES
   http (~> 5.1)
   image_processing (~> 1.2)
   importmap-rails
+  llama_cpp (~> 0.10.0)
   open-uri (~> 0.3.0)
   pdf-reader (~> 2.11)
   pg

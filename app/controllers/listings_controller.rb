@@ -1,6 +1,5 @@
 class ListingsController < ApplicationController
     before_action :require_logged_in
-    skip_before_action :require_logged_out
     def new
         @listing = Listing.new
         render :new
@@ -91,6 +90,7 @@ class ListingsController < ApplicationController
 
     def index
         @listings = Listing.where(user_id: current_user.id)
+        @user = current_user
         render :index
     end
 end

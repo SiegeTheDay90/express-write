@@ -66,6 +66,8 @@ class LoadingBar {
       this.bar.innerText = 100;
       this.bar.value = 100;
       let count = 5;
+      let bio;
+      let params;
       this.status.innerText = `Complete! Redirecting in ${count}.....`
       switch(this.action){
         case "listings#generate":
@@ -76,10 +78,16 @@ class LoadingBar {
           this.nextPath = `/letters/${id}/`;
         break;
 
-        case "users#generate":
-          const bio = JSON.parse(this.messages);
-          const params = new URLSearchParams(bio).toString();
-          this.nextPath = `/users/${id}/edit?`+params;
+        case "profiles#new":
+          bio = JSON.parse(this.messages);
+          params = new URLSearchParams(bio).toString();
+          this.nextPath = `/profiles/new?`+params;
+        break;
+
+        case "profiles#edit":
+          bio = JSON.parse(this.messages);
+          params = new URLSearchParams(bio).toString();
+          this.nextPath = `/profiles/${id}/edit?`+params+"&m=Profile+Not+Yet+Saved";
         break;
 
         default:

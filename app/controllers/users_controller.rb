@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
   before_action :require_ownership, only: %i[ edit update_details destroy ]
   before_action :require_logged_in, only: [:edit, :details]
-  skip_before_action :require_logged_out, only: [:show]
 
   
 
@@ -10,11 +9,10 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def details
-    @user = current_user
+  def show
   end
 
-  def update_details
+  def update
     if @user.update_details(params["updated_details"])
       render :details
     else
@@ -22,7 +20,6 @@ class UsersController < ApplicationController
       render :details
     end
   end
-
 
   def edit
     @listings = @user.listings || []
@@ -39,11 +36,8 @@ class UsersController < ApplicationController
       payload = request.body
     end
 
-
     payload = helpers.pdf_to_text(payload)
     
-    
-    GenerateBioJob.perform_later(req, current_user, payload)
     render json: {ok: true, message: "Bio Started", id: req.id}
   end
 
@@ -65,14 +59,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    success_target = params["redirect"] == 'bio' ? user_url(@user) : details_url()
-    failure_target = params["redirect"] == 'bio' ? :edit : :details
     if @user.update(user_params)
-      flash["messages"] = "User was successfully updated."
-      redirect_to success_target
+      flash.now["messages"] = "User was successfully updated."
+      render :show
     else
       flash.now[:errors] = @user.errors.full_messages
-      render failure_target, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 

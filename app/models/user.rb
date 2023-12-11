@@ -28,9 +28,15 @@ class User < ApplicationRecord
     validates :first_name, :last_name, presence: true
     before_validation :ensure_username, :ensure_session_token
     has_secure_password
-
+    
+    has_many :profiles, dependent: :destroy
     has_many :listings, dependent: :destroy
     has_many :letters, through: :listings, source: :letters, dependent: :destroy
+    has_many :profiles
+
+    def profile
+      Profile.find(active_profile)
+    end
 
     def ensure_username
         self.username = self.email

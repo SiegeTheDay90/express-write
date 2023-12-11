@@ -5,11 +5,16 @@ Rails.application.routes.draw do
   root "application#show"
 
   resource :session, only: [:new, :create, :destroy]
-  resources :listings, only: [:show, :new, :create, :edit, :update, :destroy]
+  resources :listings
   resources :letters, only: [:show, :edit, :update, :destroy]
+  resources :profiles, only: [:new, :create, :edit, :update, :destroy]
   resources :users, only: [:new, :create, :show, :edit, :update] do
+    resources :profiles, only: [:show]
     resources :listings, only: [:index]
   end
+
+  # Stress Test
+  get '/stresstest', to: 'application#stress_test'
 
   # Password Reset
   get '/reset', to: 'application#reset', as: 'reset_form'
@@ -20,14 +25,14 @@ Rails.application.routes.draw do
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
   
-  # User Details
-  get '/details', to: 'users#details', as: 'details'
-
   # Bug Report
   get '/bugreport', to: 'application#bug', as: 'bug_report'
 
-  # Mark Letters as Helpful
+  # Mark Letter as Helpful
   patch '/letters/:id/helpful', to: 'letters#helpful', as: 'helpful_letter'
+
+  # Set Profile as Active
+  get '/profiles/:id/activate', to: 'profiles#set_active', as: 'set_active'
 
   # Login Routes
   get '/session/linkedin', to: 'sessions#linkedin'
@@ -36,7 +41,7 @@ Rails.application.routes.draw do
   # Generators
   post '/letters/generate', to: 'letters#generate', as: 'generate_letter'
   post '/listings/generate', to: 'listings#generate', as: 'generate_listing'
-  post '/users/generate', to: 'users#generate', as: 'generate_bio'
+  post '/profiles/generate', to: 'profiles#generate', as: 'generate_profile'
   post '/express', to: 'letters#express', as: 'express_letter'
   get '/express', to: 'application#express'
   

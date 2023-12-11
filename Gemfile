@@ -81,3 +81,5 @@ gem "open-uri", "~> 0.3.0"
 
 gem "bootstrap", "~> 5.3"
 
+
+gem "llama_cpp", "~> 0.10.0"

@@ -2,37 +2,42 @@
   <section id="user-info-container" >
     <span class="d-flex mb-4"><h1 class="me-3">Editing Profile</h1> <%= link_to 'Back', _back_url, class: "btn btn-secondary" %></span>
     <div class="ms-2 col-12 col-lg-9" >
-      <form method="POST" action=<%= user_url(@user.id)+"?redirect=bio"%> class="mb-3">
+      <form method="POST" action=<%= profile_url(@profile.id)%> class="mb-3">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
         <input type="hidden" name="_method" value="patch" />
           
         <div class="mb-3 form-floating"> 
-          <input type="text" value="<%= params["industry"] || @user.industry %>" name="user[industry]" id="industry" class="pt-5 pb-3 form-control w-50" placeholder="Industry" />
+          <input type="text" value="<%= params["title"] || @profile.title %>" name="profile[title]" id="title" class="pt-5 pb-3 form-control w-50" placeholder="Title" />
+          <label class="fs-5 fw-bolder" for="title">Title</label>
+        </div>
+        
+        <div class="mb-3 form-floating"> 
+          <input type="text" value="<%= params["industry"] || @profile.industry %>" name="profile[industry]" id="industry" class="pt-5 pb-3 form-control w-50" placeholder="Industry" />
           <label class="fs-5 fw-bolder" for="industry">Industry</label>
         </div>
         
         <div class="mb-3 form-floating"> 
-          <textarea id="about-me" name="user[aboutme]" class="pt-5 pb-3 form-control" placeholder="About Me" style="height: 10em"><%= params["aboutme"] || @user.aboutme %></textarea>
+          <textarea id="about-me" name="profile[aboutme]" class="pt-5 pb-3 form-control" placeholder="About Me" style="height: 10em"><%= params["aboutme"] || @profile.aboutme %></textarea>
           <label class="fs-5 fw-bolder" for="about-me">About Me</label>
         </div>
         
         <div class="mb-3 form-floating"> 
-          <textarea id="education" name="user[education]" class="pt-5 pb-3 form-control" placeholder="Education" style="height: 10em"><%= params["education"] ? params["education"].split(",").join("\n") : @user.education.join("\n") %></textarea>
+          <textarea id="education" name="profile[education]" class="pt-5 pb-3 form-control" placeholder="Education" style="height: 10em"><%= params["education"] ? params["education"].split(",").join("\n") : @profile.education.join("\n") %></textarea>
           <label class="fs-5 fw-bolder" for="education">Education</label>
         </div>
         
         <div class="mb-3 form-floating"> 
-          <textarea id="skills" name="user[skills]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["skills"] ? params["skills"].split(",").join("\n") : @user.skills.join("\n") %></textarea>
+          <textarea id="skills" name="profile[skills]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["skills"] ? params["skills"].split(",").join("\n") : @profile.skills.join("\n") %></textarea>
           <label class="fs-5 fw-bolder" for="skills">Skills</label>
         </div>
 
         <div class="mb-3 form-floating"> 
-          <textarea id="work-experience" name="user[experience]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["experience"] ? params["experience"].split(",").join("\n") : @user.experience.join("\n") %></textarea>
+          <textarea id="work-experience" name="profile[experience]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["experience"] ? params["experience"].split(",").join("\n") : @profile.experience.join("\n") %></textarea>
           <label class="fs-5 fw-bolder" for="work-experience">Work Experience</label>
         </div>
 
         <div class="mb-3 form-floating"> 
-          <textarea id="projects" name="user[projects]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["projects"] ? params["projects"].split(",").join("\n") : @user.projects.join("\n") %></textarea>
+          <textarea id="projects" name="profile[projects]" class="pt-5 pb-3 form-control" placeholder="Industry" style="height: 10em"><%= params["projects"] ? params["projects"].split(",").join("\n") : @profile.projects.join("\n") %></textarea>
           <label class="fs-5 fw-bolder" for="projects">Other Details</label>
         </div>
       
@@ -41,8 +46,8 @@
     </div>
 
     <div id="generate-bio-container">
-      <h5>Update Bio with PDF Resume</h5>
-      <form data-action="users#generate" method="POST" action=<%= generate_bio_url %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column">
+      <h5>Update with PDF</h5>
+      <form data-action="profiles#edit" method="POST" action=<%= generate_profile_url + "?id=#{@profile.id}" %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <%# <div class="mb-3 form-floating">
           <input name="link" id="link-to-file" class="pt-5 pb-3 form-control">
