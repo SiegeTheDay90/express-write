@@ -16,7 +16,7 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
 
     User.all.each do |user|
       profile = Profile.create!(
-        title: user.industry.empty? ? "My First Profile" : user.industry,
+        title: user.industry&.empty? ? "My First Profile" : user.industry || "My First Profile",
         skills: user.skills,
         education: user.education,
         experience: user.experience,
