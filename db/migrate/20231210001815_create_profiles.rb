@@ -15,7 +15,7 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
     add_column :users, :active_profile, :integer
 
     User.all.each do |user|
-      Profile.create!(
+      profile = Profile.create!(
         title: "My First Profile",
         skills: user.skills,
         education: user.education,
@@ -25,7 +25,8 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
         projects: user.projects,
         aboutme: user.aboutme
       )
-      user.update!(active_profile: user.id)
+      user.update!(active_profile: profile)
     end
+    
   end
 end

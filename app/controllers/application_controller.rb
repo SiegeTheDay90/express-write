@@ -19,10 +19,10 @@ class ApplicationController < ActionController::Base
 
     def show
         require_logged_out()
-
     end
+    
     def current_user
-        @current_user ||= User.includes(:listings, :letters).find_by(session_token: session['_clhelper_session'])
+        @current_user ||= User.includes(:listings, :letters, :profiles).find_by(session_token: session['_clhelper_session'])
     end
     
     def express
@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
     end
 
     def require_logged_out
-        redirect_to user_listings_url(current_user) if current_user
+        redirect_to user_url(current_user) if current_user
     end
 
     private

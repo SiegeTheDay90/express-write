@@ -62,11 +62,16 @@
       <h5>Letters Saved: <%= @user.letters.count %></h5>
       <h5>Candidate Profiles: <%= @user.profiles.count %></h5>
       <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
-        <h5>Active Profile <a href=<%= edit_profile_url(@user.active_profile) %> class="btn btn-light ms-3" style="font-size: small">Edit</a></h5>
+        <h5>Active Profile 
+          <a href=<%= @user.active_profile ? edit_profile_url(@user.active_profile) : "#"%> 
+             class="btn btn-light ms-3" style="font-size: small">Edit
+          </a>
+        </h5>
+        
         <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
-        <h6><%= @user.active_profile.title %></h6>
-        <p>Industry: <%= @user.active_profile.industry.empty? ? "None Listed" : @user.active_profile.industry %></p>
-        <p>Last Updated: <%= @user.active_profile.updated_at %></p>
+        <h6><%= @user.active_profile&.title || "Not Set" %></h6>
+        <p>Industry: <%= @user.active_profile&.industry&.empty? ? "None Listed" : @user.active_profile&.industry || "Not Set" %></p>
+        <p><%= ("Last Updated: " + @user.active_profile&.updated_at.to_date.inspect) if @user.active_profile %></p>
         </div>
       </div>
     </span>

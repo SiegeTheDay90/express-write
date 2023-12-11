@@ -9,6 +9,9 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def show
+  end
+
   def update
     if @user.update_details(params["updated_details"])
       render :details

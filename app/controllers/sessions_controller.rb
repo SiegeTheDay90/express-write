@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     def demo
       @user = User.create_with(password:"password", first_name:"Demo", last_name:"User").find_or_create_by(email:"demo@user.io")
       login!(@user)
-      redirect_to user_url(@user)
+      redirect_to user_path(@user)
     end
 
     def linkedin
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
             if !is_returning_user
               UserMailer.with(user: @user).welcome_email.deliver_now
             end
-            redirect_to is_returning_user ? user_listings_path(@user) : edit_user_path(@user)
+            redirect_to user_path(@user)
         else
             @user = nil
             flash.now["errors"] = "Could not Login with LinkedIn"
