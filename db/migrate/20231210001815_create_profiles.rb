@@ -25,7 +25,7 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
         projects: user.projects,
         aboutme: user.aboutme
       )
-      user.update!(active_profile: profile)
+      user.update!(active_profile: profile.id)
     end
     
   end
