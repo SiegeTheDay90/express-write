@@ -47,11 +47,15 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.email = @user.email.downcase
     @user.password = params["user"]["password"]
-
+    title = params["user"]["industry"] || "My First Profile"
+    industry = params["user"]["industry"] || ""
+    
     if @user.save
       login!(@user)
+      profile = Profile.create!(title: title, industry: industry, user_id: @user.id)
+      profile.set_active()
       UserMailer.with(user: @user).welcome_email.deliver_now
-      redirect_to edit_user_path(@user), notice: "User was successfully created."
+      redirect_to user_path(@user), notice: "User was successfully created."
     else
       flash["errors"] = @user.errors.full_messages.join("\n")
       render :new, status: :unprocessable_entity

@@ -1,9 +1,10 @@
 class Profile < ApplicationRecord
+    validates :title, :industry, presence: true
     
     belongs_to :user
 
     def is_active?
-        user.active_profile == id
+        user&.active_profile == id
     end
 
     def set_active

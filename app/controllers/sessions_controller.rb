@@ -27,6 +27,8 @@ class SessionsController < ApplicationController
             if !is_returning_user
               UserMailer.with(user: @user).welcome_email.deliver_now
             end
+            profile = Profile.create!(title: "First Profile", industry: "", user_id: @user.id)
+            profile.set_active()
             redirect_to user_path(@user)
         else
             @user = nil

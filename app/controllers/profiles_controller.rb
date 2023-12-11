@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+
   
   def new
     @profile = Profile.new
@@ -11,6 +12,10 @@ class ProfilesController < ApplicationController
     if @profile.save
       flash.now["messages"] = "Profile saved."
       @user = @profile.user
+      debugger
+      if params["set_active"] == "on"
+        @profile.set_active()
+      end
       render :show
     else
       flash.now["errors"] = @profile.errors.full_messages
@@ -38,6 +43,9 @@ class ProfilesController < ApplicationController
     redirect_to root_url and return unless current_user.id == @profile.user_id
     if @profile.update(profile_params)
       flash["messages"] = "Profile was successfully updated."
+      if params["set_active"] == "on"
+        @profile.set_active()
+      end
       redirect_to user_profile_url(@profile.user_id, @profile)
     else
       flash.now[:errors] = @user.errors.full_messages
