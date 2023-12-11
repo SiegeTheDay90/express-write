@@ -12,7 +12,6 @@ class ProfilesController < ApplicationController
     if @profile.save
       flash.now["messages"] = "Profile saved."
       @user = @profile.user
-      debugger
       if params["set_active"] == "on"
         @profile.set_active()
       end
@@ -48,7 +47,7 @@ class ProfilesController < ApplicationController
       end
       redirect_to user_profile_url(@profile.user_id, @profile)
     else
-      flash.now[:errors] = @user.errors.full_messages
+      flash.now[:errors] = @profile.errors.full_messages
       render :edit, status: :unprocessable_entity
     end
   end
