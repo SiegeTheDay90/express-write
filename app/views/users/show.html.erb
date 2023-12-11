@@ -41,6 +41,17 @@
     }
   }
 </script>
+<script>
+  function profileChange(e){
+    const profileId = e.target.value;
+    console.log(profileId);
+    window.location.href = window.location.origin + `/profiles/${profileId}/activate`;
+  }
+</script>
+<style>
+
+
+</style>
 <main class="pt-2 mx-auto">
   <section id="user-info-container" style="flex-direction: row;" class="col-4">
     <span id="details-container" class="col-4">
@@ -52,7 +63,8 @@
       </div>
 
       <div class="mb-3">
-          <strong>Email Address</strong><a href="#" id="edit-email" onClick="convertToEdit()" style="font-size: small; padding: 3px 10px;" class="btn btn-secondary ms-3">Change</a>
+          <strong>Email Address</strong>
+          <!--<a href="#" id="edit-email" onClick="convertToEdit()" style="font-size: small; padding: 3px 10px;" class="btn btn-secondary ms-3">Change</a> -->
           <p id="email"><%= @user.email %></p>
       </div>
     </span>
@@ -62,16 +74,30 @@
       <h5>Letters Saved: <%= @user.letters.count %></h5>
       <h5>Candidate Profiles: <%= @user.profiles.count %></h5>
       <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
-        <h5>Active Profile 
-          <a href=<%= @user.active_profile ? edit_profile_url(@user.active_profile) : "#"%> 
-             class="btn btn-light ms-3" style="font-size: small">Edit
+        <h5>Active Profile <br class="d-md-none" />
+        <% if @user.profile %>
+          <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
+             class="btn btn-light ms-lg-5 ms-sm-1" style="font-size: small">Edit
           </a>
+        <% end %>
+        <a id="change-button" href="#"
+            class="btn btn-secondary ms-1" style="font-size: small">Change
+            <select id="profile-select" onChange="profileChange(event)">
+              <% @user.profiles.each do |profile| %>
+                <option value=<%= profile.id %> <%= profile.is_active? ? "selected" : ""%>> <%= profile.title %> </option>
+              <% end %>
+            </select>
+
+        </a>
+        <a href=<%= new_profile_url() %> 
+            class="btn btn-success ms-1" style="font-size: small">New
+        </a>
         </h5>
         
         <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
-        <h6><%= @user.active_profile&.title || "Not Set" %></h6>
-        <p>Industry: <%= @user.active_profile&.industry&.empty? ? "None Listed" : @user.active_profile&.industry || "Not Set" %></p>
-        <p><%= ("Last Updated: " + @user.active_profile&.updated_at.to_date.inspect) if @user.active_profile %></p>
+        <h6><%= @user.profile&.title || "Not Set" %></h6>
+        <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
+        <p><%= ("Last Updated: " + @user.profile&.updated_at.to_date.inspect) if @user.profile %></p>
         </div>
       </div>
     </span>
