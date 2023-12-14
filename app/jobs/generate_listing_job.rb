@@ -3,7 +3,7 @@ class GenerateListingJob < ApplicationJob
   BLACKLIST = Set.new(["header", "footer", "a", "code", "template", "text", "form", "link", "script", "img", "iframe", "icon", "comment", "button", "input", "head", "meta", "style"])
   
   def perform(request, type, payload, current_user)
-
+    
     begin
       if type == "http"
         listing_obj = http_to_listing(payload)
@@ -67,6 +67,7 @@ class GenerateListingJob < ApplicationJob
       unless raw_doc.search("title").empty?
           document.prepend_child(raw_doc.search("title")[0])
       end
+      
       trimmed_doc = document.to_s
       trimmed_doc.gsub!(/\n/, "\s\s")
       trimmed_doc.gsub!("  ", "")

@@ -127,7 +127,7 @@ export const ajaxSubmit = function(e){
   const options = { method, body: {}, headers: {} };
   options.headers["Content-Type"] = "application/json";
   
-  const inputs = form.querySelectorAll("input, textarea");
+  const inputs = form.querySelectorAll("input, textarea, select");
   inputs.forEach((input) => {
     if(!input.name) return;
     switch(input.type){
