@@ -47,6 +47,26 @@ class ApplicationController < ActionController::Base
         redirect_to user_url(current_user) if current_user
     end
 
+    def test
+
+        url = ""
+
+        if params["text"].split("/").include?("docs.google.com")
+            id = params["text"].split("/")[-2]
+            url = "https://drive.google.com/uc?export=download&id=#{id}"
+        else 
+            url = params["text"]
+        end
+
+        debugger
+
+        docx = URI.open(url)
+        text = helpers.docx_to_text(docx)
+        debugger
+        puts "OK"
+        render plain: text
+    end
+    
     private
 
     def snake_case_params
@@ -87,29 +107,5 @@ class ApplicationController < ActionController::Base
         return lp
     end
 
-    def test
-        @listing = Listing.third_to_last
-        return redirect_to edit_user_url(current_user) unless @listing
-
-         OpenAI.configure do |config|
-            config.access_token = ENV["OPENAI"]
-        end
-        client = OpenAI::Client.new
-        
-        response = client.chat(
-            parameters: {
-                model: "gpt-3.5-turbo-16k",
-                messages: [
-                    {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
-                    {role: "user", content: "Job: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ""))}\nCandidate: #{JSON.parse(@listing.user.to_json(except: :id).gsub("\r", ""))}"}
-                ],
-                max_tokens: 15200,
-                temperature: 1.1
-            }
-        )
-        @message = response["choices"][0]["message"]["content"]
-        render plain: @message
-        # @letter = Letter.new(body: @message, listing_id: @listing.id, user_id: current_user.id)
-    end
 
 end

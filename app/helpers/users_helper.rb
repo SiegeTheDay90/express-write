@@ -1,4 +1,5 @@
 module UsersHelper
+    require 'docx'
 
     def pdf_to_text(pdf)
         PDF::Reader.open(pdf) do |reader|
@@ -19,6 +20,18 @@ module UsersHelper
 
             return txt
         end
+    end
+
+    def docx_to_text(docx)
+        doc = Docx::Document.open(docx)
+        txt = ""
+
+        doc.paragraphs.each_with_index do |p, i|
+            txt += i == 0 ? "" : "\n"
+            txt += p.to_s
+        end
+
+        return txt
     end
 
 end
