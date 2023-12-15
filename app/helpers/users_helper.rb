@@ -6,7 +6,7 @@ module UsersHelper
 
             logger.info "Converting : #{pdf}"
             pageno = 0
-            txt = reader.pages.map do |page| 
+            pages = reader.pages.map do |page| 
 
                 pageno += 1
                 begin
@@ -18,11 +18,12 @@ module UsersHelper
                 end
             end
 
-            return txt
+            return pages.join("\n\n")
         end
     end
 
     def docx_to_text(docx)
+        
         doc = Docx::Document.open(docx)
         txt = ""
 

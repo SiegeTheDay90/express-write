@@ -58,11 +58,11 @@ class ApplicationController < ActionController::Base
             url = params["text"]
         end
 
-        debugger
+        
 
         docx = URI.open(url)
         text = helpers.docx_to_text(docx)
-        debugger
+        
         puts "OK"
         render plain: text
     end

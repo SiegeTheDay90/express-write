@@ -64,7 +64,6 @@ class ProfilesController < ApplicationController
   def generate
     
     req = Request.create!(resource_type: "bio", resource_id: params["id"])
-    debugger
 
     # Is this a PDF or DOCX file?
     if ["PDF", "DOCX"].include?(params["type"])
@@ -100,7 +99,7 @@ class ProfilesController < ApplicationController
       payload = helpers.docx_to_text(payload)
     end
 
-    debugger
+    
 
     GenerateBioJob.perform_later(req, current_user, payload)
 
