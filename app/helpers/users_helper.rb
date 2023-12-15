@@ -29,7 +29,7 @@ module UsersHelper
 
         doc.paragraphs.each_with_index do |p, i|
             txt += i == 0 ? "" : "\n"
-            txt += p.to_s
+            txt += p.to_s if p
         end
 
         return txt
