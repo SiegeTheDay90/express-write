@@ -47,6 +47,7 @@ class ListingsController < ApplicationController
     end
     
     def generate
+        
         @listing = Listing.new
         if params["type"] == "url"
             params["input"] = params["input"]
@@ -62,6 +63,7 @@ class ListingsController < ApplicationController
             else
                 begin
                     request = Request.create!(resource_type: "listing")
+                    
                     GenerateListingJob.perform_later(request, "http", http_response.body.to_s, current_user)
                     render json: {ok: true, message: "Listing Started", id: request.id}
                 rescue
