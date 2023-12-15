@@ -128,6 +128,7 @@ export const ajaxSubmit = function(e){
   options.headers["Content-Type"] = "application/json";
   
   const inputs = form.querySelectorAll("input, textarea, select");
+  let extraParam = "";
   inputs.forEach((input) => {
     if(!input.name) return;
     switch(input.type){
@@ -136,9 +137,18 @@ export const ajaxSubmit = function(e){
         break;
 
       case "file":
-        options.body = new FormData();
-        options.body.append('file', input.files[0]);
-        options.headers["Content-Type"] = 'application/pdf';
+        if(options.body["link"]) break;
+        // options.body = new FormData();
+        options.body = input.files[0];
+        // options.body.append('file', input.files[0]);
+        const type = document.getElementById("type").value;
+        if(type === "PDF"){
+          options.headers["Content-Type"] = 'application/pdf';
+          extraParam = "?type=PDF";
+        } else if(type === "DOCX"){
+          options.headers["Content-Type"] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+          extraParam = "?type=DOCX";
+        }
         break;
 
       default:
@@ -154,7 +164,7 @@ export const ajaxSubmit = function(e){
   
   new LoadingBar(
     form, //Form Element to be relplaced
-    form.action, // Fetch URL
+    form.action+extraParam, // Fetch URL
     options, // Method, Body, Headers
     form.dataset?.action // i.e. data-action="letters#generate"
   );

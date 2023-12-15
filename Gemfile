@@ -83,3 +83,5 @@ gem "bootstrap", "~> 5.3"
 
 
 gem "llama_cpp", "~> 0.10.0"
+
+gem "docx", "~> 0.8.0"

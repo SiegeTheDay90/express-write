@@ -64,14 +64,42 @@ class ProfilesController < ApplicationController
   def generate
     
     req = Request.create!(resource_type: "bio", resource_id: params["id"])
-    
-    if params["link"]
-      payload = URI.open(params["link"])
-    else
-      payload = request.body
+
+    # Is this a PDF or DOCX file?
+    if ["PDF", "DOCX"].include?(params["type"])
+
+      # Are we given a link to the file?
+      if params["link"]
+        url = ""
+        # Is it a Google Docs sharing link? Convert to direct download link.
+        if params["link"].split("/").include?("docs.google.com") || params["link"].split("/").include?("drive.google.com")
+            id = params["link"].split("/")[-2]
+            url = "https://drive.google.com/uc?export=download&id=#{id}"
+        else 
+            url = params["link"]
+        end
+
+        # Try to open the link
+        begin
+          payload = URI.open(url)
+        end
+
+      else # The file is attached directly to the request
+        payload = request.body
+      end
+    else # Just plain text
+      payload = params["text"]
     end
 
-    payload = helpers.pdf_to_text(payload)
+    # Covert to text if it is a file
+    case params["type"]
+    when "PDF"
+      payload = helpers.pdf_to_text(payload)
+    when "DOCX"
+      payload = helpers.docx_to_text(payload)
+    end
+
+    
 
     GenerateBioJob.perform_later(req, current_user, payload)
 

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_user, only: %i[ edit update destroy ]
   before_action :require_ownership, only: %i[ edit update_details destroy ]
-  before_action :require_logged_in, only: [:edit, :details]
+  before_action :require_logged_in, only: [:edit, :show]
 
   
 
@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = current_user
   end
 
   def update
