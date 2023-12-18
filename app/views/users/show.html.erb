@@ -75,31 +75,54 @@
       <h5>Candidate Profiles: <%= @user.profiles.count %></h5>
       <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
         <h5>Active Profile <br class="d-md-none" />
+        <a id="change-button" href="#"
+          class="btn btn-primary ms-5" style="font-size: small">Change
+          <select id="profile-select" onChange="profileChange(event)">
+            <% @user.profiles.each do |profile| %>
+              <option value=<%= profile.id %> <%= profile.is_active? ? "selected" : ""%>> <%= profile.title %> </option>
+            <% end %>
+          </select>
+        </a>
         <% if @user.profile %>
           <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
-             class="btn btn-light ms-lg-5 ms-sm-1" style="font-size: small">Edit
+             class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">Edit
           </a>
         <% end %>
-        <a id="change-button" href="#"
-            class="btn btn-secondary ms-1" style="font-size: small">Change
-            <select id="profile-select" onChange="profileChange(event)">
-              <% @user.profiles.each do |profile| %>
-                <option value=<%= profile.id %> <%= profile.is_active? ? "selected" : ""%>> <%= profile.title %> </option>
-              <% end %>
-            </select>
-
-        </a>
         <a href=<%= new_profile_url() %> 
             class="btn btn-success ms-1" style="font-size: small">New
         </a>
         </h5>
         
         <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
-        <h6><%= @user.profile&.title || "Not Set" %></h6>
-        <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
-        <p><%= ("Last Updated: " + @user.profile&.updated_at.to_date.inspect) if @user.profile %></p>
+          <h6><%= @user.profile&.title || "Not Set" %></h6>
+          <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
+          <p><%= ("Last Updated: " + @user.profile&.updated_at.to_date.inspect) if @user.profile %></p>
         </div>
       </div>
+
+      <div id="newest-listing-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
+        <h5>Last Updated Listing<br class="d-md-none" />
+        <% if !@user.listings.empty? %>
+          <% @listing = @user.listings.order("updated_at").last %>
+          <a href=<%= listing_url(@listing) %> 
+             class="btn btn-primary ms-lg-5 ms-sm-1" style="font-size: small">View
+          </a>
+          <a href=<%= edit_listing_url(@listing) %> 
+             class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">Edit
+          </a>
+        <% end %>
+
+        <a href=<%= new_listing_url() %> 
+            class="btn btn-success ms-1" style="font-size: small">New
+        </a>
+        </h5>
+        
+        <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
+          <h6><%= @listing ? "#{@listing.job_title} @ #{@listing.company}" : "No Listings Yet"%></h6>
+          <p><%= ("Last Updated: " + @listing.updated_at.to_date.inspect) if @listing %></p>
+        </div>
+      </div>
+
     </span>
     
   </section>
