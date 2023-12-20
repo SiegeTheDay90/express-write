@@ -1,0 +1,14 @@
+<main class="pl-1 pt-2 mx-auto">
+    <%= link_to "Return Home", "/", class: "btn btn-primary" %>
+    <h2 class="mb-5">Your Letter</h2>
+    <section id="letter-body" class="w-75"><hr>
+        <div>
+            <% @letter.body.split("\n").each do |line| %>
+                <%= line %><br>
+            <% end %>
+        </div>
+        <hr>
+        <h6>Consider signing up to save and edit letters.</h6>
+        <h6>Thank you! :&#41;</h6>
+    </section>
+</main>

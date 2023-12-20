@@ -39,7 +39,6 @@ class LoadingBar {
       this.interval = setInterval(async () => { // Ping backend until request is complete
         const response = await fetch(`/check/${this.request_id}`)
         const data = await response.json();
-
         if(data.complete){ // Request complete
           if(data.ok){ // Success
             this.messages = data.messages
@@ -90,6 +89,10 @@ class LoadingBar {
           this.nextPath = `/profiles/${id}/edit?`+params+"&m=Profile+Not+Yet+Saved";
         break;
 
+        case "express#generate":
+          this.nextPath = `/temp/${id}`;
+        break;
+
         default:
           this.nextPath = "/";
       }
@@ -123,12 +126,12 @@ class LoadingBar {
 export const ajaxSubmit = function(e){
   e.preventDefault();
   const form = e.target;
-  const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method;
+  const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method || "GET";
   const options = { method, body: {}, headers: {} };
   options.headers["Content-Type"] = "application/json";
   
   const inputs = form.querySelectorAll("input, textarea, select");
-  let extraParam = "";
+  let queryParams = new URLSearchParams();
   inputs.forEach((input) => {
     if(!input.name) return;
     switch(input.type){
@@ -141,13 +144,13 @@ export const ajaxSubmit = function(e){
         // options.body = new FormData();
         options.body = input.files[0];
         // options.body.append('file', input.files[0]);
-        const type = document.getElementById("type").value;
+        const type = document.getElementById("resume-type").value;
         if(type === "PDF"){
           options.headers["Content-Type"] = 'application/pdf';
-          extraParam = "?type=PDF";
+          queryParams.append("resume-type", "PDF");
         } else if(type === "DOCX"){
           options.headers["Content-Type"] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-          extraParam = "?type=DOCX";
+          queryParams.append("resume-type", "DOCX");
         }
         break;
 
@@ -156,15 +159,17 @@ export const ajaxSubmit = function(e){
           options.headers["X-CSRF-Token"] = input.value
         } 
         else {
-          options.body[input.name] = input.value
+          queryParams.append(input.name, input.value)
+          // options.body[input.name] = input.value
         };
     }
   });
+
   if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
   
   new LoadingBar(
     form, //Form Element to be relplaced
-    form.action+extraParam, // Fetch URL
+    form.action+"?"+queryParams.toString(), // Fetch URL
     options, // Method, Body, Headers
     form.dataset?.action // i.e. data-action="letters#generate"
   );

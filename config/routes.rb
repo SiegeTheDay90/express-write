@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "application#show"
+  root "application#splash"
 
   resource :session, only: [:new, :create, :destroy]
   resources :listings
@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     resources :profiles, only: [:show]
     resources :listings, only: [:index]
   end
+
+  # Temp Letter
+  get '/temp/:id', to: 'letters#temp'
 
   # Stress Test
   get '/stresstest', to: 'application#stress_test'
@@ -46,6 +49,7 @@ Rails.application.routes.draw do
   get '/express', to: 'application#express'
   
   # Other
+  get '/homepage', to: 'application#show'
   get '/test', to: 'application#test'
   get '*path', to: 'errors#not_found', via: :all
 end

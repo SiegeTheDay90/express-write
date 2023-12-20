@@ -37,8 +37,8 @@
     <h2>Generate with AI</h2>
         <form class="ajaxForm" id="generate-listing-form" action=<%= generate_listing_url %> method="POST" data-action="listings#generate"> 
             <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
-            <label for="type">Generate from:</label>
-            <select id="type" name="type" style="width: max-content">
+            <label for="listing-type">Generate from:</label>
+            <select id="listing-type" name="listing-type" style="width: max-content">
                 <option value="url">URL</option>
                 <option value="text">Plain Text</option>
             </select>

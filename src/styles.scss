@@ -2,6 +2,50 @@
 @import './styles/header.scss';
 @import './styles/sidebar.scss';
 
+#main.splash{
+  background-color: rgb(70, 70, 180);
+  padding-bottom: 50px;
+}
+
+.express-instruction{
+  list-style-position: inside;
+  margin-bottom: 3px;
+}
+.account-instruction{
+  list-style-type: "📎";
+}
+
+#letter-gif{
+  clip-path:view-box;
+}
+
+#resume-instruction{
+  list-style-type: "📜";
+}
+#listing-instruction{
+  list-style-type: "📰";
+}
+#letter-instruction{
+  list-style-type: "🔄";
+}
+#edit-instruction{
+  list-style-type: "✍️";
+}
+
+#splash-logo{
+  color: whitesmoke;
+  font-family: 'Allura', cursive;
+  font-size: 20vh;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  span{
+    display: flex;
+  }
+}
+
 .logo{
   user-select: none;
   font-family: 'Allura', cursive;
@@ -17,6 +61,13 @@
   box-shadow: 0 0 5px 1px rgb(255, 255, 255);
   opacity: 0.85;
   margin-right: 1vw;
+  transform: rotate(70deg);
+}
+
+#logo-img.splash{
+  box-shadow: none;
+  margin: -1%;
+  height: 25vh;
 }
 
 .btn {

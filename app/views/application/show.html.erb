@@ -1,4 +1,4 @@
-<%= javascript_importmap_tags 'hitcounter' %>
+<%= javascript_import_module_tag 'hitcounter' %>
 <div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 mb-5 text-center">
   <span class="text-center">
     <h1 class="display-5 fw-bold text-body-emphasis">Cover Letters</h1>
@@ -25,11 +25,9 @@
 <div style="background-color: #eef" class="px-4 py-5 my-5 text-center">
     <h2 class="display-5 fw-bold text-body-emphasis">Express Write</h2>
     <div class="col-lg-6 mx-auto">
-      <%# <p class="lead mb-4">Generate a letter without signing in.</p> %>
-      <%# <p class="lead mb-4">Currently Disabled</p> %>
       <p>You'll need a resume (pdf) and a job listing.</p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <%= button_to "Coming Soon", "/express", class: "btn btn-outline-secondary btn-lg px-4 disabled", method: :get %>
+        <%= link_to "Try it out", "/", class: "btn btn-outline-primary btn-lg px-4" %>
       </div>
     </div>
 </div>

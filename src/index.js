@@ -2,7 +2,7 @@ import { ajaxSubmit } from "./LoadingBar";
 import "./styles.scss";
 
 document.addEventListener("DOMContentLoaded", () => {
-    Array.from(document.getElementsByClassName('ajaxForm')).forEach(form => form.addEventListener('submit', ajaxSubmit));
+    Array.from(document.getElementsByClassName('ajaxForm'))?.forEach(form => {form.addEventListener('submit', ajaxSubmit);});
     const hamburgerClick = (e) => {
         e.stopPropagation();
         const sidebar = document.getElementById("sidebar");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         document.addEventListener('click', hide);
     }
-    document.getElementById("hamburger-container").addEventListener('click', hamburgerClick);
+    document.getElementById("hamburger-container")?.addEventListener('click', hamburgerClick);
 
 
 })
