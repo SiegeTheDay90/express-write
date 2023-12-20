@@ -21,7 +21,6 @@ class GenerateBioJob < ApplicationJob
       client = OpenAI::Client.new
 
       
-      
       response = client.chat(
           parameters: {
               model: "gpt-3.5-turbo-16k",

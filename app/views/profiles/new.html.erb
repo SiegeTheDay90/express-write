@@ -11,9 +11,6 @@
               <input name="link" id="link-to-file" class="pt-5 pb-3 form-control">
               <label class="fs-5 fw-bolder" for="link-to-file">Link</label>
           </div>
-          <br>
-          <small>OR</small>
-          <br>
           <label for="file">Upload PDF</label>
           <input type="file" name="file" id="file" accept=".pdf" class="mb-3"><br>`
         break
@@ -24,9 +21,6 @@
               <input name="link" id="link-to-file" class="pt-5 pb-3 form-control">
               <label class="fs-5 fw-bolder" for="link-to-file">Link</label>
           </div>
-          <br>
-          <small>OR</small>
-          <br>
           <label for="file">Upload DOCX</label>
           <input type="file" name="file" id="file" accept=".docx" class="mb-3"><br>`
 
@@ -102,7 +96,7 @@
       <form data-action="profiles#new" method="POST" action=<%= generate_profile_url %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <label></label>
-        <select name="type" id="type" onChange="typeChange(event)">
+        <select name="resume-type" id="resume-type" onChange="typeChange(event)">
           <option value="PDF" selected>PDF</option>
           <option value="DOCX">DOCX</option>
           <option value="TEXT">Plain Text</option>
@@ -112,9 +106,6 @@
             <input name="link" id="link-to-file" class="pt-5 pb-3 form-control">
             <label class="fs-5 fw-bolder" for="link-to-file">Link</label>
           </div>
-          <br>
-          <small>OR</small>
-          <br>
           <label for="file">Upload PDF</label>
           <input type="file" name="file" id="file" accept=".pdf" class="mb-3"><br>
         </div>

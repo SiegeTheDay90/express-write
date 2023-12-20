@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     include ActionController::RequestForgeryProtection
+    before_action :require_logged_out, only: :splash
     protect_from_forgery with: :exception
     rescue_from StandardError, with: :unhandled_error
     rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
@@ -23,6 +24,10 @@ class ApplicationController < ActionController::Base
     
     def current_user
         @current_user ||= User.includes(:listings, :letters, :profiles).find_by(session_token: session['_clhelper_session'])
+    end
+
+    def splash
+        render layout: 'empty'
     end
     
     def express

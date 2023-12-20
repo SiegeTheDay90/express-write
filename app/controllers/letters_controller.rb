@@ -1,5 +1,5 @@
 class LettersController < ApplicationController
-    before_action :require_logged_in, except: :express
+    before_action :require_logged_in, except: [:express, :temp]
     def new
         render :new
     end
@@ -22,61 +22,65 @@ class LettersController < ApplicationController
     end
 
     def express
-        # Generate user bio
-        pdf = nil
-        if params["pdf"]
-          pdf = params["pdf"].tempfile
-        elsif params["link"]
-          pdf = URI.open(params["link"])
-        end
-    
-        bio = helpers.pdf_to_bio(pdf)
-        
-        # Generate listing object
-        listing_obj = nil
-        if params["type"] == "url"
-            params["input"] = params["input"].split("?")[0]
-            http_response = HTTP.headers("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36").get(params["input"])       
+        req = Request.create!(resource_type: "temp_letter")
+        # Listing to Text Payload
+        if params["listing_type"] == "url"
+            http_response = HTTP.headers("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36").get(params["input"])
+
             if http_response.status >= 400
                 flash.now['errors'] = "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login."
-                render 'application/show' and return
+                raise "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login."
             elsif http_response.status >= 300
                 flash.now['errors'] = "The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login."
-                render 'application/show' and return
+                raise "The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login."
             else
-                begin
-                    listing_obj = helpers.http_to_listing(http_response)
-                rescue
-                    flash['errors'] = "There was an error while parsing the response. Please try again."
-                end
+                @listing_payload = http_response.body.to_s
             end
         else
-            listing_obj = helpers.text_to_listing(params["input"])
+            @listing_payload = params["input"]
         end
 
-       
-        # Generate letter
-        letter = nil
-        OpenAI.configure do |config|
-            config.access_token = ENV["OPENAI"]
-        end
-        client = OpenAI::Client.new
-        response = client.chat(
-            parameters: {
-                model: "gpt-3.5-turbo-16k",
-                messages: [
-                    {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
-                    {role: "user", content: "Job: #{listing_obj}\nCandidate: #{bio}"}
-                ],
-                temperature: 1.1,
-                max_tokens: 10000
-            }
-        )
-        @message = response["choices"][0]["message"]["content"]
-        @letter = Letter.new(body: @message)
-        @listing = listing_obj
-        render :express
+        # Resume to Text Payload
 
+        # Is this a PDF or DOCX file?
+        if ["PDF", "DOCX"].include?(params["resume_type"])
+        # Are we given a link to the file?
+            if !params["link"]&.empty?
+            url = ""
+            # Is it a Google Docs sharing link? Convert to direct download link.
+            if params["link"].split("/").include?("docs.google.com") || params["link"].split("/").include?("drive.google.com")
+                id = params["link"].split("/")[-2]
+                url = "https://drive.google.com/uc?export=download&id=#{id}"
+            else 
+                url = params["link"]
+            end
+    
+            # Try to open the link
+            begin
+                @bio_payload = URI.open(url)
+            end
+    
+            else # The file is attached directly to the request
+            @bio_payload = request.body
+            end
+        else # Just plain text
+            @bio_payload = params["text"]
+        end
+    
+        # Covert to text if it is a file
+        case params["resume_type"]
+        when "PDF"
+            @bio_payload = helpers.pdf_to_text(@bio_payload)
+        when "DOCX"
+            @bio_payload = helpers.docx_to_text(@bio_payload)
+        end
+
+        ExpressJob.perform_later(req, @bio_payload, @listing_payload, params["listing_type"])
+        render json: {ok: true, message: "Letter Started", id: req.id}
+    end
+
+    def temp
+        @letter = TempLetter.find_by(secure_id: params["id"])
     end
 
     def generate

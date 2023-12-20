@@ -62,14 +62,12 @@ class ProfilesController < ApplicationController
   end
   
   def generate
-    
     req = Request.create!(resource_type: "bio", resource_id: params["id"])
 
     # Is this a PDF or DOCX file?
-    if ["PDF", "DOCX"].include?(params["type"])
-
+    if ["PDF", "DOCX"].include?(params["resume_type"])
       # Are we given a link to the file?
-      if params["link"]
+      if !params["link"]&.empty?
         url = ""
         # Is it a Google Docs sharing link? Convert to direct download link.
         if params["link"].split("/").include?("docs.google.com") || params["link"].split("/").include?("drive.google.com")
@@ -92,7 +90,7 @@ class ProfilesController < ApplicationController
     end
 
     # Covert to text if it is a file
-    case params["type"]
+    case params["resume_type"]
     when "PDF"
       payload = helpers.pdf_to_text(payload)
     when "DOCX"

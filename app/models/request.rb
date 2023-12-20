@@ -12,7 +12,7 @@
 #  updated_at    :datetime         not null
 #
 class Request < ApplicationRecord
-    validates :resource_type, inclusion: {in: %w[letter listing bio]}
+    validates :resource_type, inclusion: {in: %w[letter listing bio temp_letter]}
 
     def complete!(status, resource_id, errors="")
         return if self.complete

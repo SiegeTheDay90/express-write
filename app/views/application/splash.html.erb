@@ -1,0 +1,123 @@
+<%= javascript_import_module_tag 'splashcounter' %>
+<script>
+  function typeChange(e){
+    const form = document.getElementById("form-type");
+
+    switch(e.target.value){
+      case "PDF":
+        form.innerHTML = `
+            <div class="mb-3">
+                <input placeholder="Link" name="link" id="link-to-file" class="form-control">
+            </div>
+            <label for="file">Upload</label>
+            <input type="file" name="file" id="file" accept=".pdf" class="mb-3"><br>`
+        break
+
+      case "DOCX":
+        form.innerHTML = `
+            <div class="mb-3">
+                <input placeholder="Link" name="link" id="link-to-file" class="form-control">
+            </div>
+            <label for="file">Upload</label>
+            <input type="file" name="file" id="file" accept=".docx" class="mb-3"><br>`
+
+        break
+
+      case "TEXT":
+        form.innerHTML = `
+          <div class="mb-3 form-floating w-100">
+              <input name="text" id="link-to-file" class="pt-5 pb-3 form-control w-100">
+              <label class="fs-5 fw-bolder" for="link-to-file">Paste Here</label>
+          </div>`
+
+        break
+
+
+    }
+
+  }
+</script>
+
+<div style="backgrond-color: transparent" class="text-center px-4 w-100">
+    <span id="splash-logo">
+        <span><img id="logo-img" class="splash" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise
+    </span></span>
+</div>
+
+<div style="background-color: #eef" class="px-4 py-5 mb-5 text-center">
+    <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Express Write</h2>
+    <small>Get a letter now, no account needed.</small><br/>
+    <p class="mb-4"><small >But you're <a href="#why">missing out!</a></small></p>
+    <div class="d-flex justify-content-center">
+        <div class="col-lg-2 d-flex flex-column align-items-start ps-5">
+            <h3>How it works:</h3>
+            <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
+                <li id="resume-instruction" class="express-instruction"> Share your Resume</li>
+                <li id="listing-instruction" class="express-instruction"> Share a Job Listing</li>
+                <li id="letter-instruction" class="express-instruction"> Generate a Cover Letter</li>
+                <li id="edit-instruction" class="express-instruction"> Make it your own!</li>
+            </ul>
+        </div>
+        <div class="col-lg-4 px-5">
+            <div class="gap-2 d-sm-flex justify-content-sm-center w-100">
+                <form data-action="express#generate" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start w-100">
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+                    <label for="resume-type">Resume</label>
+                    <select name="resume-type" id="resume-type" onChange="typeChange(event)">
+                        <option value="PDF" selected>PDF</option>
+                        <option value="DOCX">DOCX</option>
+                        <option value="TEXT">Plain Text</option>
+                    </select>
+                    
+                    <div id="form-type" class="w-100">
+                        <div class="mb-3">
+                            <input placeholder="Link" name="link" id="link-to-file" class="form-control">
+                        </div>
+                        <label for="file">Upload</label>
+                        <input type="file" name="file" id="file" accept=".pdf" class="mb-3"><br>
+                    </div>
+
+                    <label for="listing-type">Job Listing</label>
+                    <select id="listing-type" name="listing-type" style="width: max-content">
+                        <option value="url">URL</option>
+                        <option value="text">Plain Text</option>
+                    </select>
+
+                    <input name="input" placeholder="Paste Here" id="link-to-file" class="form-control">
+
+
+                    <input type="submit" value="Generate" class="btn btn-success">
+                </form>
+            </div>
+            <p style="margin-top: 20px; margin-bottom: 0;">Have an account?</p>
+            <p style="margin-top: 0;"><a href="/homepage">Sign In</a></p>
+        </div>
+        <div class="col-lg-2">
+            <div class="gap-2 d-sm-flex justify-content-sm-center">
+                <%= image_tag "letter.gif", id:"letter-gif", class:"w-75" %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="why" style="background-color: #eef" class="px-4 py-5 text-center">
+    <h2 class="display-5 fw-bold mb-4 text-body-emphasis">Why Sign Up?</h2>
+    <div class="d-flex justify-content-center">
+        <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
+            <h3>An account allows you to:</h3>
+            <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
+                <li class="account-instruction express-instruction"> Save multiple job profiles</li>
+                <li class="account-instruction express-instruction"> Save and track multiple listings</li>
+                <li class="account-instruction express-instruction"> Stay up to date with WriteWise's new features!</li>
+            </ul>
+        </div>
+        <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
+            <div class="gap-2 d-sm-flex justify-content-sm-center">
+                <%= link_to "Check it Out", "/homepage", class: "btn btn-primary btn-lg px-4" %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%# <div>&nbsp;</div> %>
