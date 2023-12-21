@@ -4,7 +4,7 @@ class LoadingBar {
       this.status = document.createElement('span');
       this.statusBox = document.createElement('p');
       this.loadingImage = new Image();
-      this.loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif"
+      this.loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*1.99)]
       this.loadingImage.id = "loading-gif"
       this.container = form.parentElement;
       this.originalForm = form;

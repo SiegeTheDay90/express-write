@@ -39,3 +39,6 @@
 
 /test
 /node_modules
+
+.byebug_history
+app/javascript/application.js.LICENSE.txt
