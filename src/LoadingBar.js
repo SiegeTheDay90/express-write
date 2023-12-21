@@ -1,7 +1,11 @@
 class LoadingBar {
   constructor(form, url, options={}, action, completionCallback){
       this.bar = document.createElement('progress');
-      this.status = document.createElement('p');
+      this.status = document.createElement('span');
+      this.statusBox = document.createElement('p');
+      this.loadingImage = new Image();
+      this.loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif"
+      this.loadingImage.id = "loading-gif"
       this.container = form.parentElement;
       this.originalForm = form;
       form.remove();
@@ -15,12 +19,14 @@ class LoadingBar {
       this.completionCallback ||= completionCallback;
 
       this.container.append(this.bar);
-      this.container.append(this.status);
+      this.statusBox.append(this.status);
+      this.statusBox.append(this.loadingImage);
+      this.container.append(this.statusBox);
 
       this.bar.innerText = 0;
       this.bar.max = 100;
 
-      this.status.innerText = "Getting Started..."
+      this.status.innerHTML = "Getting Started..."
       // options["authenticity_token"] = "<%= form_authenticity_token %>";
       fetch(url, options).then((res) => this.loadingCallback(res)).catch(this.failureCallback);
   }

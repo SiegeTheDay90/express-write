@@ -44,7 +44,7 @@
     </span></span>
 </div>
 
-<div style="background-color: #eef" class="px-4 py-5 mb-5 text-center">
+<div style="background-color: #eef" class="px-4 py-5 mb-5 text-center" id="t-height">
     <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Express Write</h2>
     <small>Get a letter now, no account needed.</small><br/>
     <p class="mb-4"><small >But you're <a href="#why">missing out!</a></small></p>
@@ -59,7 +59,7 @@
             </ul>
         </div>
         <div class="col-lg-4 px-5">
-            <div class="gap-2 d-sm-flex justify-content-sm-center w-100">
+            <div class="gap-2 d-flex flex-column align-items-center w-100">
                 <form data-action="express#generate" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start w-100">
                     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
