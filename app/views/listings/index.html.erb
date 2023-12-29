@@ -37,22 +37,24 @@
   }
 </script>
 <main class="pt-2 mx-auto d-flex">
-    <section id="listings-left" class="">
+    <section id="listings-left" class="col-8">
     <h1>My Listings</h1>
     <%= link_to "Add a Listing", new_listing_path, class: "btn btn-success" %>
-    <div id="listings-container">
+    <div id="listings-container" class="col-11">
         <ol id="list" class="p-2 m-2" start="1" data-length=<%= @listings.length %> data-page="1">
             <% @listings.reverse.each_with_index do |listing, idx| %>
-                <li class="<%= "list-item my-3 " + (idx > 4 ? "hidden" : "visible") %>" data-index=<%= idx %>>
-                    <%= link_to listing.job_title() +" @ "+ listing.company(), listing_url(listing), {alt: listing.job_title() +" @ "+ listing.company()} %>
-                    <br>
-                    <b>Added on:</b> <%= listing.created_at.strftime('%D') %>
-                    <form action=<%= generate_letter_url %> method="post" class="ajaxForm" data-action="letters#generate">
-                        <input type="hidden" name="listing_id" value=<%=listing.id%>>
-                        <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
-                        <input type="submit" value="Generate New Letter" class="btn btn-success">
-                    </form>
-                </li>
+                <a href="<%= listing_url(listing) %>" alt="<%= listing.job_title() +" @ "+ listing.company() %>">
+                    <li class="listings-index-item list-item my-3 <%= (idx > 4 ? "hidden" : "visible") %>" data-index=<%= idx %>>
+                        <h6><%= listing.job_title() +" @ "+ listing.company() %></h6>
+                        <br>
+                        <b>Added on:</b> <%= listing.created_at.strftime('%D') %>
+                        <form action=<%= generate_letter_url %> method="post" class="ajaxForm" data-action="letters#generate">
+                            <input type="hidden" name="listing_id" value=<%=listing.id%>>
+                            <input type="hidden" name="authenticity_token" value=<%= form_authenticity_token %>>
+                            <input type="submit" value="New Letter" class="btn btn-primary fs-small">
+                        </form>
+                    </li>
+                </a>
             <% end %>
         </ol>
         <div id="list-controls-container" class="d-flex justify-content-center align-items-center">
@@ -62,9 +64,9 @@
         </div>
     </div>
     </section>
-    <section id="listings-right" class="">
+    <section id="listings-right" class="col-3">
         <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
-            <h5>Active Profile <br class="d-md-none" />
+            <h5>Resume<br class="d-md-none" />
                 <% if @user.profile %>
                 <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
                     class="btn btn-light ms-lg-5 ms-sm-1" style="font-size: small">Edit

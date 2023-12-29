@@ -1,0 +1,23 @@
+.listings-index-item{
+    background-color: #eef;
+    padding: 20px 30px;
+    border-radius: 5px;
+    list-style-position: inside;
+    line-height: 2.5rem;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    &:hover{
+        background-color: #ddf;
+        h6{
+            text-decoration: underline;
+        }
+    }
+    h6{
+        display: inline;
+    }
+}
+
+a:has(.listings-index-item){
+    text-decoration: none;
+    color: black;
+}
