@@ -58,14 +58,14 @@ class UsersController < ApplicationController
       UserMailer.with(user: @user).welcome_email.deliver_now
       redirect_to user_path(@user), notice: "User was successfully created."
     else
-      flash["errors"] = @user.errors.full_messages.join("\n")
+      flash["errors"] = @user.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
     if @user.update(user_params)
-      flash.now["messages"] = "User was successfully updated."
+      flash.now["messages"] = ["User was successfully updated."]
       render :show
     else
       flash.now[:errors] = @user.errors.full_messages
@@ -90,7 +90,7 @@ class UsersController < ApplicationController
     @user = User.find_by(reset_password_token: @token)
 
     if !@user
-      flash["messages"] = "Invalid Token"
+      flash["messages"] = ["Invalid Token"]
       redirect_to root_url and return
     end
 
@@ -106,12 +106,12 @@ class UsersController < ApplicationController
       @user.reset_password_token = nil
       @user.reset_password_sent_at = nil
       if @user.save
-        flash["messages"] = "Password updated successfully. You may now log in."
+        flash["messages"] = ["Password updated successfully. You may now log in."]
       else
-        flash["errors"] = @user.errors.full_messages.to_s
+        flash["errors"] = @user.errors.full_messages
       end
     else
-      flash["errors"] = "Invalid Token"
+      flash["errors"] = ["Invalid Token"]
     end
     redirect_to root_url
   end
@@ -123,14 +123,14 @@ class UsersController < ApplicationController
       @user.reset_password_sent_at = Date.today
       if @user.save
         UserMailer.with(user: @user).reset_request.deliver_now
-        flash["messages"] = "Reset initiated. Check your email inbox for instructions."
+        flash["messages"] = ["Reset initiated. Check your email inbox for instructions."]
         redirect_to root_url
       else
-        flash.now[:errors] = "Something went wrong."
+        flash.now[:errors] = ["Something went wrong."]
         render :reset
       end
     else
-      flash.now[:errors] = "User not found."
+      flash.now[:errors] = ["User not found."]
       render :reset
     end
   end

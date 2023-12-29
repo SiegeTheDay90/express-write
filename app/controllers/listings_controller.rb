@@ -13,7 +13,7 @@ class ListingsController < ApplicationController
         elsif @listing
             render :show
         else
-            flash["errors"] = "Listing not found."
+            flash["errors"] = ["Listing not found."]
             redirect_to root_url
         end
     end
@@ -21,17 +21,17 @@ class ListingsController < ApplicationController
     def destroy
         @listing = Listing.find_by(id: params["id"])
         @listing.destroy
-        flash["messages"] = "Deleted listing #{params["id"]}"
+        flash["messages"] = ["Deleted listing #{params["id"]}"]
         redirect_to user_listings_url(current_user)
     end
 
     def update
         @listing = Listing.find_by(id: params["id"])
         if @listing.update(listing_params)
-            flash["messages"] = "Listing Updated Succesfully"
+            flash["messages"] = ["Listing Updated Succesfully"]
             redirect_to listing_url(@listing)
         else
-            flash["errors"] = @listing.errors.full_messages.join("\n")
+            flash["errors"] = @listing.errors.full_messages
             redirect_to user_listings_path(current_user)
         end
     end
@@ -41,7 +41,7 @@ class ListingsController < ApplicationController
         if @listing
             render :edit
         else
-            flash["errors"] = "Listing not found"
+            flash["errors"] = ["Listing not found"]
             redirect_to user_listings_path(current_user)
         end
     end

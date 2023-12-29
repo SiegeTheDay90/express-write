@@ -6,7 +6,7 @@ class GenerateBioJob < ApplicationJob
     
     
     if !bio
-      request.complete!(false, nil, "Error while generating bio.")
+      request.complete!(false, nil, ["Error while generating bio."])
     else
       request.complete!(true, user.id, bio)
     end

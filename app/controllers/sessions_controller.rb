@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
         @user = User.omni_authorize(info)
         if @user
             login!(@user)
-            flash["messages"] = "Successfully Logged In as #{@user.first_name}"
+            flash["messages"] = ["Successfully Logged In as #{@user.first_name}"]
             if !is_returning_user
               UserMailer.with(user: @user).welcome_email.deliver_now
             end
@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
             redirect_to user_path(@user)
         else
             @user = nil
-            flash.now["errors"] = "Could not Login with LinkedIn"
+            flash.now["errors"] = ["Could not Login with LinkedIn"]
             render :new
         end
     end
@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
         redirect_to user_path(@user)
       else
         @user = nil
-        flash.now["errors"] = "Email or Password was incorrect"
+        flash.now["errors"] = ["Email or Password was incorrect"]
         render :new
       end
     end

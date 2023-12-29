@@ -1,3 +1,5 @@
+import NoticeBallon from "./NoticeBalloon";
+
 class LoadingBar {
   constructor(form, url, options={}, action, completionCallback){
       this.bar = document.createElement('progress');
@@ -46,13 +48,12 @@ class LoadingBar {
         const response = await fetch(`/check/${this.request_id}`)
         const data = await response.json();
         if(data.complete){ // Request complete
+          clearInterval(this.interval);
           if(data.ok){ // Success
             this.messages = data.messages
-            clearInterval(this.interval);
             this.completionCallback(data.resource_id);
           } else{ // Failure
-            clearInterval(this.interval);
-            this.failureCallback(data.errors);
+            this.failureCallback(JSON.parse(data.messages));
           }
         } else if(this.timeElapsed > 240){ // Timeout
           clearInterval(this.interval);
@@ -112,8 +113,12 @@ class LoadingBar {
 
   }
 
-  failureCallback(error){
-    console.error("Request Failed: ", error);
+  failureCallback(errors){
+    console.error("Request Failed: ", errors.join("\n"));
+    const alertContainer = document.getElementById("alert-container");
+    errors.forEach(error => {
+      new NoticeBallon(alertContainer, "error", error)
+    })
     this.status.innerText = "ERROR";
     const tryAgain = document.createElement("button");
     tryAgain.classList.add("btn");
@@ -123,6 +128,7 @@ class LoadingBar {
       this.container.append(this.originalForm);
       this.bar.remove();
       this.status.remove();
+      this.loadingImage.remove();
       tryAgain.remove();
     })
     this.container.append(tryAgain);

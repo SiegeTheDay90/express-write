@@ -14,12 +14,12 @@
 class Request < ApplicationRecord
     validates :resource_type, inclusion: {in: %w[letter listing bio temp_letter]}
 
-    def complete!(status, resource_id, errors="")
+    def complete!(status, resource_id, messages=[""])
         return if self.complete
         self.resource_id ||= resource_id
         self.complete = true
         self.ok = status
-        self.messages = errors
+        self.messages = messages
         self.save!
     end
 

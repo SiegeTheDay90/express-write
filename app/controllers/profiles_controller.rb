@@ -10,7 +10,7 @@ class ProfilesController < ApplicationController
     @profile.user_id = current_user.id
     
     if @profile.save
-      flash.now["messages"] = "Profile saved."
+      flash.now["messages"] = ["Profile saved."]
       @user = @profile.user
       if params["set_active"] == "on"
         @profile.set_active()
@@ -26,14 +26,14 @@ class ProfilesController < ApplicationController
     @user = User.find(params["user_id"])
     @profile = Profile.find(params["id"])
     if @user.id != @profile.user_id
-      flash["errors"] = "Invalid Profile"
+      flash["errors"] = ["Invalid Profile"]
       redirect_to root_url and return
     end
   end
 
   def edit
     @profile = Profile.find(params["id"])
-    flash.now["messages"] = params["m"]
+    flash.now["messages"] = [params["m"]]
     redirect_to root_url and return unless current_user.id == @profile.user_id
   end
 
@@ -41,7 +41,7 @@ class ProfilesController < ApplicationController
     @profile = Profile.find(params["id"])
     redirect_to root_url and return unless current_user.id == @profile.user_id
     if @profile.update(profile_params)
-      flash["messages"] = "Profile was successfully updated."
+      flash["messages"] = ["Profile was successfully updated."]
       if params["set_active"] == "on"
         @profile.set_active()
       end
@@ -57,7 +57,7 @@ class ProfilesController < ApplicationController
     @user = current_user
     redirect_to root_url unless @profile&.user_id == current_user.id
     @profile.set_active
-    flash["messages"] = "#{@profile.title} set to Active Profile."
+    flash["messages"] = ["#{@profile.title} set to Active Profile."]
     redirect_to params["redirect"] == "listings" ? user_listings_url(current_user) : user_url(current_user)
   end
   

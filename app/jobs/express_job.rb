@@ -8,7 +8,7 @@ class ExpressJob < ApplicationJob
         @bio = text_to_user_bio(bio_payload)
         
         if !@bio
-            return request.complete!(false, nil, "Error while generating bio.")
+            return request.complete!(false, nil, ["Error while generating bio."])
         end
 
         # generate listing
@@ -22,7 +22,7 @@ class ExpressJob < ApplicationJob
             @profile = Profile.new(JSON.parse(@bio))
       
         rescue => e
-            request.complete!(false, nil, e.to_s)
+            request.complete!(false, nil, [e.to_s])
         end
 
 

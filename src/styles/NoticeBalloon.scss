@@ -1,0 +1,58 @@
+.close-button{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 5px;
+    right: 5px;
+    color: black;
+    border: 1px solid black;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    &::after{
+        font-size: x-small;
+        content: 'X';
+        text-align: center;
+        vertical-align: center;
+    }
+}
+
+#alert-container{
+    h3{
+        color: #4646b4;
+    }
+    position: fixed;
+    bottom: 20%;
+    padding: 10px 20px;
+    background-color: #eef;
+    border-radius: 10px;
+    border: 1px solid #4646b4;
+    right: 0;
+    animation: 0.5s linear slidein;
+}
+
+#alert-container:not(:has(span)){
+    display: none;
+};
+
+.balloon{
+    position: relative;
+    padding: 15px 15px;
+    margin: 10px 0;
+}
+.balloon.error{
+    background-color: pink;
+}
+.balloon.notice{
+    background-color: white;
+}
+
+@keyframes slidein{
+    from{
+        opacity: 0%;
+    }
+    to{
+        opacity: 1;
+    }
+}

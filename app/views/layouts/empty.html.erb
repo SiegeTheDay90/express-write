@@ -17,5 +17,22 @@
     <footer id="bug-report">
       <%= link_to "Report a Bug", bug_report_url %>
     </footer>
+        <span id="alert-container">
+        <h3>Notifications</h3>
+        <% if flash["errors"] %>
+          <% flash["errors"].each do |error|%>
+            <meta class="baloon-message" data-type="error" data-text="<%= error %>">
+          <% end %>
+        <% end %>
+
+        <%# <meta class="balloon-message" data-type="error" data-text="THIS IS A TEST.">
+        <meta class="balloon-message" data-type="notice" data-text="THIS IS A TEST."> %>
+        <% if flash["messages"] %>
+          <% flash["messages"].each do |message|%>
+            <meta class="balloon-message" data-type="notice" data-text="<%= message %>">
+          <% end %>
+        <% end %>
+
+      </span>
   </body>
 </html>

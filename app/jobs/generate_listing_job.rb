@@ -20,7 +20,7 @@ class GenerateListingJob < ApplicationJob
       end 
 
     rescue => e
-      request.complete!(false, nil, e.to_s)
+      request.complete!(false, nil, [e.to_s])
     end
 
   end
@@ -50,6 +50,9 @@ class GenerateListingJob < ApplicationJob
           logger.info("Listing Parsed on First Try")
       rescue JSON::ParserError
           output = JSON.parse(message[0..-4]+"}") # Removes trailing comma from JSON string
+      
+      rescue
+        return false
       end
       return output
   end

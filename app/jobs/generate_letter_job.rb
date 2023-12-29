@@ -2,6 +2,9 @@ class GenerateLetterJob < ApplicationJob
   queue_as :default
 
   def perform(request, listing, user) # Generate a letter for `listing.id` by `current_user`
+    if !user.profile
+      return request.complete!(false, nil, ["You must have an active resume profile to generate a letter."])
+    end
     OpenAI.configure do |config|
       config.access_token = ENV["OPENAI"]
     end
@@ -33,11 +36,11 @@ class GenerateLetterJob < ApplicationJob
             request.complete!(true, @letter.id, @letter.content.body)
         else
             #failure
-            request.complete!(false, nil, @letter.errors.full_messages.to_s)
+            request.complete!(false, nil, @letter.errors.full_messages)
         end
       rescue
         @message = response.to_json
-        request.complete!(false, @message)
+        request.complete!(false, nil, [@message])
       end
   end
 end
