@@ -65,7 +65,7 @@
     </div>
     </section>
     <section id="listings-right" class="col-3">
-        <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
+        <div id="active-resume" class="active-container mt-5 px-3 py-2 text-white" >
             <h5>Resume<br class="d-md-none" />
                 <% if @user.profile %>
                 <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
