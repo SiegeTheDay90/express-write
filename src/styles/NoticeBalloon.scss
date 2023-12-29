@@ -1,3 +1,6 @@
+.text-info{
+    color: #4646b4 !important;
+}
 .close-button{
     position: absolute;
     display: flex;
@@ -23,13 +26,13 @@
         color: #4646b4;
     }
     position: fixed;
-    bottom: 20%;
+    bottom: 5%;
     padding: 10px 20px;
     background-color: #eef;
     border-radius: 10px;
-    border: 1px solid #4646b4;
-    right: 0;
+    right: 10px;
     animation: 0.5s linear slidein;
+    box-shadow: 0 0 12px 1px #4646b4;
 }
 
 #alert-container:not(:has(span)){

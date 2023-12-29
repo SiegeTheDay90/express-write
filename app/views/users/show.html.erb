@@ -73,7 +73,8 @@
       <h5>Listings Saved: <%= @user.listings.count %></h5>
       <h5>Letters Saved: <%= @user.letters.count %></h5>
       <h5>Candidate Profiles: <%= @user.profiles.count %></h5>
-      <div id="active-profile-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
+      <div id="active-resume" class="active-container mt-5 px-3 py-2 text-white">
+
         <h5>Active Resume <br class="d-md-none" />
         <a id="change-button" href="#"
           class="btn btn-primary ms-5" style="font-size: small">Change
@@ -93,19 +94,21 @@
         </a>
         </h5>
         
-        <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
-          <h6><%= @user.profile&.title || "Not Set" %></h6>
-          <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
-          <p><%= ("Last Updated: " + @user.profile&.updated_at.to_date.inspect) if @user.profile %></p>
-        </div>
+        <a href="<%= @user&.profile ? edit_profile_url(@user.profile) : "#"%>">
+          <div class="px-3 py-2 active-container-inner">
+            <h6><%= @user.profile&.title || "Not Set" %></h6>
+            <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
+            <p><%= ("Last Updated: " + @user.profile&.updated_at.to_date.inspect) if @user.profile %></p>
+          </div>
+        </a>
       </div>
 
-      <div id="newest-listing-container" class="mt-5 px-3 py-2 text-white" style="background-color: #5555ba; border-radius: 10px;">
+      <div id="newest-listing" class="active-container mt-5 px-3 py-2 text-white" >
         <h5>Last Updated Listing<br class="d-md-none" />
         <% if !@user.listings.empty? %>
           <% @listing = @user.listings.order("updated_at").last %>
-          <a href=<%= listing_url(@listing) %> 
-             class="btn btn-primary ms-lg-5 ms-sm-1" style="font-size: small">View
+          <a href=<%= listings_url() %> 
+             class="btn btn-primary ms-lg-5 ms-sm-1" style="font-size: small">View All
           </a>
           <a href=<%= edit_listing_url(@listing) %> 
              class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">Edit
@@ -116,11 +119,12 @@
             class="btn btn-success ms-1" style="font-size: small">New
         </a>
         </h5>
-        
-        <div class="px-3 py-2" style="background-color: #7777ba; border-radius: 10px">
-          <h6><%= @listing ? "#{@listing.job_title} @ #{@listing.company}" : "No Listings Yet"%></h6>
-          <p><%= ("Last Updated: " + @listing.updated_at.to_date.inspect) if @listing %></p>
-        </div>
+        <a href="<%= @listing ? listing_url(@listing) : "#"%>">
+          <div class="px-3 py-2 active-container-inner" >
+            <h6><%= @listing ? "#{@listing.job_title} @ #{@listing.company}" : "No Listings Yet"%></h6>
+            <p><%= ("Last Updated: " + @listing.updated_at.to_date.inspect) if @listing %></p>
+          </div>
+        </a>
       </div>
 
     </span>

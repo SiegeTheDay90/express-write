@@ -33,7 +33,6 @@ class ProfilesController < ApplicationController
 
   def edit
     @profile = Profile.find(params["id"])
-    flash.now["messages"] = [params["m"]]
     redirect_to root_url and return unless current_user.id == @profile.user_id
   end
 

@@ -1,4 +1,4 @@
-<div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 text-center ">
+<div style="background-color: #ddf" class="d-flex mx-auto justify-content-evenly align-items-center h-100">
   <span class="text-center ">
     <h1 class="display-5 fw-bold text-body-emphasis">Sign In</h1>
     <%= link_to "With LinkedIn", "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV["OAUTH_CLIENT_ID"]}&redirect_uri=#{Rack::Utils.escape(ENV["OAUTH_CALLBACK_URI"])}&scope=profile%20email%20openid" %>
@@ -23,7 +23,4 @@
     </form>
     </div>
   </span>
-
 </div>
-
-<%= link_to "Back", _back_url, class:"btn btn-secondary" %>

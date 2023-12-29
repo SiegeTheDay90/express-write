@@ -3,10 +3,16 @@
 @import './styles/sidebar.scss';
 @import './styles/NoticeBalloon.scss';
 @import './styles/ListingsIndex.scss';
+@import './styles/ActiveContainer.scss';
+
 
 #main.splash{
   background-color: rgb(70, 70, 180);
   padding-bottom: 50px;
+}
+
+#main{
+  height: 100dvh;
 }
 
 #loading-gif {

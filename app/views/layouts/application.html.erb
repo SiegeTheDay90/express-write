@@ -52,8 +52,10 @@
           <% end %>
         <% end %>
 
-        <%# <meta class="balloon-message" data-type="error" data-text="THIS IS A TEST.">
-        <meta class="balloon-message" data-type="notice" data-text="THIS IS A TEST."> %>
+        <%# <meta class="balloon-message" data-type="error" data-text="This is a test ERROR.">
+        <meta class="balloon-message" data-type="notice" data-text="Notification 1">
+        <meta class="balloon-message" data-type="notice" data-text="Notification 2">
+        <meta class="balloon-message" data-type="notice" data-text="Notification 3"> %>
         <% if flash["messages"] %>
           <% flash["messages"].each do |message|%>
             <meta class="balloon-message" data-type="notice" data-text="<%= message %>">
