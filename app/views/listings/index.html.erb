@@ -38,6 +38,7 @@
 </script>
 <main class="pt-2 mx-auto d-flex">
     <section id="listings-left" class="col-6">
+
     <h1>My Listings</h1>
     <%= link_to "Add a Listing", new_listing_path, class: "btn btn-success" %>
     <div id="listings-container" class="col-11">
@@ -66,6 +67,7 @@
     </section>
     <section id="listings-right" class="col-5">
         <div id="active-resume" class="active-container mt-5 px-3 py-2 text-white" >
+
             <h5>Resume<br class="d-md-none" />
                 <% if @user.profile %>
                 <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
