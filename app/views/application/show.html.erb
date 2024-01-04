@@ -1,4 +1,4 @@
-<%= javascript_import_module_tag 'hitcounter' %>
+<%= javascript_import_module_tag 'hitcounter' if Rails.env.production? %>
 <div id="fp-hero" style="background-color: #ddf" class="px-4 py-5 mb-5 text-center">
   <span class="text-center">
     <h1 class="display-5 fw-bold text-body-emphasis">Cover Letters</h1>

@@ -156,13 +156,13 @@ export const ajaxSubmit = function(e){
         // options.body = new FormData();
         options.body = input.files[0];
         // options.body.append('file', input.files[0]);
-        const type = document.getElementById("resume-type").value;
+        const type = document.getElementById("resume-format").value;
         if(type === "PDF"){
           options.headers["Content-Type"] = 'application/pdf';
-          queryParams.append("resume-type", "PDF");
+          queryParams.append("resume-format", "PDF");
         } else if(type === "DOCX"){
           options.headers["Content-Type"] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-          queryParams.append("resume-type", "DOCX");
+          queryParams.append("resume-format", "DOCX");
         }
         break;
 
