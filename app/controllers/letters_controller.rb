@@ -22,7 +22,7 @@ class LettersController < ApplicationController
     end
 
     def express
-
+            debugger
         req = Request.create!(resource_type: "temp_letter")
         # render json: {ok: false, errors: ["First error", "Second error"], id: req.id} and return
         # Listing to Text Payload
@@ -53,9 +53,9 @@ class LettersController < ApplicationController
         # Resume to Text Payload
 
         # Is this a PDF or DOCX file?
-        if ["PDF", "DOCX"].include?(params["resume_type"])
+        if ["PDF", "DOCX"].include?(params["resume_format"])
         # Are we given a link to the file?
-            if !params["link"]&.empty?
+            if params["link"] && !params["link"]&.empty?
                 url = ""
                 # Is it a Google Docs sharing link? Convert to direct download link.
                 if params["link"].split("/").include?("docs.google.com") || params["link"].split("/").include?("drive.google.com")
@@ -83,7 +83,7 @@ class LettersController < ApplicationController
     
         # Covert to text if it is a file
         begin
-            case params["resume_type"]
+            case params["resume_format"]
             when "PDF"
                 @bio_payload = helpers.pdf_to_text(@bio_payload)
             when "DOCX"

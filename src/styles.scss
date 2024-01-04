@@ -11,6 +11,29 @@
   padding-bottom: 50px;
 }
 
+#splash{
+  position: relative;
+  #auth{
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: white;  
+  }
+}
+
+#resume-input, #listing-input {
+  border-radius: 10px;
+  background-color: #ddf;
+  padding: 10px;
+}
+
+#express-form{
+  padding: 20px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccf;
+  background-color: white;
+}
+
 #main{
   height: 100dvh;
 }

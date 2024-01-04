@@ -1,47 +1,79 @@
-<%= javascript_import_module_tag 'splashcounter' %>
+<%= javascript_import_module_tag 'splashcounter' if Rails.env.production? %>
 <script>
-  function typeChange(e){
-    const form = document.getElementById("form-type");
 
-    switch(e.target.value){
-      case "PDF":
-        form.innerHTML = `
-            <div class="mb-3">
-                <input placeholder="Link" name="link" id="link-to-file" class="form-control">
-            </div>
-            <label for="file">Upload</label>
-            <input type="file" name="file" id="file" accept=".pdf" class="mb-3"><br>`
-        break
+    function updateForm(){
+        const form = document.getElementById("express-form");
+        const uploadType = form.dataset.upload;
+        const format = form.dataset.format;
+        const input = document.getElementById("resume-input");
 
-      case "DOCX":
-        form.innerHTML = `
-            <div class="mb-3">
-                <input placeholder="Link" name="link" id="link-to-file" class="form-control">
-            </div>
-            <label for="file">Upload</label>
-            <input type="file" name="file" id="file" accept=".docx" class="mb-3"><br>`
+        switch(format){
+            case "PDF":
+                input.innerHTML = `<div id="upload-type" class="w-100 d-flex py-1 mb-1" onChange="uploadChange(event)">
+                                        From:&nbsp; 
+                                        <label>File <input type="radio" name="form-type" value="File" ${uploadType === "File" ? "checked" : ""}></label>
+                                        <label>Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
+                                    </div>`
+                                    
+                if(uploadType === "File"){
+                    input.innerHTML += `<input type="file" name="file" id="file" accept=".pdf" class="mb-3">`
+                } else {
+                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
+                }
+            break;
 
-        break
+            case "DOCX":
+                input.innerHTML = `<div id="upload-type" class="w-100 d-flex py-1 mb-1" onChange="uploadChange(event)">
+                                        From:&nbsp; 
+                                        <label>File <input type="radio" name="form-type" value="File" ${uploadType === "File" ? "checked" : ""}></label>
+                                        <label>Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
+                                    </div>`
+                                    
+                if(uploadType === "File"){
+                    input.innerHTML += `<input type="file" name="file" id="file" accept=".doc, .docx" class="mb-3">`
+                } else {
+                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
+                }
+            break;
 
-      case "TEXT":
-        form.innerHTML = `
-          <div class="mb-3 form-floating w-100">
-              <input name="text" id="link-to-file" class="pt-5 pb-3 form-control w-100">
-              <label class="fs-5 fw-bolder" for="link-to-file">Paste Here</label>
-          </div>`
-
-        break
-
+            case "TEXT":
+                input.innerHTML = `<div class="mb-3 form-floating w-100">
+                    <input name="text" id="link-to-file" class="pt-5 pb-3 form-control w-100">
+                    <label class="fs-5 fw-bolder" for="link-to-file">Paste Here</label>
+                </div>`
+            break;
+            default:
+                console.error("Could not update form");
+        }
 
     }
 
-  }
+    function uploadChange(e){
+        const value = e.target.value;
+        const form = e.currentTarget.parentElement.parentElement;
+        form.dataset.upload = value;
+        updateForm();
+    }
+
+    function formatChange(e){
+        const value = e.target.value;
+        const form = e.target.parentElement.parentElement;
+        form.dataset.format = value;
+        updateForm();
+    }
 </script>
 
-<div style="backgrond-color: transparent" class="text-center px-4 w-100">
+<div id="splash" style="backgrond-color: transparent" class="text-center px-4 w-100">
     <span id="splash-logo">
-        <span><img id="logo-img" class="splash" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise
-    </span></span>
+        <span><img id="logo-img" class="splash" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise</span>
+    </span>
+    <div id="auth">
+        <%= link_to "Sign in with Linked In", "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV["OAUTH_CLIENT_ID"]}&redirect_uri=#{Rack::Utils.escape(ENV["OAUTH_CALLBACK_URI"])}&scope=profile%20email%20openid", class: "btn btn-outline-light w-100 mb-2" %>
+        <br>
+        <%= link_to "Sign in with Email", new_session_url, class: "btn btn-outline-light w-100 mb-2" %>
+        <br>
+        <%= link_to "Sign Up", new_user_url, class: "btn btn-outline-light w-100" %>
+    </div>
 </div>
 
 <div style="background-color: #eef" class="px-4 py-5 mb-5 text-center" id="t-height">
@@ -60,31 +92,36 @@
         </div>
         <div class="col-lg-4 px-5">
             <div class="gap-2 d-flex flex-column align-items-center w-100">
-                <form data-action="express#generate" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start w-100">
+                <form id="express-form" data-action="express#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
                     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-
-                    <label for="resume-type">Resume</label>
-                    <select name="resume-type" id="resume-type" onChange="typeChange(event)">
+                    <h6 class="my-1">Upload your Resume</h6>
+                    <label for="resume-format">Format:
+                    <select class="mb-1" name="resume-format" id="resume-format" onChange="formatChange(event)">
                         <option value="PDF" selected>PDF</option>
                         <option value="DOCX">DOCX</option>
                         <option value="TEXT">Plain Text</option>
-                    </select>
+                    </select></label>
                     
-                    <div id="form-type" class="w-100">
-                        <div class="mb-3">
-                            <input placeholder="Link" name="link" id="link-to-file" class="form-control">
+
+                    <div id="resume-input" class="w-100">
+                        <div id="upload-type" class="d-flex py-1 mb-1" onChange="uploadChange(event)">
+                            From:&nbsp;
+                            <label>File <input type="radio" name="form-type" value="File" checked></label>
+                            <label>Link <input type="radio" name="form-type" value="Link"></label>
                         </div>
-                        <label for="file">Upload</label>
-                        <input type="file" name="file" id="file" accept=".pdf" class="mb-3"><br>
+                        <input type="file" name="file" id="file" accept=".pdf" class="mb-3">
                     </div>
-
-                    <label for="listing-type">Job Listing</label>
-                    <select id="listing-type" name="listing-type" style="width: max-content">
-                        <option value="url">URL</option>
-                        <option value="text">Plain Text</option>
-                    </select>
-
-                    <input name="input" placeholder="Paste Here" id="link-to-file" class="form-control">
+                    <hr class=" w-100">
+                    <h6 class="my-1">Share a Job Listing</h6>
+                    <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">
+                        <label for="listing-type">From:&nbsp;
+                            <select id="listing-type" name="listing-type" class="mb-1" style="width: max-content">
+                                <option value="url">URL</option>
+                                <option value="text">Plain Text</option>
+                            </select>
+                        </label>
+                        <input name="input" placeholder="Paste Here" id="link-to-file" class="form-control">
+                    </div>
 
 
                     <input type="submit" value="Generate" class="btn btn-success">
