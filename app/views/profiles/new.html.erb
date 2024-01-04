@@ -87,7 +87,7 @@
           <input id="active" type="checkbox" name="set_active" <%= @profile.is_active? ? "checked" : "" %>/>
         </div>
       
-        <input type="submit" value="Save Changes" class="btn btn-success">
+        <input type="submit" value="Save" class="btn btn-success">
       </form>
     </div>
 
@@ -96,7 +96,7 @@
       <form data-action="profiles#new" method="POST" action=<%= generate_profile_url %> enctype="multipart/form-data" class="mb-3 ajaxForm d-flex flex-column">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <label></label>
-        <select name="resume-type" id="resume-type" onChange="typeChange(event)">
+        <select name="resume-format" id="resume-format" onChange="typeChange(event)">
           <option value="PDF" selected>PDF</option>
           <option value="DOCX">DOCX</option>
           <option value="TEXT">Plain Text</option>

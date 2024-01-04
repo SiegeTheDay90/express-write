@@ -64,7 +64,7 @@ class ProfilesController < ApplicationController
     req = Request.create!(resource_type: "bio", resource_id: params["id"])
 
     # Is this a PDF or DOCX file?
-    if ["PDF", "DOCX"].include?(params["resume_type"])
+    if ["PDF", "DOCX"].include?(params["resume_format"])
       # Are we given a link to the file?
       if !params["link"]&.empty?
         url = ""
@@ -89,7 +89,7 @@ class ProfilesController < ApplicationController
     end
 
     # Covert to text if it is a file
-    case params["resume_type"]
+    case params["resume_format"]
     when "PDF"
       payload = helpers.pdf_to_text(payload)
     when "DOCX"
