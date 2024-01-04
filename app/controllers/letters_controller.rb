@@ -22,7 +22,6 @@ class LettersController < ApplicationController
     end
 
     def express
-            debugger
         req = Request.create!(resource_type: "temp_letter")
         # render json: {ok: false, errors: ["First error", "Second error"], id: req.id} and return
         # Listing to Text Payload
