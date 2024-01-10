@@ -25,11 +25,13 @@
     h3{
         color: #4646b4;
     }
+    z-index: 10000;
     position: fixed;
     bottom: 5%;
     padding: 10px 20px;
     background-color: #eef;
     border-radius: 10px;
+    max-width: 33%;
     right: 10px;
     animation: 0.5s linear slidein;
     box-shadow: 0 0 12px 1px #4646b4;
@@ -45,7 +47,7 @@
     margin: 10px 0;
 }
 .balloon.error{
-    background-color: pink;
+    background-color: #ffc0cb;
 }
 .balloon.notice{
     background-color: white;
