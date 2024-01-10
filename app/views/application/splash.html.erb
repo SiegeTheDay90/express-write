@@ -107,7 +107,7 @@
                         <div id="upload-type" class="d-flex py-1 mb-1" onChange="uploadChange(event)">
                             From:&nbsp;
                             <label>File <input type="radio" name="form-type" value="File" checked></label>
-                            <label>Link <input type="radio" name="form-type" value="Link"></label>
+                            <label class="ms-2">Link <input type="radio" name="form-type" value="Link"></label>
                         </div>
                         <input type="file" name="file" id="file" accept=".pdf" class="mb-3">
                     </div>
@@ -115,10 +115,8 @@
                     <h6 class="my-1">Share a Job Listing</h6>
                     <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">
                         <label for="listing-type">From:&nbsp;
-                            <select id="listing-type" name="listing-type" class="mb-1" style="width: max-content">
-                                <option value="url">URL</option>
-                                <option value="text">Plain Text</option>
-                            </select>
+                            <label>URL <input type="radio" name="listing-type" value="url" checked></label>
+                            <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text"></label>
                         </label>
                         <input name="input" placeholder="Paste Here" id="link-to-file" class="form-control">
                     </div>

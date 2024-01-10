@@ -148,7 +148,7 @@ export const ajaxSubmit = function(e){
     if(!input.name) return;
     switch(input.type){
       case "radio":
-        if(input.checked) options.body[input.name] = input.value;
+        if(input.checked) queryParams.append(input.name, input.value);
         break;
 
       case "file":

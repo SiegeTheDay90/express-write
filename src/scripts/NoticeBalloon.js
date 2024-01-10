@@ -1,6 +1,5 @@
 class NoticeBalloon{
     constructor(container, type="notice", message){
-        debugger;
         this.type = type;
         this.parent = container;
         this.balloon = document.createElement("div");
@@ -10,7 +9,6 @@ class NoticeBalloon{
         this.balloon.classList.add(type);
         this.balloon.innerText = message;
         if(this.type === "error"){
-            debugger;
             const reportButton = document.createElement("span");
             reportButton.innerHTML = `<a href="/bugreport?error=one">Report</a>`
             reportButton.style.position = "absolute";
