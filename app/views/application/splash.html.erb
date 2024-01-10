@@ -12,7 +12,7 @@
                 input.innerHTML = `<div id="upload-type" class="w-100 d-flex py-1 mb-1" onChange="uploadChange(event)">
                                         From:&nbsp; 
                                         <label>File <input type="radio" name="form-type" value="File" ${uploadType === "File" ? "checked" : ""}></label>
-                                        <label>Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
+                                        <label class="ms-2">Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
                                     </div>`
                                     
                 if(uploadType === "File"){
@@ -26,7 +26,7 @@
                 input.innerHTML = `<div id="upload-type" class="w-100 d-flex py-1 mb-1" onChange="uploadChange(event)">
                                         From:&nbsp; 
                                         <label>File <input type="radio" name="form-type" value="File" ${uploadType === "File" ? "checked" : ""}></label>
-                                        <label>Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
+                                        <label class="ms-2">Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
                                     </div>`
                                     
                 if(uploadType === "File"){
