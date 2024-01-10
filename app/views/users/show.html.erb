@@ -85,8 +85,8 @@
           </select>
         </a>
         <% if @user.profile %>
-          <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
-             class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">Edit
+          <a href=<%= @user.profile ? user_profile_url(@user, @user.profile) : "#"%> 
+             class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">View
           </a>
         <% end %>
         <a href=<%= new_profile_url() %> 
@@ -94,7 +94,7 @@
         </a>
         </h5>
         
-        <a href="<%= @user&.profile ? edit_profile_url(@user.profile) : "#"%>">
+        <a href="<%= @user&.profile ? user_profile_url(@user, @user.profile) : "#"%>">
           <div class="px-3 py-2 active-container-inner">
             <h6><%= @user.profile&.title || "Not Set" %></h6>
             <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
@@ -110,8 +110,8 @@
           <a href=<%= listings_url() %> 
              class="btn btn-primary ms-lg-5 ms-sm-1" style="font-size: small">View All
           </a>
-          <a href=<%= edit_listing_url(@listing) %> 
-             class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">Edit
+          <a href=<%= listing_url(@listing) %> 
+             class="btn btn-light ms-lg-1 ms-sm-1" style="font-size: small">View
           </a>
         <% end %>
 

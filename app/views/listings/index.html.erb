@@ -69,23 +69,22 @@
         <div id="active-resume" class="active-container mt-5 px-3 py-2 text-white" >
 
             <h5>Resume<br class="d-md-none" />
-                <% if @user.profile %>
-                <a href=<%= @user.profile ? edit_profile_url(@user.profile) : "#"%> 
-                    class="btn btn-light ms-lg-5 ms-sm-1" style="font-size: small">Edit
-                </a>
-                <% end %>
                 <a id="change-button" href="#"
-                    class="btn btn-secondary ms-1" style="font-size: small">Change
+                    class="btn btn-primary ms-lg-3 ms-sm-1" style="font-size: small">Change
                     <select id="profile-select" onChange="profileChange(event)">
                         <% @user.profiles.each do |profile| %>
                             <option value=<%= profile.id %> <%= profile.is_active? ? "selected" : ""%>> <%= profile.title %> </option>
                         <% end %>
                     </select>
-
                 </a>
+                <% if @user.profile %>
+                <a href=<%= @user.profile ? user_profile_url(@user, @user.profile) : "#"%> 
+                    class="btn btn-light ms-1 " style="font-size: small">View
+                </a>
+                <% end %>
             </h5>   
             
-            <a href="<%= @user&.profile ? edit_profile_url(@user.profile) : "#"%>">
+            <a href="<%= @user&.profile ? user_profile_url(@user, @user.profile) : "#"%>">
                 <div class="px-3 py-2 active-container-inner">
                     <h6><%= @user.profile&.title || "Not Set" %></h6>
                     <p>Industry: <%= @user.profile&.industry&.empty? ? "None Listed" : @user.profile&.industry || "Not Set" %></p>
