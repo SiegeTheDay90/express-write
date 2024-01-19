@@ -44,16 +44,24 @@ class GenerateListingJob < ApplicationJob
           }
       )
 
-      begin
-          message = response["choices"][0]["message"]["content"]
-          output = JSON.parse(message)
-          logger.info("Listing Parsed on First Try")
-      rescue JSON::ParserError
-          output = JSON.parse(message[0..-4]+"}") # Removes trailing comma from JSON string
-      
-      rescue
-        return false
-      end
+        begin
+            message = response["choices"][0]["message"]["content"]
+            output = JSON.parse(message)
+            logger.info("Listing Parsed on First Try")
+        rescue JSON::ParserError
+            origin = message.dup
+            message.insert(-2, "''") # Fills empty benefits value
+            message.gsub!("'", "\"") # Replace single quotes with double quotes
+            begin 
+                output = JSON.parse(message)
+                logger.info("Listing Parsed on Second Try")
+            rescue JSON::ParserError
+                output = JSON.parse(origin[0..-4]+"''}") # Removes trailing comma from JSON string
+                logger.info("Listing Parsed on Third Try")
+            end
+        rescue
+            return false
+        end
       return output
   end
 
