@@ -36,7 +36,7 @@ class GenerateListingJob < ApplicationJob
           parameters: {
               model: "gpt-3.5-turbo-16k",
               messages: [
-                  {role: "system", content:"Summarize. Respond with only valid JSON with exact keys: {'company': 'string', 'job_title': 'string', 'job_description': 'string', 'requirements': str[], 'benefits': str[]}. Ensure there is no trailing comma after the last value."},
+                  {role: "system", content:"Summarize. Respond with only valid JSON with exact keys: {\"company\": \"string\", \"job_title\": \"string\", \"job_description\": \"string\", \"requirements\": str[], \"benefits\": str[]}. Ensure there is no trailing comma after the last value."},
                   {role: "user", content: text}
               ],
               temperature: 0.9,
@@ -46,12 +46,12 @@ class GenerateListingJob < ApplicationJob
 
         begin
             message = response["choices"][0]["message"]["content"]
+            message.gsub!(/(?<!\w)'(?!\w)/, "\"")
             output = JSON.parse(message)
             logger.info("Listing Parsed on First Try")
         rescue JSON::ParserError
             origin = message.dup
-            message.insert(-2, "''") # Fills empty benefits value
-            message.gsub!("'", "\"") # Replace single quotes with double quotes
+            message.insert(-2, "\"\"") # Fills empty benefits value
             begin 
                 output = JSON.parse(message)
                 logger.info("Listing Parsed on Second Try")
@@ -60,6 +60,7 @@ class GenerateListingJob < ApplicationJob
                 logger.info("Listing Parsed on Third Try")
             end
         rescue
+            logger.error("Error: #{e.message}")
             return false
         end
       return output

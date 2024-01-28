@@ -25,7 +25,7 @@ class GenerateBioJob < ApplicationJob
           parameters: {
               model: "gpt-3.5-turbo-16k",
               messages: [
-                  {role: "system", content:"Return JSON with values that summarize this document. Use exactly these keys: {'aboutme': 'string', 'skills': str[], 'education': str[], 'projects': str[], 'experience': str[]}. Your response must be only valid JSON with a flat shape. \"aboutme\" should be at least 2 sentences long. If \"skills\" would be empty, use generic professional skills such as Time Management"},
+                  {role: "system", content:"Return JSON with values that summarize this document. Use exactly these keys: {\"aboutme\": \"string\", \"skills\": str[], \"education\": str[], \"projects\": str[], \"experience\": str[]}. Your response must be only valid JSON with a flat shape. \"aboutme\" should be at least 2 sentences long. If \"skills\" would be empty, use generic professional skills such as Time Management, Communication, Teamwork, Problem Solving"},
                   {role: "user", content: text}
               ],
               temperature: 1.4,
