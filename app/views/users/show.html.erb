@@ -1,4 +1,73 @@
 <script>
+
+  async function isValidURL(url) {
+      // Regular expression pattern to match URLs
+      const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.){1,}[a-z]{2,}(\.[a-z]{2,})?$/i;
+      if(!urlPattern.test(url)){
+        return false;
+      }
+      try{
+        await fetch(url, {mode: 'no-cors'});
+        return true;
+      } catch {
+        return false;
+      }
+      
+  }
+
+
+
+  async function checkValidSite(url, button){
+    if(url.slice(0,4).toLowerCase() !== "http"){
+      url = "http://" + url;
+    }
+
+    if(!(await isValidURL(url))){
+      debugger
+      alert(`Invalid URL: ${url}`);
+      return;
+    }
+    const response = await fetch(`/url-check/?url=${url}`);
+    const {ok, status} = await response.json();
+
+    if(ok === true){
+      button.disabled = false;
+    } else {
+      debugger;
+      button.disabled = true;
+      alert(`Invalid URL: ${status}`)
+    }
+  }
+
+  function listingInputChange(e=event){
+    if(localStorage.getItem('debounce')){
+      clearTimeout(localStorage.getItem('debounce'));
+    }
+    const type = Array.from(document.querySelectorAll("input[type=radio]")).filter(radio => radio.checked)[0].value;
+    const input = document.getElementById("text-input");
+    const submit = document.getElementById("express-submit");
+    submit.disabled = true;
+    if(input.value === "") return;
+    if(e.target.type === "radio"){
+      input.value = "";
+    } else {
+      if(type === 'url'){
+        const debounce = setTimeout(() => {
+          checkValidSite(e.target.value, submit);
+        }, 500);
+  
+        localStorage.setItem('debounce', debounce);
+  
+      } else {
+        if(e.target.value.trim()){
+          submit.disabled = false;
+        } else {
+          submit.disabled = true;
+        }
+      }
+    }
+
+  }
   function convertToEdit(e=event){
     
     const editForm = document.createElement('form');
@@ -73,6 +142,24 @@
       <h5>Listings Saved: <%= @user.listings.count %></h5>
       <h5>Letters Saved: <%= @user.letters.count %></h5>
       <h5>Candidate Profiles: <%= @user.profiles.count %></h5>
+      <div id="express-write" class="active-container mt-5 px-3 py-2 text-white">
+
+        <h5>Generate a Cover Letter </h5><br class="d-md-none" />
+        
+        <form id="member-express-form" data-action="express#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <h6 class="my-1">Share a Job Listing <input type="submit" id="express-submit" value="Generate" class="btn btn-success m-1" disabled> </h6>
+          <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">
+              <div>From:&nbsp;
+                  <label>URL <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)"></label>
+                  <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text" onChange="listingInputChange(event)"></label>
+              </div>
+              <input name="input" placeholder="Paste Here" id="text-input" class="form-control" onInput="listingInputChange(event)" required>
+          </div>
+        </form>
+      </div>
+
+
       <div id="active-resume" class="active-container mt-5 px-3 py-2 text-white">
 
         <h5>Active Resume <br class="d-md-none" />

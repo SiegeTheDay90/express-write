@@ -246,6 +246,17 @@ left: 0%
 #profile-select option{
 padding: 5px 10px;
 }
+
 #change-button:focus-within #profile-select{
 display: block;
+}
+
+#member-express-form{
+  background-color: #5656c4;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  #listing-input {
+    color: black;
+  }
 }

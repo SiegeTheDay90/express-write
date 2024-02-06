@@ -7,6 +7,24 @@ class ApplicationController < ActionController::Base
     helper_method :current_user
 
     before_action :snake_case_params, :attach_authenticity_token
+    def url_check
+        # debugger
+        if params["url"][0..3] != "http"
+            params["url"] = "http://"+params["url"]
+        end
+        begin
+            response = URI.open(params["url"])
+            if(response.status[0].to_i < 300)
+                render json: {ok: true}
+            else
+                render json: {ok: false, status: response.status }
+            end
+        rescue OpenURI::HTTPError => e
+            render json: {ok: false, status: e}
+        rescue => e
+            render json: {ok: false, status: e}
+        end
+    end
 
     def stress_test
         stress = params["amount"] || 10
