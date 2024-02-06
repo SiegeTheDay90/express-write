@@ -15,38 +15,39 @@ Rails.application.routes.draw do
 
   # Temp Letter
   get '/temp/:id', to: 'letters#temp'
-
+  
   # Stress Test
   get '/stresstest', to: 'application#stress_test'
-
+  
   # Password Reset
   get '/reset', to: 'application#reset', as: 'reset_form'
   post '/reset', to: 'users#request_reset', as: 'request_reset'
   get '/confirmation/:token', to: 'users#confirm', as: 'user_confirmation'
   post '/reset/:token', to: 'users#reset_password', as: 'user_reset'
-
+  
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
   
   # Bug Report
   get '/bugreport', to: 'application#bug', as: 'bug_report'
-
+  
   # Mark Letter as Helpful
   patch '/letters/:id/helpful', to: 'letters#helpful', as: 'helpful_letter'
-
+  
   # Set Profile as Active
   get '/profiles/:id/activate', to: 'profiles#set_active', as: 'set_active'
 
   # Login Routes
   get '/session/linkedin', to: 'sessions#linkedin'
   get '/session/demo', to: 'sessions#demo', as: 'demo_session'
-
+  
   # Generators
   post '/letters/generate', to: 'letters#generate', as: 'generate_letter'
   post '/listings/generate', to: 'listings#generate', as: 'generate_listing'
   post '/profiles/generate', to: 'profiles#generate', as: 'generate_profile'
   post '/express', to: 'letters#express', as: 'express_letter'
   get '/express', to: 'application#express'
+  get '/url-check', to: 'application#url_check', as: 'url_check'
   
   # Other
   get '/homepage', to: 'application#show'
