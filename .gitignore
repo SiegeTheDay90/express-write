@@ -39,6 +39,7 @@
 
 /test
 /node_modules
+/docx_test
 
 .byebug_history
 app/javascript/application.js.LICENSE.txt
