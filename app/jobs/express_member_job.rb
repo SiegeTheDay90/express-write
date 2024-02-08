@@ -3,10 +3,8 @@ class ExpressMemberJob < ApplicationJob
   BLACKLIST = Set.new(["header", "footer", "a", "code", "template", "text", "form", "link", "script", "img", "iframe", "icon", "comment", "button", "input", "head", "meta", "style"])
 
   def perform(request, user_id, listing_payload, listing_type="url")
-    debugger
     user = User.find(user_id)
     @profile = Profile.find(user.active_profile)
-    # debugger
     # generate listing
     begin
       if listing_type == "url"
@@ -31,7 +29,6 @@ class ExpressMemberJob < ApplicationJob
     resume = JSON.parse(
         @profile.to_json(except: [:id, :title]).gsub("\r", "")
     )
-    # debugger
     resume["first_name"] = user.first_name
     resume["last_name"] = user.last_name
     
@@ -56,7 +53,6 @@ class ExpressMemberJob < ApplicationJob
 
         if @letter.save
             #success
-            debugger
             request.complete!(true, @letter.id, @message)
         else
             #failure
