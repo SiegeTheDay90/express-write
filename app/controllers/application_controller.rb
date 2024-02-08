@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
 
     before_action :snake_case_params, :attach_authenticity_token
     def url_check
-        # debugger
         if params["url"][0..3] != "http"
             params["url"] = "http://"+params["url"]
         end
