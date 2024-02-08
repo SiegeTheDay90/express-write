@@ -50,6 +50,7 @@
     }
     input.disabled = false;
     loadingImage.remove();
+    input.focus();
   }
 
   function listingInputChange(e=event){
@@ -159,7 +160,7 @@
 
         <h5>Generate a Cover Letter </h5><br class="d-md-none" />
         
-        <form id="member-express-form" data-action="express-member#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_member_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
+        <form id="member-express-form" data-action="express-member#generate" method="POST" action=<%= express_member_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
           <h6 class="my-1">Share a Job Listing <input type="submit" id="express-submit" value="Generate" class="btn btn-success m-1" disabled> <span id="status" class="m-1"></span></h6>
           <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">

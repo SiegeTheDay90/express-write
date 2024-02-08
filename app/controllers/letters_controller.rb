@@ -99,6 +99,7 @@ class LettersController < ApplicationController
     end
 
     def express_member
+        debugger
         req = Request.create!(resource_type: "letter")
         if params["listing_type"] == "url"
             begin

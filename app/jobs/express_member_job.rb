@@ -3,6 +3,7 @@ class ExpressMemberJob < ApplicationJob
   BLACKLIST = Set.new(["header", "footer", "a", "code", "template", "text", "form", "link", "script", "img", "iframe", "icon", "comment", "button", "input", "head", "meta", "style"])
 
   def perform(request, user_id, listing_payload, listing_type="url")
+    debugger
     user = User.find(user_id)
     @profile = Profile.find(user.active_profile)
     # debugger
@@ -51,10 +52,11 @@ class ExpressMemberJob < ApplicationJob
           
     begin
         @message = response["choices"][0]["message"]["content"]
-        @letter = Letter.new(user_id: user_id, listing: @listing.to_json, body: @message)
+        @letter = Letter.new(user_id: user_id, listing: @listing, body: @message)
 
         if @letter.save
             #success
+            debugger
             request.complete!(true, @letter.id, @message)
         else
             #failure
