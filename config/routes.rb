@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   post '/listings/generate', to: 'listings#generate', as: 'generate_listing'
   post '/profiles/generate', to: 'profiles#generate', as: 'generate_profile'
   post '/express', to: 'letters#express', as: 'express_letter'
+  post '/express-member', to: 'letters#express_member', as: 'express_member_letter'
   get '/express', to: 'application#express'
   get '/url-check', to: 'application#url_check', as: 'url_check'
   

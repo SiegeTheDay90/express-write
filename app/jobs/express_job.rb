@@ -160,5 +160,5 @@ class ExpressJob < ApplicationJob
         trimmed_doc.gsub!("</div>", "")    
         return text_to_listing(trimmed_doc)
     end
-  end
+end
   

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: temp_letters
+#
+#  id         :bigint           not null, primary key
+#  profile    :string           not null
+#  listing    :string           not null
+#  body       :string           not null
+#  secure_id  :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class TempLetter < ApplicationRecord
 
     before_validation :ensure_secure_id
