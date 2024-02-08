@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     before_action :snake_case_params, :attach_authenticity_token
     def url_check
         if params["url"][0..3] != "http"
-            params["url"] = "http://"+params["url"]
+            params["url"] = "https://"+params["url"]
         end
         begin
             response = URI.open(params["url"])

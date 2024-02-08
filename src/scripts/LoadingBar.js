@@ -216,7 +216,7 @@ async function checkValidSite(input, button){
   button.parentElement.appendChild(loadingImage);
   const statusDiv = document.getElementById('status');
   if(url.slice(0,4).toLowerCase() !== "http"){
-    url = "http://" + url;
+    url = "https://" + url;
   }
   if(!(await isValidURL(url))){
     statusDiv.classList.add('text-danger');
