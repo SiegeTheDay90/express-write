@@ -16,7 +16,7 @@
                                     </div>`
                                     
                 if(uploadType === "File"){
-                    input.innerHTML += `<input type="file" name="file" id="file" accept=".pdf" class="mb-3">`
+                    input.innerHTML += `<input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>`
                 } else {
                     input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
                 }
@@ -38,7 +38,7 @@
 
             case "TEXT":
                 input.innerHTML = `<div class="mb-3 form-floating w-100">
-                    <input name="text" id="link-to-file" class="pt-5 pb-3 form-control w-100">
+                    <input name="text" id="link-to-file" class="pt-5 pb-3 form-control w-100" required>
                     <label class="fs-5 fw-bolder" for="link-to-file">Paste Here</label>
                 </div>`
             break;
@@ -61,6 +61,89 @@
         form.dataset.format = value;
         updateForm();
     }
+
+    async function isValidURL(url) {
+        // Regular expression pattern to match URLs
+        const urlPattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+        if(!urlPattern.test(url)){
+        return false;
+        }
+        try{
+        await fetch(url, {mode: 'no-cors'});
+        return true;
+        } catch {
+        return false;
+        }
+    }
+
+    async function checkValidSite(input, button){
+      let url = input.value;
+      input.disabled = true;
+      const loadingImage = new Image();
+      loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*2)]
+      loadingImage.id = "loading-gif"
+      button.parentElement.appendChild(loadingImage);
+      const statusDiv = document.getElementById('status');
+      if(url.slice(0,4).toLowerCase() !== "http"){
+        url = "http://" + url;
+      }
+      if(!(await isValidURL(url))){
+        statusDiv.classList.add('text-danger');
+        statusDiv.classList.remove('text-sucess');
+        statusDiv.innerHTML = `❌ Not a valid URL`;
+      } else {
+        const response = await fetch(`/url-check/?url=${url}`);
+        const {ok, status} = await response.json();
+    
+        if(ok === true){
+          button.disabled = false;
+          statusDiv.innerHTML = `✅`;
+          statusDiv.classList.add('text-success');
+          statusDiv.classList.remove('text-danger');
+        } else {
+          button.disabled = true;
+          statusDiv.classList.remove('text-sucess');
+          statusDiv.classList.add('text-danger');
+          statusDiv.innerHTML = `❌ ${status}`;
+        }
+      }
+      input.disabled = false;
+      loadingImage.remove();
+      input.focus();
+    } 
+
+    function listingInputChange(e=event){
+        if(localStorage.getItem('debounce')){
+            clearTimeout(localStorage.getItem('debounce'));
+        }
+        const type = Array.from(document.getElementsByClassName("listing-type")).filter(radio => radio.checked)[0].value;
+        const input = document.getElementById("link-to-listing");
+        const submit = document.getElementById("express-submit");
+        submit.disabled = true;
+
+
+        if(input.value === "") return;
+
+        if(e.target.type === "radio"){
+            input.value = "";
+        } else {
+            if(type === 'url'){
+                const debounce = setTimeout(() => {
+                    checkValidSite(input, submit);
+                }, 700);
+            
+                localStorage.setItem('debounce', debounce);
+        
+            } else {
+                if(e.target.value.trim()){
+                    submit.disabled = false;
+                } else {
+                    submit.disabled = true;
+                }
+            }
+        }
+    }
+
 </script>
 
 <div id="splash" style="backgrond-color: transparent" class="text-center px-4 w-100">
@@ -109,20 +192,20 @@
                             <label>File <input type="radio" name="form-type" value="File" checked></label>
                             <label class="ms-2">Link <input type="radio" name="form-type" value="Link"></label>
                         </div>
-                        <input type="file" name="file" id="file" accept=".pdf" class="mb-3">
+                        <input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>
                     </div>
                     <hr class=" w-100">
                     <h6 class="my-1">Share a Job Listing</h6>
                     <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">
-                        <label for="listing-type">From:&nbsp;
-                            <label>URL <input type="radio" name="listing-type" value="url" checked></label>
-                            <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text"></label>
-                        </label>
-                        <input name="input" placeholder="Paste Here" id="link-to-file" class="form-control">
+                        <div>From:&nbsp;
+                            <label>URL <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)" class="listing-type"></label>
+                            <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text" onChange="listingInputChange(event)" class="listing-type"></label>
+                        </div>
+                        <input name="input" placeholder="Paste Here" id="link-to-listing" class="form-control" onInput="listingInputChange(event)">
                     </div>
 
 
-                    <input type="submit" value="Generate" class="btn btn-success">
+                    <span class="d-flex align-items-center"><input type="submit" value="Generate" id="express-submit" class="btn btn-success" disabled><span id="status" class="m-1"></span></span>
                 </form>
             </div>
             <p style="margin-top: 20px; margin-bottom: 0;">Have an account?</p>
