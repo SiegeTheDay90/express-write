@@ -6,7 +6,7 @@ class LoadingBar {
       this.status = document.createElement('span');
       this.statusBox = document.createElement('p');
       this.loadingImage = new Image();
-      this.loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*1.99)]
+      this.loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*2)]
       this.loadingImage.id = "loading-gif"
       this.container = form.parentElement;
       this.originalForm = form;
@@ -100,6 +100,10 @@ class LoadingBar {
           this.nextPath = `/temp/${id}`;
         break;
 
+        case "express-member#generate":
+          this.nextPath=`/letters/${id}`
+        break;
+
         default:
           this.nextPath = "/";
       }
@@ -114,6 +118,7 @@ class LoadingBar {
   }
 
   failureCallback(errors){
+    debugger
     console.error("Request Failed: ", errors.join("\n"));
     const alertContainer = document.getElementById("alert-container");
     errors.forEach(error => {
@@ -185,4 +190,86 @@ export const ajaxSubmit = function(e){
     options, // Method, Body, Headers
     form.dataset?.action // i.e. data-action="letters#generate"
   );
+}
+
+async function isValidURL(url) {
+  // Regular expression pattern to match URLs
+  const urlPattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+  if(!urlPattern.test(url)){
+    return false;
+  }
+  try{
+    await fetch(url, {mode: 'no-cors'});
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+
+
+async function checkValidSite(input, button){
+  let url = input.value;
+  input.disabled = true;
+  const loadingImage = new Image();
+  loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*2)]
+  loadingImage.id = "loading-gif"
+  button.parentElement.appendChild(loadingImage);
+  const statusDiv = document.getElementById('status');
+  if(url.slice(0,4).toLowerCase() !== "http"){
+    url = "http://" + url;
+  }
+  // debugger;
+  if(!(await isValidURL(url))){
+    statusDiv.classList.add('text-danger');
+    statusDiv.classList.remove('text-sucess');
+    statusDiv.innerHTML = `❌ Not a valid URL`;
+  } else {
+    const response = await fetch(`/url-check/?url=${url}`);
+    const {ok, status} = await response.json();
+
+    if(ok === true){
+      button.disabled = false;
+      statusDiv.innerHTML = `✅`;
+      statusDiv.classList.add('text-success');
+      statusDiv.classList.remove('text-danger');
+    } else {
+      button.disabled = true;
+      statusDiv.classList.remove('text-sucess');
+      statusDiv.classList.add('text-danger');
+      statusDiv.innerHTML = `❌ ${status}`;
+    }
+  }
+  input.disabled = false;
+  loadingImage.remove();
+}
+
+function listingInputChange(e=event){
+  if(localStorage.getItem('debounce')){
+    clearTimeout(localStorage.getItem('debounce'));
+  }
+  const type = Array.from(document.querySelectorAll("input[type=radio]")).filter(radio => radio.checked)[0].value;
+  const input = document.getElementById("text-input");
+  const submit = document.getElementById("express-submit");
+  submit.disabled = true;
+  if(input.value === "") return;
+  if(e.target.type === "radio"){
+    input.value = "";
+  } else {
+    if(type === 'url'){
+      const debounce = setTimeout(() => {
+        checkValidSite(input, submit);
+      }, 500);
+
+      localStorage.setItem('debounce', debounce);
+
+    } else {
+      if(e.target.value.trim()){
+        submit.disabled = false;
+      } else {
+        submit.disabled = true;
+      }
+    }
+  }
+
 }

@@ -9,19 +9,16 @@
 #  reset_password_sent_at :datetime
 #  first_name             :string           default("")
 #  last_name              :string           default("")
-#  skills                 :text             default([]), is an Array
-#  education              :text             default([]), is an Array
-#  experience             :text             default([]), is an Array
-#  completion             :integer          default(0)
-#  industry               :string           default("")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  provider               :string
 #  uid                    :string
 #  username               :string
 #  session_token          :string
-#  aboutme                :text             default("")
-#  projects               :string           default([]), is an Array
+#  active_profile         :integer
+#  email_token            :string
+#  unconfirmed_email      :string
+#  email_token_sent_at    :datetime
 #
 class User < ApplicationRecord
     validates :username, :email, :password_digest, uniqueness: true, presence: true

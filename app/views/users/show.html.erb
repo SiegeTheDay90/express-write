@@ -1,42 +1,55 @@
 <script>
 
   async function isValidURL(url) {
-      // Regular expression pattern to match URLs
-      const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.){1,}[a-z]{2,}(\.[a-z]{2,})?$/i;
-      if(!urlPattern.test(url)){
-        return false;
-      }
-      try{
-        await fetch(url, {mode: 'no-cors'});
-        return true;
-      } catch {
-        return false;
-      }
-      
+    // Regular expression pattern to match URLs
+    const urlPattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+    if(!urlPattern.test(url)){
+      return false;
+    }
+    try{
+      await fetch(url, {mode: 'no-cors'});
+      return true;
+    } catch {
+      return false;
+    }
   }
 
 
 
-  async function checkValidSite(url, button){
+  async function checkValidSite(input, button){
+    let url = input.value;
+    input.disabled = true;
+    const loadingImage = new Image();
+    loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*2)]
+    loadingImage.id = "loading-gif"
+    button.parentElement.appendChild(loadingImage);
+    const statusDiv = document.getElementById('status');
     if(url.slice(0,4).toLowerCase() !== "http"){
       url = "http://" + url;
     }
-
+    // debugger;
     if(!(await isValidURL(url))){
-      debugger
-      alert(`Invalid URL: ${url}`);
-      return;
-    }
-    const response = await fetch(`/url-check/?url=${url}`);
-    const {ok, status} = await response.json();
-
-    if(ok === true){
-      button.disabled = false;
+      statusDiv.classList.add('text-danger');
+      statusDiv.classList.remove('text-sucess');
+      statusDiv.innerHTML = `❌ Not a valid URL`;
     } else {
-      debugger;
-      button.disabled = true;
-      alert(`Invalid URL: ${status}`)
+      const response = await fetch(`/url-check/?url=${url}`);
+      const {ok, status} = await response.json();
+  
+      if(ok === true){
+        button.disabled = false;
+        statusDiv.innerHTML = `✅`;
+        statusDiv.classList.add('text-success');
+        statusDiv.classList.remove('text-danger');
+      } else {
+        button.disabled = true;
+        statusDiv.classList.remove('text-sucess');
+        statusDiv.classList.add('text-danger');
+        statusDiv.innerHTML = `❌ ${status}`;
+      }
     }
+    input.disabled = false;
+    loadingImage.remove();
   }
 
   function listingInputChange(e=event){
@@ -53,7 +66,7 @@
     } else {
       if(type === 'url'){
         const debounce = setTimeout(() => {
-          checkValidSite(e.target.value, submit);
+          checkValidSite(input, submit);
         }, 500);
   
         localStorage.setItem('debounce', debounce);
@@ -146,9 +159,9 @@
 
         <h5>Generate a Cover Letter </h5><br class="d-md-none" />
         
-        <form id="member-express-form" data-action="express#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
+        <form id="member-express-form" data-action="express-member#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_member_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <h6 class="my-1">Share a Job Listing <input type="submit" id="express-submit" value="Generate" class="btn btn-success m-1" disabled> </h6>
+          <h6 class="my-1">Share a Job Listing <input type="submit" id="express-submit" value="Generate" class="btn btn-success m-1" disabled> <span id="status" class="m-1"></span></h6>
           <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">
               <div>From:&nbsp;
                   <label>URL <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)"></label>

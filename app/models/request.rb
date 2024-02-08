@@ -7,9 +7,9 @@
 #  ok            :boolean
 #  messages      :string           default("")
 #  resource_type :string           not null
-#  resource_id   :bigint
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  resource_id   :string
 #
 class Request < ApplicationRecord
     validates :resource_type, inclusion: {in: %w[letter listing bio temp_letter]}
