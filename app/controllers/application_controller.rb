@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
     before_action :require_logged_out, only: :splash
     protect_from_forgery with: :exception
     rescue_from StandardError, with: :unhandled_error
+    rescue_from ActionController::BadRequest, with: :unhandled_error
     rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
     helper_method :current_user
 
