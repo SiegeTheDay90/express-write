@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   # Temp Letter
   get '/temp/:id', to: 'letters#temp'
+
   
   # Stress Test
   get '/stresstest', to: 'application#stress_test'
@@ -52,6 +53,5 @@ Rails.application.routes.draw do
   
   # Other
   get '/homepage', to: 'application#show'
-  get '/test', to: 'application#test'
-  get '*path', to: 'errors#not_found', via: :all
+  get '*unmatched_route', to: redirect('/404.html'), via: :all
 end

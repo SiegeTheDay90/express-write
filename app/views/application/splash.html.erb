@@ -92,7 +92,8 @@
         statusDiv.classList.remove('text-sucess');
         statusDiv.innerHTML = `❌ Not a valid URL`;
       } else {
-        const response = await fetch(`/url-check/?url=${url}`);
+        const params = new URLSearchParams(`url=${url}`)
+        const response = await fetch(`/url-check/?${params.toString()}`);
         const {ok, status} = await response.json();
     
         if(ok === true){

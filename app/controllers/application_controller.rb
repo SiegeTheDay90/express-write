@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
     before_action :require_logged_out, only: :splash
     protect_from_forgery with: :exception
     rescue_from StandardError, with: :unhandled_error
-    rescue_from ActionController::BadRequest, with: :unhandled_error
     rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
     helper_method :current_user
 
@@ -70,24 +69,8 @@ class ApplicationController < ActionController::Base
         redirect_to user_url(current_user) if current_user
     end
 
-    def test
-
-        url = ""
-
-        if params["text"].split("/").include?("docs.google.com")
-            id = params["text"].split("/")[-2]
-            url = "https://drive.google.com/uc?export=download&id=#{id}"
-        else 
-            url = params["text"]
-        end
-
-        
-
-        docx = URI.open(url)
-        text = helpers.docx_to_text(docx)
-        
-        puts "OK"
-        render plain: text
+    def err_test
+        raise "Test Error: #{Date.today}"
     end
     
     private
@@ -105,16 +88,23 @@ class ApplicationController < ActionController::Base
     end
 
     def unhandled_error(error)
-        # if request.accepts.first.html?
-        #     raise error
-        # else
-        @message = "#{error.class} - #{error.message}"
         @stack = Rails::BacktraceCleaner.new.clean(error.backtrace)
-        # render 'api/errors/internal_server_error', status: :internal_server_error
-        render json: {ok: false, status: @message}
         logger.error "\n#{@message}:\n\t#{@stack.join("\n\t")}\n"
-        # end
+        
+        respond_to do |format|
+            format.html do
+                @error = error
+                render '/utils/500'
+            end
+
+            format.json do
+                @message = "#{error.class} - #{error.message}"
+                render json: {error: @message}
+            end
+        end
+
     end
+
 
     def user_params
         params.require(:user).permit(:email, :first_name, :last_name, :password)
