@@ -69,6 +69,9 @@ class ApplicationController < ActionController::Base
         redirect_to user_url(current_user) if current_user
     end
 
+    def test
+    end
+
     def err_test
         raise "Test Error: #{Date.today}"
     end
