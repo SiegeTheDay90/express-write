@@ -1,0 +1,33 @@
+.focused {
+  background-color: #b3b3ff;
+}
+
+#resume-builder-container{
+    height: 50vh;
+}
+
+.resume-builder-sub-section{
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 8px;
+  max-height: 100%;
+  transition: max-height 1s;
+  overflow-y: hidden;
+  border: 1px solid red;
+
+    &.closed{
+        max-height: 40px;
+    }
+}
+
+.resume-builder-section{
+  padding: 10px;
+}
+
+.flex-header{
+  flex-basis: 100%;
+  padding-top: 5px 0;
+  padding-left: 25%;
+  max-height: min-content;
+  // border: 3px dotted rgb(203, 0, 179);
+}

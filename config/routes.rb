@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "application#splash"
 
+  get '/test', to: 'application#test'
+
   resource :session, only: [:new, :create, :destroy]
   resources :listings
   resources :letters, only: [:show, :edit, :update, :destroy]
