@@ -1,33 +1,79 @@
 .focused {
-  background-color: #b3b3ff;
+  background-color: #ccf;
 }
 
 #resume-builder-container{
-    height: 50vh;
+    height: 100%;
+    max-height: 100vh;
 }
 
 .resume-builder-sub-section{
-  cursor: pointer;
+  vertical-align: middle;
   user-select: none;
-  padding: 4px 8px;
-  max-height: 100%;
-  transition: max-height 1s;
+  padding: 1em 12px;
+  // max-height: 500px;
+  height: max-content;
+  transition: height 0.7s ease-in-out, background-color 0.3s linear;
   overflow-y: hidden;
-  border: 1px solid red;
+  border: 1px solid #bbd;
+  &.closed:hover{
+    background-color: #ccf;
+  }
+  
+  h4{
+    font-size: 2em;
+    padding: 0;
+    cursor: pointer;
+  }
+  .content{
+    transform: scaleY(1);
+    transition: all 0.6s ease-out;
+    transform-origin: top;
+  }
 
-    &.closed{
-        max-height: 40px;
-    }
+  &.closed .content{
+    transform: scaleY(0);
+  }
+
+  &:first-of-type{
+    border-radius: 8px 8px 0 0;
+  }
+
+  &:last-child{
+    border-radius: 0 0 8px 8px;
+  }
+
 }
 
+.closed{
+    height: 4em;
+}
 .resume-builder-section{
   padding: 10px;
+  max-height: 82dvh;
+}
+
+.accordion{
+  overflow-y: auto;
 }
 
 .flex-header{
   flex-basis: 100%;
   padding-top: 5px 0;
-  padding-left: 25%;
   max-height: min-content;
-  // border: 3px dotted rgb(203, 0, 179);
+}
+
+body:has(#resume-builder-main){
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+main{
+  flex-basis: 100%;
+  padding-bottom: 0 !important;
+}
+
+#resume-image{
+  width: 100%;
 }
