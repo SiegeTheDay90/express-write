@@ -3,16 +3,24 @@ import React from 'react';
 import '../../styles/ResumeBuilder.scss'
 import PersonalInfoForm from './PersonalInfoForm';
 import WorkExperienceForm from './WorkExperienceForm';
+import EducationForm from './EducationForm';
+import SkillList from './SkillList';
 
 function ResumeBuilder() {
 
     const resumeImage = new Image();
     resumeImage.src = "./lorem-resume.png";
+    const [resume, setResume] = useState({
+        persalInfo: {},
+        education: [],
+        work: [],
+        skills: []
+    })
 
     function focusClick(e){
         e.currentTarget.parentElement.classList.toggle('focused');
         e.currentTarget.parentElement.classList.toggle('closed');
-        setFocus(e.currentTarget);
+        // setFocus(e.currentTarget);
     }
 
     return (
@@ -30,11 +38,11 @@ function ResumeBuilder() {
                 </div>
                 <div id="resume-builder-three"  className="resume-builder-sub-section closed" >
                     <h4 onClick={focusClick} >Education</h4>
-                    <PersonalInfoForm />
+                    <EducationForm />
                 </div>
                 <div id="resume-builder-four"  className="resume-builder-sub-section closed" >
                     <h4 onClick={focusClick} >Skills</h4>
-                    <PersonalInfoForm />
+                    <SkillList />
                 </div>
             </div>
 

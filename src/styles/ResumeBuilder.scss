@@ -7,12 +7,16 @@
     max-height: 100vh;
 }
 
+.hideable:has(input[type=date]:disabled){
+  visibility: hidden;
+}
+
 .resume-builder-sub-section{
   vertical-align: middle;
   user-select: none;
   padding: 1em 12px;
-  // max-height: 500px;
-  height: max-content;
+  // max-height: min-content;
+  height: min-content;
   transition: height 0.7s ease-in-out, background-color 0.3s linear;
   overflow-y: hidden;
   border: 1px solid #bbd;
@@ -27,7 +31,7 @@
   }
   .content{
     transform: scaleY(1);
-    transition: all 0.6s ease-out;
+    transition: all 0.18s ease;
     transform-origin: top;
   }
 
