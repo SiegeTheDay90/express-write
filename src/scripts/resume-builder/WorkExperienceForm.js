@@ -2,20 +2,34 @@ import { useRef, useState } from 'react'
 import React from 'react';
 import WorkExperienceFormItem from './WorkExperienceFormItem';
 
-function WorkExperienceForm(){
+function WorkExperienceForm( {resume: [resume, setResume]}){
 
-  const [formItems, setFormItems] = useState([<WorkExperienceFormItem key={0} />]);
+  const formItems = resume.work;
 
   function AddItem(e){
-    setFormItems(formItems => formItems.concat([<WorkExperienceFormItem key={formItems.length} />]))
+    setResume(prevState => {
+      return {
+        ...prevState,
+        work: prevState.work.concat([{
+          companyName: '',
+          jobTitle: '',
+          city: '',
+          location: '',
+          from: '',
+          to: '',
+          description: '',
+          current: false
+        }])
+      }
+    })
   };
 
     return (
       <>
-        <ul>
-          {formItems}
+        <ul className='ps-1'>
+          {formItems.map((item, idx) => <WorkExperienceFormItem key={idx} resume={[resume, setResume]} idx={idx} item={item} />)}
         </ul>
-        <button className="button button-secondary" onClick={AddItem}>+ Add New Experience</button>
+        <button className="btn btn-secondary" onClick={AddItem}>+ Add New Experience</button>
       </>
     );
 }

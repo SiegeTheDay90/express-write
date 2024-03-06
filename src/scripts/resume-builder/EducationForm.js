@@ -2,22 +2,37 @@ import { useRef, useState } from 'react'
 import React from 'react';
 import EducationFormItem from './EducationFormItem';
 
-function EducationForm(){
+function EducationForm({resume: [resume, setResume]}){
 
-  const [formItems, setFormItems] = useState([<EducationFormItem key={0} />]);
+  const formItems = resume.education;
 
   function AddItem(e){
-    setFormItems(formItems => formItems.concat([<EducationFormItem key={formItems.length} />]))
+    setResume(prevState => {
+      return {
+        ...prevState,
+        education: prevState.education.concat([{
+          institutionName: '',
+          fieldOfStudy: '',
+          degreeType: '',
+          city: '',
+          location: '',
+          to: '',
+          description: '',
+          current: false
+        }])
+      }
+    })
   };
 
-    return (
-      <>
-        <ul>
-          {formItems}
-        </ul>
-        <button className="button button-secondary" onClick={AddItem}>+ Add New Education</button>
-      </>
-    );
+
+  return (
+    <>
+      <ul className="ps-1">
+        {formItems.map((item, idx) => <EducationFormItem key={idx} resume={[resume, setResume]} idx={idx} item={item} />)}
+      </ul>
+      <button className="button button-secondary" onClick={AddItem}>+ Add New Education</button>
+    </>
+  );
 }
 
 export default EducationForm

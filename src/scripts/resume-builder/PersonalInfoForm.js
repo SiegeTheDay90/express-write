@@ -1,38 +1,46 @@
 import { useRef, useState } from 'react'
 import React from 'react';
 
-function PersonalInfoForm(){
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        website: ''
-    });
+function PersonalInfoForm({ resume: [resume, setResume] }){
+    // const [formData, setFormData] = useState({
+    //     firstName: '',
+    //     lastName: '',
+    //     phoneNumber: '',
+    //     email: '',
+    //     website: ''
+    // });
+
+    const formData = resume.personal;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
+        if(value !== '' && name === "phoneNumber" && !/^\d{1,20}?$/.test(value)){
+          return
+        }
+        setResume(prevState => ({
             ...prevState,
-            [name]: value
+            personal: {
+              ...prevState.personal,
+              [name]: value
+            }
         }));
     };
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
+    // const handleSubmit = (e) => {
+    // e.preventDefault();
+    // console.log(formData);
 
-    setFormData({
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        website: ''
-    });
-    };
+    // setResume({
+    //     firstName: '',
+    //     lastName: '',
+    //     phoneNumber: '',
+    //     email: '',
+    //     website: ''
+    // });
+    // };
 
     return (
-    <form onSubmit={handleSubmit} className='content'>
+    <form onSubmit={(e) => e.preventDefault()} className='content'>
       <div className="row mb-3">
         <div className="col-sm-10 form-floating">
           <input type="text" className="form-control ps-2 bg-light" placeholder='_' id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} />
@@ -47,8 +55,8 @@ function PersonalInfoForm(){
       </div>
       <div className="row mb-3">
         <div className="col-sm-10 form-floating">
-          <input type="tel" className="form-control ps-2 bg-light" placeholder='_' id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
-            <label htmlFor="phoneNumber" className="ms-2 col-form-label">Phone Number</label>
+          <input type="text" className="form-control ps-2 bg-light" placeholder='_' id="profession" name="profession" value={formData.profession} onChange={handleChange} />
+            <label htmlFor="profession" className="ms-2 col-form-label">Profession</label>
         </div>
       </div>
       <div className="row mb-3">
@@ -59,13 +67,14 @@ function PersonalInfoForm(){
       </div>
       <div className="row mb-3">
         <div className="col-sm-10 form-floating">
-          <input type="url" className="form-control ps-2 bg-light" placeholder='_' id="website" name="website" value={formData.website} onChange={handleChange} />
-            <label htmlFor="website" className="ms-2 col-form-label">Website</label>
+          <input type="tel" className="form-control ps-2 bg-light" placeholder='_' id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+            <label htmlFor="phoneNumber" className="ms-2 col-form-label">Phone Number</label>
         </div>
       </div>
       <div className="row mb-3">
         <div className="col-sm-10 form-floating">
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <input type="url" className="form-control ps-2 bg-light" placeholder='_' id="website" name="website" value={formData.website} onChange={handleChange} />
+            <label htmlFor="website" className="ms-2 col-form-label">Website</label>
         </div>
       </div>
     </form>
