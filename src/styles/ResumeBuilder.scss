@@ -81,3 +81,8 @@ main{
 #resume-image{
   width: 100%;
 }
+
+.resume-form:not(:last-child){
+  border-bottom: 1px solid #aac;
+  padding-bottom: 0.75rem;
+}

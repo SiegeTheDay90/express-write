@@ -1,0 +1,29 @@
+#resume-preview-container{
+    border-radius: 2px;
+    border: 1px solid #bbd;
+    h4, h6 {
+        margin-bottom: 1px;
+    }
+    p{
+        padding: 1px 0;
+        margin: 0;
+        font-size: 0.75rem;
+    }
+}
+
+#resume-preview-personal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resume-preview-work-item{
+    p{
+        font-size: smaller;
+    }
+}
+
+.resume-preview-work-item:not(:last-child){
+    border-bottom: 1px solid #bbd;
+    padding-bottom: 0.75rem;
+}
