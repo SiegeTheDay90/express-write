@@ -7,7 +7,6 @@ function SkillList({resume: [resume, setResume]}){
   const formItems = resume.skills;
   const [newSkill, setNewSkill] = useState("");
   const [count, setCount] = useState(0);
-  console.log(formItems);
 
   function newSkillChange(e){
     setNewSkill(e.target.value);
@@ -38,8 +37,6 @@ function SkillList({resume: [resume, setResume]}){
     const dir = e.currentTarget.dataset.dir === "up" ? -1 : 1;
     const idx = parseInt(e.currentTarget.dataset.idx);
 
-    console.log(dir);
-    console.log(idx);
 
     setResume(prevState => {
       const items = [...prevState.skills];

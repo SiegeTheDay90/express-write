@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import React from 'react';
+import BulletPointInput from './util/BulletPointInput';
 
 function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], idx} ){
 
@@ -94,9 +95,8 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
       </div>
 
       <div className="row mb-3">
-        <div className="col-sm-10 form-floating">
-            <textarea className="form-control ps-2 bg-light" placeholder='_' id="description" name="description" value={formData.description} onChange={handleChange} />
-            <label htmlFor="description" className="ms-2 col-form-label">Description</label>
+        <div className="col-sm-10">
+            <BulletPointInput id={"description"} label={"Description"} value={formData.description} setValue={handleChange}/>
         </div>
       </div>
       <div className="row mb-3">

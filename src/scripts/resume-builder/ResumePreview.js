@@ -1,10 +1,10 @@
 import React from 'react';
+import { shortDate } from './util/DocX';
 import '../../styles/ResumePreview.scss';
 
 function EducationForm({ resume }){
     const { personal, education, work, skills } = resume;
 
-    console.log(skills);
     return (
         <div id="resume-preview-container" className="p-4 h-100">
             <section id="resume-preview-personal" className="resume-preview-section">
@@ -21,9 +21,19 @@ function EducationForm({ resume }){
                     {
                         work.map( (item, idx) => (
                             <div key={idx} className="resume-preview-work-item mt-1">
-                                <h6 className="d-flex flex-row justify-content-between"><span>{item.companyName || 'company'} - {item.jobTitle || 'title'}</span><span>{item.from || 'Date'} to {item.to || 'present'}</span></h6>
+                                <h6 className="d-flex flex-row justify-content-between">
+                                    <span>
+                                        {item.companyName || 'company'} - {item.jobTitle || 'title'}
+                                    </span>
+                                    <span>
+                                        {shortDate(new Date(item.from).toLocaleDateString('en-US')) || 'Date'} to {item.current ? 'present' : shortDate(new Date(item.to).toLocaleDateString('en-US'))}
+                                    </span>
+                                </h6>
                                 <p>{item.city || 'City, State'}</p>
-                                <p>{item.description || 'Description'}</p>
+                                {item.description?.split("\n").map((bullet, idx) => (
+                                    bullet.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet}</div></li>: null
+                                ))}
+                                {/* <p>{item.description || 'Description'}</p> */}
                             </div>
                         ))
                     }
@@ -37,7 +47,9 @@ function EducationForm({ resume }){
                             <div key={idx} className="resume-preview-work-item mt-1">
                                 <h6 className="d-flex flex-row justify-content-between"><span>{item.degreeType ? item.degreeType+' - ' : ''}{item.fieldOfStudy || 'field'}</span><span>{item.to || 'present'}</span></h6>
                                 <p>{item.institutionName || 'School'}</p>
-                                <p>{item.description || 'Description'}</p>
+                                {item.description?.split("\n").map((bullet, idx) => (
+                                    bullet.trim() ? <li className={"bullet-point"} key={idx}>{bullet}</li>: null
+                                ))}                           
                             </div>
                         ))
                     }
