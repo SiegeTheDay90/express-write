@@ -7,6 +7,16 @@
     max-height: 100vh;
 }
 
+.bullet-point{
+  word-wrap: break-word;
+  width: 100%;
+  div{
+    word-wrap: break-word;
+    display: inline-block;
+    width: 90%;
+  }
+}
+
 .hideable:has(input[type=date]:disabled){
   visibility: hidden;
 }

@@ -26,18 +26,6 @@ function PersonalInfoForm({ resume: [resume, setResume] }){
         }));
     };
 
-    // const handleSubmit = (e) => {
-    // e.preventDefault();
-    // console.log(formData);
-
-    // setResume({
-    //     firstName: '',
-    //     lastName: '',
-    //     phoneNumber: '',
-    //     email: '',
-    //     website: ''
-    // });
-    // };
 
     return (
     <form onSubmit={(e) => e.preventDefault()} className='content'>

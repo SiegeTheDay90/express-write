@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import React from 'react';
 import '../../styles/ResumeBuilder.scss'
 import PersonalInfoForm from './PersonalInfoForm';
@@ -6,41 +6,57 @@ import WorkExperienceForm from './WorkExperienceForm';
 import EducationForm from './EducationForm';
 import SkillList from './SkillList';
 import ResumePreview from './ResumePreview';
+import { saveAs } from 'file-saver';
+import * as Docx from "docx";
+import generateDocx from './util/DocX';
 
 function ResumeBuilder() {
-
-    const resumeImage = new Image();
-    resumeImage.src = "./lorem-resume.png";
+    
+    
+    async function saveResume() {
+        const doc = generateDocx(resume);
+        const blob = await Docx.Packer.toBlob(doc);
+        saveAs(blob, 'resume.docx');
+    }
+    
     const [resume, setResume] = useState({
         personal: {
-            firstName: '',
-            lastName: '',
-            profession: '',
-            phoneNumber: '',
-            email: '',
+            firstName: 'Clarence',
+            lastName: 'Smith',
+            profession: 'Software Engineer',
+            phoneNumber: '6463747244',
+            email: 'ClarenceSmith90@gmail.com',
             website: ''
         },
         work: [{
-            companyName: '',
-            jobTitle: '',
-            city: '',
+            companyName: 'App Academy',
+            jobTitle: 'Instructor',
+            city: 'New York, NY',
+            from: '01-01-2023',
+            to: '01-06-2024',
+            description: '',
+            current: false
+        },
+        {
+            companyName: 'NYC DOE',
+            jobTitle: 'Math Teacher',
+            city: 'Bronx, NY',
             from: '',
             to: '',
             description: '',
             current: false
         }],
         education: [{
-            institutionName: '',
-            fieldOfStudy: '',
-            degreeType: '',
+            institutionName: 'Hunter College',
+            fieldOfStudy: 'Mathematics',
+            degreeType: 'BA',
             city: '',
-            location: '',
             from: '',
-            to: '',
+            to: '01-01-2013',
             description: '',
             current: false
         }],
-        skills: []
+        skills: ['Object Oriented Programming', 'Web Development', 'Teaching', 'Documentation', 'Presentation']
     })
 
     function focusClick(e){
@@ -74,8 +90,12 @@ function ResumeBuilder() {
             <div className="resume-builder-section w-50" id="resume-builder-right">
                 <ResumePreview resume={resume} />
             </div>
+            <div className="w-100"><button onClick={saveResume}>Download as Docx</button></div>
         </>
     )
+    
+    
 }
+
 
 export default ResumeBuilder
