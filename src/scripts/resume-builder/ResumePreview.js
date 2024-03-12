@@ -43,15 +43,19 @@ function EducationForm({ resume }){
                 <h5>Education</h5>
 
                     {
-                        education.map( (item, idx) => (
+                        education.map( (item, idx) => {
+                            return(
                             <div key={idx} className="resume-preview-work-item mt-1">
-                                <h6 className="d-flex flex-row justify-content-between"><span>{item.degreeType ? item.degreeType+' - ' : ''}{item.fieldOfStudy || 'field'}</span><span>{item.to || 'present'}</span></h6>
+                                <h6 className="d-flex flex-row justify-content-between">
+                                    <span>{item.degreeType ? item.degreeType+' - ' : ''}{item.fieldOfStudy || 'field'}</span>
+                                    <span>{shortDate(new Date(item.to).toLocaleDateString('en-US'))}</span>
+                                </h6>
                                 <p>{item.institutionName || 'School'}</p>
                                 {item.description?.split("\n").map((bullet, idx) => (
                                     bullet.trim() ? <li className={"bullet-point"} key={idx}>{bullet}</li>: null
                                 ))}                           
                             </div>
-                        ))
+                        )})
                     }
             </section>
 
