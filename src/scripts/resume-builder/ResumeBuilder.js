@@ -33,17 +33,17 @@ function ResumeBuilder() {
             jobTitle: 'Instructor',
             city: 'New York, NY',
             from: '01-01-2023',
-            to: '01-06-2024',
-            description: '',
+            to: '06-21-2024',
+            description: 'This is a\nTest Descriptionn\nMeep',
             current: false
         },
         {
             companyName: 'NYC DOE',
             jobTitle: 'Math Teacher',
             city: 'Bronx, NY',
-            from: '',
-            to: '',
-            description: '',
+            from: '10-19-2016',
+            to: '08-15-2022',
+            description: 'This is a\nTest Descriptionn\nMeep',
             current: false
         }],
         education: [{
@@ -53,7 +53,7 @@ function ResumeBuilder() {
             city: '',
             from: '',
             to: '01-01-2013',
-            description: '',
+            description: 'This is a\nTest Descriptionn\nMeep',
             current: false
         }],
         skills: ['Object Oriented Programming', 'Web Development', 'Teaching', 'Documentation', 'Presentation']
