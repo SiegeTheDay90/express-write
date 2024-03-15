@@ -23,7 +23,7 @@ export default function BulletPointInput({id, label, value, setValue}){
 
     return(
         <>
-            <label htmlFor={id} onClick={listClick} className="ms-2 col-form-label" role="button">{label} (Bullet Points, separated by new-lines)</label>
+            <label htmlFor={id} onClick={listClick} className="ms-2 col-form-label" role="button">{label} (1 bullet per line)</label>
             <textarea id={id} name={id} ref={inputRef} onBlur={leaveInput} className="ms-2 d-block invisible position-absolute form-control bg-light" value={value} onChange={setValue} />
             <ul className="w-100 form-control-sm bg-light ps-4 ms-2 bullet-list" ref={listRef} onClick={listClick} role="button">
                 {

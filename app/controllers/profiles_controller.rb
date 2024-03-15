@@ -103,6 +103,36 @@ class ProfilesController < ApplicationController
     render json: {ok: true, message: "Bio Started", id: req.id}
   end
 
+  def suggest_bullets
+    description = params["description"]
+    item = params["item"]
+
+    OpenAI.configure do |config|
+      config.access_token = ENV["OPENAI"]
+    end
+    client = OpenAI::Client.new
+
+    
+    response = client.chat(
+        parameters: {
+            model: "gpt-3.5-turbo-16k",
+            messages: [
+                {role: "system", content:"Write 2-3 new-line separated sentences that could be used as job description bullet points for a resume. If possible, the points should include a metric that supports proficiency at that type of job. Format response as '...\\n...\\n..."},
+                {role: "user", content: description ? "Existing description: #{description.split("\n").join(",")} Job: #{item}" : "Job: #{item}"}
+            ],
+            temperature: 1.4,
+            max_tokens: 10000
+        }
+    )
+    
+    begin
+      message = response["choices"][0]["message"]["content"]
+      render plain: message
+    rescue
+      render plain: "NO"
+    end
+  end
+
   private
 
   def profile_params

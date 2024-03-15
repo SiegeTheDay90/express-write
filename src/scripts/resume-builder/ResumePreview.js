@@ -16,8 +16,7 @@ function EducationForm({ resume }){
             </section>
 
             <section id="resume-preview-work" className="mt-4 resume-preview-section">
-                <h5>Professional Experience</h5>
-
+                {work.length ? <h5>Experience</h5> : null}
                     {
                         work.map( (item, idx) => (
                             <div key={idx} className="resume-preview-work-item mt-1">
@@ -26,7 +25,7 @@ function EducationForm({ resume }){
                                         {item.companyName || 'company'} - {item.jobTitle || 'title'}
                                     </span>
                                     <span>
-                                        {shortDate(new Date(item.from).toLocaleDateString('en-US')) || 'Date'} to {item.current ? 'present' : shortDate(new Date(item.to).toLocaleDateString('en-US'))}
+                                        {item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.current ? 'Present' : item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}
                                     </span>
                                 </h6>
                                 <p>{item.city || 'City, State'}</p>
@@ -40,15 +39,14 @@ function EducationForm({ resume }){
             </section>
 
             <section id="resume-preview-education" className="mt-3 resume-preview-section">
-                <h5>Education</h5>
-
+                {education.length ? <h5>Education</h5> : null}
                     {
                         education.map( (item, idx) => {
                             return(
                             <div key={idx} className="resume-preview-work-item mt-1">
                                 <h6 className="d-flex flex-row justify-content-between">
                                     <span>{item.degreeType ? item.degreeType+' - ' : ''}{item.fieldOfStudy || 'field'}</span>
-                                    <span>{shortDate(new Date(item.to).toLocaleDateString('en-US'))}</span>
+                                    <span>{item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.to ? (item.current && !item.from ? 'Graduating ' : '') + shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}</span>
                                 </h6>
                                 <p>{item.institutionName || 'School'}</p>
                                 {item.description?.split("\n").map((bullet, idx) => (
@@ -60,7 +58,7 @@ function EducationForm({ resume }){
             </section>
 
             <section id="resume-preview-skills" className="mt-3 resume-preview-section">
-                <h5>Skills</h5>
+                {skills.length ? <h5>Skills</h5> : null}
 
                     {
                         skills.join(" | ")

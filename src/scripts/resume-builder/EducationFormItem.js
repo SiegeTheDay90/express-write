@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
 import React from 'react';
+import BulletPointInput from './util/BulletPointInput';
 
 function EducationFormItem( { item: formData, resume: [resume, setResume], idx} ){
 
@@ -64,9 +64,9 @@ function EducationFormItem( { item: formData, resume: [resume, setResume], idx} 
         </div>
         <div className="col-sm-3 d-flex justify-content-end mb-3">
           <div className="btn-group" role="group" >
-            <button onClick={move} data-dir="up" className={`btn btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
-            <button onClick={move} data-dir="down" className={`btn btn-secondary ${idx == resume.education.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
-            <button onClick={remove} className={`btn btn-danger ${resume.education.length == 1 ? 'disabled' : ''}`}><i className="fa-solid fa-trash-can"></i></button>
+            <button onClick={move} data-dir="up" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
+            <button onClick={move} data-dir="down" className={`btn btn-sm btn-secondary ${idx == resume.education.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
+            <button onClick={remove} className={`btn btn-sm btn-danger ${resume.education.length == 1 ? 'disabled' : ''}`}><i className="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       </div>
@@ -94,9 +94,8 @@ function EducationFormItem( { item: formData, resume: [resume, setResume], idx} 
       </div>
 
       <div className="row mb-3">
-        <div className="col-sm-10 form-floating">
-            <textarea className="form-control ps-2 bg-light" placeholder='_' id="description" name="description" value={formData.description} onChange={handleChange} />
-            <label htmlFor="description" className="ms-2 col-form-label">Description</label>
+        <div className="col-sm-10">
+          <BulletPointInput id={"description"} label={"Description"} value={formData.description} setValue={handleChange}/>
         </div>
       </div>
     </form>

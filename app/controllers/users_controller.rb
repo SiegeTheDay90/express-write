@@ -45,11 +45,12 @@ class UsersController < ApplicationController
 
 
   def create
+    debugger
     @user = User.new(user_params)
     @user.email = @user.email.downcase
     @user.password = params["user"]["password"]
-    title = params["user"]["industry"] || "My First Profile"
-    industry = params["user"]["industry"] || ""
+    title = params["industry"] || "My First Profile"
+    industry = params["industry"] || ""
     
     if @user.save
       login!(@user)
@@ -141,13 +142,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      up = params.require(:user).permit(:email, :credential, :first_name, :last_name, :skills, :education, :experience, :completion, :industry, :session_token, :aboutme, :projects)
-      up[:skills] = up[:skills].split("\n") if up[:skills]
-      up[:experience] = up[:experience].split("\n") if up[:experience]
-      up[:education] = up[:education].split("\n") if up[:education]
-      up[:projects] = up[:projects].split("\n") if up[:projects]
-
-      return up
+      params.require(:user).permit(:email, :credential, :first_name, :last_name, :session_token, :password)
     end
 
     def require_ownership

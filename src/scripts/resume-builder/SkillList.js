@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import React from 'react';
-import SkillListItem from './SkillListItem';
 
 function SkillList({resume: [resume, setResume]}){
 
@@ -66,7 +65,7 @@ function SkillList({resume: [resume, setResume]}){
         </ul>
         <div className='col-sm-6 d-flex'>
           <input type="text" className="form-control-sm bg-light" name="new-skill" value={newSkill} onChange={newSkillChange} />
-          <button className="btn btn-secondary ms-2" onClick={AddItem}>Save</button>
+          <button className="btn btn-sm btn-secondary ms-2" onClick={AddItem}>Save</button>
         </div>
       </>
     );

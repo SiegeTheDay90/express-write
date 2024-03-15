@@ -1,8 +1,32 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import React from 'react';
 import BulletPointInput from './util/BulletPointInput';
 
 function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], idx} ){
+
+    const [canUndo, setCanUndo] = useState(false);
+    const generateBullets = (e) => {
+      e.preventDefault();
+      const params = new URLSearchParams({item: JSON.stringify(formData), description: formData.description});
+      fetch(`/bullets?`+params, {method: 'GET'}).then((res) => res.text())
+      .then((data) => {
+        localStorage.setItem(`undo`, formData.description);
+        setCanUndo(true);
+        handleChange({target: {name: "description", value: data}});
+      });
+    }
+
+    const undo = (e) => {
+      e.preventDefault();
+      setCanUndo(false);
+      handleChange({target: {name: 'description', value: localStorage.getItem('undo')}});
+      localStorage.removeItem('undo');
+    }
+    const accept = (e) => {
+      e.preventDefault();
+      setCanUndo(false);
+      localStorage.removeItem('undo');
+    }
 
     const handleChange = (e) => {
       let { name, value, checked } = e.target;
@@ -65,9 +89,9 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
         </div>
         <div className="col-sm-4 d-flex justify-content-end mb-3">
           <div className="btn-group" role="group" >
-            <button onClick={move} data-dir="up" className={`btn btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
-            <button onClick={move} data-dir="down" className={`btn btn-secondary ${idx == resume.work.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
-            <button onClick={remove} className={`btn btn-danger ${resume.work.length == 1 ? 'disabled' : ''}`}><i className="fa-solid fa-trash-can"></i></button>
+            <button onClick={move} data-dir="up" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
+            <button onClick={move} data-dir="down" className={`btn btn-sm btn-secondary ${idx == resume.work.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
+            <button onClick={remove} className={`btn btn-sm btn-danger ${resume.work.length == 1 ? 'disabled' : ''}`}><i className="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       </div>
@@ -101,7 +125,10 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
       </div>
       <div className="row mb-3">
         <div className="col-sm-10">
-          <button className="btn btn-primary">Generate with AI</button>
+          {canUndo ? 
+            <span className="btn-group" role="group"><button className="btn btn-danger" onClick={undo}>Undo</button><button className="btn btn-primary" onClick={accept}>Accept</button></span> :
+            <button className="btn btn-sm btn-primary" onClick={generateBullets}>Generate with AI</button>
+          }
         </div>
       </div>
     </form>
