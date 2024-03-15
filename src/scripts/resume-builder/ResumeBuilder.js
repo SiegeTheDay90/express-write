@@ -21,42 +21,16 @@ function ResumeBuilder() {
     
     const [resume, setResume] = useState({
         personal: {
-            firstName: 'Clarence',
-            lastName: 'Smith',
-            profession: 'Software Engineer',
-            phoneNumber: '6463747244',
-            email: 'ClarenceSmith90@gmail.com',
+            firstName: '',
+            lastName: '',
+            profession: '',
+            phoneNumber: '',
+            email: '',
             website: ''
         },
-        work: [{
-            companyName: 'App Academy',
-            jobTitle: 'Instructor',
-            city: 'New York, NY',
-            from: '01-01-2023',
-            to: '06-21-2024',
-            description: 'This is a\nTest Descriptionn\nMeep',
-            current: false
-        },
-        {
-            companyName: 'NYC DOE',
-            jobTitle: 'Math Teacher',
-            city: 'Bronx, NY',
-            from: '10-19-2016',
-            to: '08-15-2022',
-            description: 'This is a\nTest Descriptionn\nMeep',
-            current: false
-        }],
-        education: [{
-            institutionName: 'Hunter College',
-            fieldOfStudy: 'Mathematics',
-            degreeType: 'BA',
-            city: '',
-            from: '',
-            to: '01-01-2013',
-            description: 'This is a\nTest Descriptionn\nMeep',
-            current: false
-        }],
-        skills: ['Object Oriented Programming', 'Web Development', 'Teaching', 'Documentation', 'Presentation']
+        work: [],
+        education: [],
+        skills: [],
     })
 
     function focusClick(e){
@@ -68,12 +42,12 @@ function ResumeBuilder() {
         <>
             <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Personal Information</h4>
+                    <h4 onClick={focusClick} >Personal Info</h4>
                     <PersonalInfoForm resume={[resume, setResume]}/>
 
                 </div>
                 <div id="resume-builder-two"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Work Experience</h4> 
+                    <h4 onClick={focusClick} >Experience</h4> 
                     <WorkExperienceForm resume={[resume, setResume]}/>
 
                 </div>

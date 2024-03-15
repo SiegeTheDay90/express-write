@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root "application#splash"
 
   get '/test', to: 'application#test'
+  get '/bullets', to: 'profiles#suggest_bullets', as: 'suggest_bullets'
 
   resource :session, only: [:new, :create, :destroy]
   resources :listings

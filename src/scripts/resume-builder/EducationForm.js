@@ -30,7 +30,7 @@ function EducationForm({resume: [resume, setResume]}){
       <ul className="ps-1">
         {formItems.map((item, idx) => <EducationFormItem key={idx} resume={[resume, setResume]} idx={idx} item={item} />)}
       </ul>
-      <button className="button button-secondary" onClick={AddItem}>+ Add New Education</button>
+      <button className="btn btn-secondary btn-sm" onClick={AddItem}>+ Add New Education</button>
     </>
   );
 }

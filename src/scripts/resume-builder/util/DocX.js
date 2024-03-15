@@ -54,7 +54,7 @@ export default function generateDocx(resume) {
 
     
     function educationItem(item){
-        const to = item.to ? shortDate(new Date(item.from).toLocaleDateString('en-US')) : 'Present';
+        const to = item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : 'Present';
         const bullets = item.description?.split("\n").map((bullet)=>(
             new Docx.Paragraph({
                 bullet: {level: 0},
@@ -97,9 +97,9 @@ export default function generateDocx(resume) {
                     {type: "right", position: Docx.TabStopPosition.MAX}
                 ],
                 children: [
-                    new Docx.TextRun({color: "00DD00", text: `${item.companyName || 'company'} - ${item.jobTitle || 'title'} `}),
+                    new Docx.TextRun({color: "000000", text: `${item.companyName || 'company'} - ${item.jobTitle || 'title'} `}),
                     new Docx.TextRun({
-                        color: "00DD00",
+                        color: "000000",
                         children: [new Docx.Tab(), `${from}${to}`]
                     })
                 
@@ -133,6 +133,17 @@ export default function generateDocx(resume) {
     });
     const doc = new Docx.Document({
         sections: [content],
+        styles: {
+            default: {
+                document: {
+                    run:{
+                        size: "22pt",
+                        font: "Calibri",
+                        color: "000000"
+                    }
+                }
+            }
+        }
     });
     
     return doc;
