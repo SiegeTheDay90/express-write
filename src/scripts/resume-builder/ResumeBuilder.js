@@ -28,8 +28,26 @@ function ResumeBuilder() {
             email: '',
             website: ''
         },
-        work: [],
-        education: [],
+        work: [{
+            companyName: '',
+            jobTitle: '',
+            city: '',
+            location: '',
+            from: '',
+            to: '',
+            description: '',
+            current: false
+          }],
+        education: [{
+            institutionName: '',
+            fieldOfStudy: '',
+            degreeType: '',
+            city: '',
+            location: '',
+            to: '',
+            description: '',
+            current: false
+          }],
         skills: [],
     })
 
@@ -40,6 +58,17 @@ function ResumeBuilder() {
 
     return (
         <>
+            <div className="btn-group hover-menu" role="group">
+                {/* <div className="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </div> */}
+                <div className="btn btn-primary" onClick={saveResume}>
+                    Save Docx <i className="fa-solid fa-download"></i>
+                </div>
+                {/* <div className="btn btn-light">
+                    <i class="fa-solid fa-gear"></i>
+                </div> */}
+            </div>
             <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >
                     <h4 onClick={focusClick} >Personal Info</h4>
@@ -64,7 +93,6 @@ function ResumeBuilder() {
             <div className="resume-builder-section w-50" id="resume-builder-right">
                 <ResumePreview resume={resume} />
             </div>
-            <div className="w-100"><button onClick={saveResume}>Download as Docx</button></div>
         </>
     )
     

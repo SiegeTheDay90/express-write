@@ -91,7 +91,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
           <div className="btn-group" role="group" >
             <button onClick={move} data-dir="up" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
             <button onClick={move} data-dir="down" className={`btn btn-sm btn-secondary ${idx == resume.work.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
-            <button onClick={remove} className={`btn btn-sm btn-danger ${resume.work.length == 1 ? 'disabled' : ''}`}><i className="fa-solid fa-trash-can"></i></button>
+            <button onClick={remove} className={`btn btn-sm btn-danger`}><i className="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       </div>
@@ -127,7 +127,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
         <div className="col-sm-10">
           {canUndo ? 
             <span className="btn-group" role="group"><button className="btn btn-danger" onClick={undo}>Undo</button><button className="btn btn-primary" onClick={accept}>Accept</button></span> :
-            <button className="btn btn-sm btn-primary" onClick={generateBullets}>Generate with AI</button>
+            <button className="btn btn-sm btn-primary" onClick={generateBullets}>Generate Bullets with AI</button>
           }
         </div>
       </div>

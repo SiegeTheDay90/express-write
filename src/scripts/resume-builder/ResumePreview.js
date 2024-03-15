@@ -50,7 +50,7 @@ function EducationForm({ resume }){
                                 </h6>
                                 <p>{item.institutionName || 'School'}</p>
                                 {item.description?.split("\n").map((bullet, idx) => (
-                                    bullet.trim() ? <li className={"bullet-point"} key={idx}>{bullet}</li>: null
+                                    bullet.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet}</div></li>: null
                                 ))}                           
                             </div>
                         )})
