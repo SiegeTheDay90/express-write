@@ -84,7 +84,7 @@ export default function generateDocx(resume) {
     }
     function workItem(item){
         const from = item.from ? `${shortDate(new Date(item.from).toLocaleDateString('en-US'))} - ` : '';
-        const to = item.to ? shortDate(new Date(item.from).toLocaleDateString('en-US')) : 'Present';
+        const to = item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : 'Present';
         const bullets = item.description?.split("\n").map((bullet)=>(
             new Docx.Paragraph({
                 bullet: {level: 0},
