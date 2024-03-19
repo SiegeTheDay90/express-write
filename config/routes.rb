@@ -4,11 +4,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "application#splash"
 
-  get '/test', to: 'application#test'
-  get '/bullets', to: 'profiles#suggest_bullets', as: 'suggest_bullets'
+  # get '/test', to: 'application#test'
+  get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [:show, :new, :create, :destroy]
   resources :listings
+  resources :resumes
   resources :letters, only: [:show, :edit, :update, :destroy]
   resources :profiles, only: [:new, :create, :edit, :update, :destroy]
   resources :users, only: [:new, :create, :show, :edit, :update] do

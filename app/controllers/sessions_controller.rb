@@ -9,6 +9,12 @@ class SessionsController < ApplicationController
       redirect_to user_path(@user)
     end
 
+    def show
+      headers["X-CSRF-Token"] = masked_authenticity_token(session)
+      @user = current_user.to_json
+      render json: {user: @user, token: headers["X-CSRF-Token"]}
+    end
+
     def linkedin
         code = params["code"]
         unless code

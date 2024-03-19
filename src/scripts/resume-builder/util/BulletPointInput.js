@@ -28,7 +28,7 @@ export default function BulletPointInput({id, label, value, setValue}){
             <ul className="w-100 form-control-sm bg-light ps-2 ms-2 bullet-list" ref={listRef} onClick={listClick} role="button">
                 {
                     value.split("\n").map((item, idx) => (
-                        item.trim() ? <li key={idx}>{item}</li> : null
+                        item.trim() ? <li className="bp-input-point" key={idx}>{item}</li> : null
                     ))
                 }
             </ul>
