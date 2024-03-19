@@ -25,10 +25,10 @@ export default function BulletPointInput({id, label, value, setValue}){
         <>
             <label htmlFor={id} onClick={listClick} className="ms-2 col-form-label" role="button">{label} (1 bullet per line)</label>
             <textarea id={id} name={id} ref={inputRef} onBlur={leaveInput} className="ms-2 d-block invisible position-absolute form-control bg-light" value={value} onChange={setValue} />
-            <ul className="w-100 form-control-sm bg-light ps-4 ms-2 bullet-list" ref={listRef} onClick={listClick} role="button">
+            <ul className="w-100 form-control-sm bg-light ps-2 ms-2 bullet-list" ref={listRef} onClick={listClick} role="button">
                 {
                     value.split("\n").map((item, idx) => (
-                        item.trim() ? <li className={"bullet-point"} key={idx}>{item}</li> : null
+                        item.trim() ? <li className="bp-input-point" key={idx}>{item}</li> : null
                     ))
                 }
             </ul>

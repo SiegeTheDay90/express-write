@@ -2,19 +2,31 @@
   background-color: #ccf;
 }
 
+.hover-menu {
+  position: fixed;
+  top: 8vh;
+  right: 1.50em;
+  z-index: 100;
+  color: white;
+  cursor: pointer;
+
+  
+  #resume-builder-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    padding-top: 2%;
+    right: 0;
+  }
+}
+
+.hover-menu:hover #resume-builder-menu {
+  display: block;
+}
+
 #resume-builder-container{
     height: 100%;
     max-height: 100vh;
-}
-
-.bullet-point{
-  word-wrap: break-word;
-  width: 100%;
-  div{
-    word-wrap: break-word;
-    display: inline-block;
-    width: 90%;
-  }
 }
 
 .hideable:has(input[type=date]:disabled){

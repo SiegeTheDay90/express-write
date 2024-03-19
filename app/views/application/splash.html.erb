@@ -160,9 +160,36 @@
     </div>
 </div>
 
+<div id="resume-splash" style="background-color: #eef" class="px-4 py-5 mb-5 text-center">
+    <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Resume Builder</h2>
+    <small>Try the Resume Builder! Generates bullet-points for job descriptions!</small><br/>
+
+    <div class="d-flex justify-content-center mt-2">
+        <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
+            <h3>Features:</h3>
+            <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
+                <li class="account-instruction express-instruction"> Professionally formatted resume</li>
+                <li class="account-instruction express-instruction"> Relevant bullet-point starters for work experience</li>
+                <li class="account-instruction express-instruction"> Download resumes as Word Documents</li>
+            </ul>
+            <%# <h3>Members can:</h3>
+            <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
+                <li class="account-instruction express-instruction"> Save resumes to the cloud</li>
+                <li class="account-instruction express-instruction"> Pre-fill forms with PDF Resume</li>
+            </ul> %>
+            <div class="gap-2 d-sm-flex justify-content-sm-center">
+                <%= link_to "Check it Out", "/resumes/new", class: "btn btn-primary btn-lg px-4" %>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
+            <img src="https://cl-helper-development.s3.amazonaws.com/Screenshot+2024-03-19+172108.png" style="border-radius: 8px" width="100%">
+        </div>
+    </div>
+</div>
+
 <div style="background-color: #eef" class="px-4 py-5 mb-5 text-center" id="t-height">
     <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Express Write</h2>
-    <small>Get a letter now, no account needed.</small><br/>
+    <small>Get a cover letter now, no account needed.</small><br/>
     <p class="mb-4"><small >But you're <a href="#why">missing out!</a></small></p>
     <div class="d-flex justify-content-center">
         <div class="col-lg-2 d-flex flex-column align-items-start ps-5">
@@ -233,7 +260,7 @@
         </div>
         <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
             <div class="gap-2 d-sm-flex justify-content-sm-center">
-                <%= link_to "Check it Out", "/homepage", class: "btn btn-primary btn-lg px-4" %>
+                <%= link_to "Check it Out", "/users/new", class: "btn btn-primary btn-lg px-4" %>
             </div>
         </div>
     </div>

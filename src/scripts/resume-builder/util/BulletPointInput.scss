@@ -1,0 +1,9 @@
+li.bp-input-point {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    list-style-type: disc;
+    &::before{
+        content: "•";
+        margin-right: 8px;
+    }
+}   

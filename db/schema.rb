@@ -101,9 +101,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_13_172009) do
   end
 
   create_table "resumes", force: :cascade do |t|
-    t.string "title"
+    t.string "title", default: "My Resume"
     t.text "header", default: ""
-    t.text "experience", default: "[]"
+    t.text "personal", default: "{}"
+    t.text "work", default: "[]"
     t.text "education", default: "[]"
     t.text "links", default: "[]"
     t.text "skills", default: "[]"

@@ -12,6 +12,19 @@
     }
 }
 
+.bullet-point {
+    display: flex;
+    &::before{
+        content: "•";
+        margin-right: 8px;
+    }
+    
+    div{
+      word-wrap: break-word;
+      width: 90%;
+    }
+}
+
 #resume-preview-personal{
     display: flex;
     flex-direction: column;
