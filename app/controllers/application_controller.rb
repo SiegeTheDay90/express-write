@@ -70,6 +70,30 @@ class ApplicationController < ActionController::Base
     end
 
     def test
+        OpenAI.configure do |config|
+            config.access_token = ENV["GPT4"]
+        end
+          client = OpenAI::Client.new
+      
+          
+        response = client.chat(
+            parameters: {
+                model: "gpt-4",
+                messages: [
+                    {role: "system", content: "You are a helpful letter-writing assistant."},
+                    {role: "user", content: "Write a cover letter for a Support Engineer role at GitHub."}
+                ],
+                temperature: 1.1,
+                max_tokens: 8000
+            }
+        )
+          
+        begin
+            message = response
+            render json: message
+        rescue => e
+            render plain: "Try Again.\nError Occurred: #{e}: #{e.message}"
+        end
     end
 
     def err_test

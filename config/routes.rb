@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "application#splash"
 
-  # get '/test', to: 'application#test'
+  get '/test', to: 'application#test'
   get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
 
   resource :session, only: [:show, :new, :create, :destroy]
