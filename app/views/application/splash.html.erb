@@ -151,13 +151,13 @@
     <span id="splash-logo">
         <span><img id="logo-img" class="splash" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise</span>
     </span>
-    <div id="auth">
+    <!-- <div id="auth">
         <%= link_to "Sign in with Linked In", "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV["OAUTH_CLIENT_ID"]}&redirect_uri=#{Rack::Utils.escape(ENV["OAUTH_CALLBACK_URI"])}&scope=profile%20email%20openid", class: "btn btn-outline-light w-100 mb-2" %>
         <br>
         <%= link_to "Sign in with Email", new_session_url, class: "btn btn-outline-light w-100 mb-2" %>
         <br>
         <%= link_to "Sign Up", new_user_url, class: "btn btn-outline-light w-100" %>
-    </div>
+    </div> -->
 </div>
 
 
@@ -249,19 +249,20 @@
 </div>
 
 <div id="why" style="background-color: #eef" class="px-4 py-5 text-center">
-    <h2 class="display-5 fw-bold mb-4 text-body-emphasis">Why Sign Up?</h2>
+    <h2 class="display-5 fw-bold mb-4 text-body-emphasis">Why Write a Cover Letter?</h2>
     <div class="d-flex justify-content-center">
         <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
-            <h3>An account allows you to:</h3>
+            <h3>It's essential for several reasons:</h3>
             <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
-                <li class="account-instruction express-instruction"> Save multiple resumes</li>
-                <li class="account-instruction express-instruction"> Save and track multiple listings</li>
-                <li class="account-instruction express-instruction"> Stay up to date with WriteWise's new features!</li>
+                <li class="account-instruction express-instruction">Personalized Introduction</li>
+                <li class="account-instruction express-instruction">Highlight Relevant Experiences</li>
+                <li class="account-instruction express-instruction">Demonstrate Communication Skills</li>
+                <li class="account-instruction express-instruction">Showcase Interest and Research</li>
             </ul>
         </div>
         <div class="col-lg-4 col-md-4 d-flex flex-column align-items-start ps-5">
             <div class="gap-2 d-sm-flex justify-content-sm-center">
-                <%= link_to "Check it Out", "/users/new", class: "btn btn-primary btn-lg px-4" %>
+                <%= link_to "Check it Out", "#t-height", class: "btn btn-primary btn-lg px-4" %>
             </div>
         </div>
     </div>
