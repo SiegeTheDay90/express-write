@@ -83,6 +83,7 @@ class ApplicationController < ActionController::Base
                     {role: "system", content: "You are a helpful letter-writing assistant."},
                     {role: "user", content: "Write a cover letter for a Support Engineer role at GitHub."}
                 ],
+                # response_format: {type: "json_object"},
                 temperature: 1.1,
                 max_tokens: 8000
             }

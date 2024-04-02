@@ -3,9 +3,10 @@
 # Table name: resumes
 #
 #  id         :bigint           not null, primary key
-#  title      :string
+#  title      :string           default("My Resume")
 #  header     :text             default("")
-#  experience :text             default("[]")
+#  personal   :text             default("{}")
+#  work       :text             default("[]")
 #  education  :text             default("[]")
 #  links      :text             default("[]")
 #  skills     :text             default("[]")

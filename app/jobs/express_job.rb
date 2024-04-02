@@ -40,7 +40,7 @@ class ExpressJob < ApplicationJob
         client = OpenAI::Client.new 
         response = client.chat(
             parameters: {
-            model: "gpt-3.5-turbo-16k",
+            model: "gpt-3.5-turbo",
             messages: [
                 {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate. Include details about education and work experience from the users resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing."},
                 {role: "user", content: "Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ""))}\n
@@ -81,11 +81,12 @@ class ExpressJob < ApplicationJob
   
         response = client.chat(
             parameters: {
-                model: "gpt-3.5-turbo-16k",
+                model: "gpt-3.5-turbo",
                 messages: [
                     {role: "system", content:"Return JSON with values that summarize this document. Use exactly these keys: {\"aboutme\": \"string\", \"skills\": str[], \"education\": str[], \"projects\": str[], \"experience\": str[]}. Your response must be only valid JSON with a flat shape. \"aboutme\" should be at least 2 sentences long. If \"skills\" would be empty, use generic professional skills such as Time Management, Communication, Teamwork, Problem Solving"},
                     {role: "user", content: text}
                 ],
+                response_format: {type: "json_object"},
                 temperature: 1.4,
                 max_tokens: 10000
             }
@@ -107,11 +108,12 @@ class ExpressJob < ApplicationJob
         
         response = client.chat(
             parameters: {
-                model: "gpt-3.5-turbo-16k",
+                model: "gpt-3.5-turbo",
                 messages: [
                     {role: "system", content:"Summarize. Respond with only valid JSON with exact keys: {\"company\": \"string\", \"job_title\": \"string\", \"job_description\": \"string\", \"requirements\": str[], \"benefits\": str[]}. Ensure there is no trailing comma after the last value."},
                     {role: "user", content: text}
                 ],
+                response_format: {type: "json_object"},
                 temperature: 0.9,
                 max_tokens: 10000
             }

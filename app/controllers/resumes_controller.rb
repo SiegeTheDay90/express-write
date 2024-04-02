@@ -30,13 +30,12 @@ class ResumesController < ApplicationController
         
         response = client.chat(
             parameters: {
-                model: "gpt-3.5-turbo-16k",
+                model: "gpt-3.5-turbo",
                 messages: [
                     {role: "system", content: prompt},
                     {role: "user", content: description ? "Update these Bullets: #{description.split("\n").join(",")} for the Job: #{item}" : "Suggest bullet points for this Job: #{item}"}
                 ],
                 temperature: 1.1,
-                max_tokens: 10000
             }
         )
         

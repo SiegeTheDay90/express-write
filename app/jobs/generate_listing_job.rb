@@ -34,11 +34,12 @@ class GenerateListingJob < ApplicationJob
       
       response = client.chat(
           parameters: {
-              model: "gpt-3.5-turbo-16k",
+              model: "gpt-3.5-turbo",
               messages: [
                   {role: "system", content:"Summarize. Respond with only valid JSON with exact keys: {\"company\": \"string\", \"job_title\": \"string\", \"job_description\": \"string\", \"requirements\": str[], \"benefits\": str[]}. Ensure there is no trailing comma after the last value."},
                   {role: "user", content: text}
               ],
+              response_format: {type: "json_object"},
               temperature: 0.9,
               max_tokens: 10000
           }

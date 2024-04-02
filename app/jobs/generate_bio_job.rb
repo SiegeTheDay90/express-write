@@ -20,16 +20,18 @@ class GenerateBioJob < ApplicationJob
       end
       client = OpenAI::Client.new
 
+      debugger
       
       response = client.chat(
           parameters: {
-              model: "gpt-3.5-turbo-16k",
+              model: "gpt-3.5-turbo",
               messages: [
                   {role: "system", content:"Return JSON with values that summarize this document. Use exactly these keys: {\"aboutme\": \"string\", \"skills\": str[], \"education\": str[], \"projects\": str[], \"experience\": str[]}. Your response must be only valid JSON with a flat shape. \"aboutme\" should be at least 2 sentences long. If \"skills\" would be empty, use generic professional skills such as Time Management, Communication, Teamwork, Problem Solving"},
                   {role: "user", content: text}
               ],
+              response_format: {type: "json_object"},
               temperature: 1.4,
-              max_tokens: 10000
+              max_tokens: 4096
           }
       )
       begin

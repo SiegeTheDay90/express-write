@@ -9,7 +9,7 @@ class OpenAiJob < ApplicationJob
     client = OpenAI::Client.new
       response = client.chat(
         parameters: {
-          model: "gpt-3.5-turbo-16k",
+          model: "gpt-3.5-turbo",
           messages: [
               {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate."},
               {role: "user", content: "Job: #{JSON.parse(listing.to_json(except: :id).gsub("\r", ""))}\nCandidate: #{JSON.parse(listing.user.to_json(except: :id).gsub("\r", ""))}"}
