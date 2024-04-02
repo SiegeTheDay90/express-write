@@ -3,7 +3,9 @@ class ExpressJob < ApplicationJob
     BLACKLIST = Set.new(["header", "footer", "a", "code", "template", "text", "form", "link", "script", "img", "iframe", "icon", "comment", "button", "input", "head", "meta", "style"])
 
   
-    def perform(request, bio_payload, listing_payload, listing_type="url")
+    def perform(request, bio_payload, listing_payload, listing_type="url", user_prompt="Write a cover letter for the job listing that uses the resume as support.")
+        debugger
+        user_prompt = "Write a cover letter for the job listing that uses the resume as support." if user_prompt.empty?
         # generate user bio
         @bio = text_to_user_bio(bio_payload)
         
@@ -42,13 +44,13 @@ class ExpressJob < ApplicationJob
             parameters: {
             model: "gpt-3.5-turbo",
             messages: [
-                {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate. Include details about education and work experience from the users resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing."},
-                {role: "user", content: "Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ""))}\n
-                Resume: #{resume}"
+                {role: "system", content:"Write cover 2-3 paragraph cover letter as job candidate. Do not include address, phone number, or email. Include details about education and work experience from the users resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ""))}\n
+                Resume: #{resume}}"},
+                {role: "user", content: "#{user_prompt}"
                 }
             ],
-            temperature: 1.3,
-            max_tokens: 10000
+            temperature: 1.3
+            # max_tokens: 10000
             }
         )
            
@@ -87,10 +89,11 @@ class ExpressJob < ApplicationJob
                     {role: "user", content: text}
                 ],
                 response_format: {type: "json_object"},
-                temperature: 1.4,
-                max_tokens: 10000
+                temperature: 1.4
+                # max_tokens: 10000
             }
         )
+        debugger
         begin
           message = response["choices"][0]["message"]["content"]
           return message
@@ -114,8 +117,8 @@ class ExpressJob < ApplicationJob
                     {role: "user", content: text}
                 ],
                 response_format: {type: "json_object"},
-                temperature: 0.9,
-                max_tokens: 10000
+                temperature: 0.9
+                # max_tokens: 10000
             }
         )
   

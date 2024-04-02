@@ -62,6 +62,12 @@
         updateForm();
     }
 
+    function promptChange(e){
+        const length = e.target.value.length;
+        const counter = e.target.parentElement.querySelector("textarea + .char-counter");
+        counter.innerText = `${length}/250`;
+    }
+
     async function isValidURL(url) {
         // Regular expression pattern to match URLs
         const urlPattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
@@ -188,7 +194,7 @@
                     </select></label>
                     
 
-                    <div id="resume-input" class="w-100">
+                    <div id="resume-input" class="w-100 mb-2">
                         <div id="upload-type" class="d-flex py-1 mb-1" onChange="uploadChange(event)">
                             From:&nbsp;
                             <label>File <input type="radio" name="form-type" value="File" checked></label>
@@ -196,15 +202,56 @@
                         </div>
                         <input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>
                     </div>
-                    <hr class=" w-100">
                     <h6 class="my-1">Share a Job Listing</h6>
-                    <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-3">
+                    <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-2">
                         <div>From:&nbsp;
                             <label>URL <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)" class="listing-type"></label>
                             <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text" onChange="listingInputChange(event)" class="listing-type"></label>
                         </div>
                         <input name="input" placeholder="Paste Here" id="link-to-listing" class="form-control" onInput="listingInputChange(event)">
                     </div>
+                    <details class="w-100 text-start">
+                        <summary class="mb-2">
+                            <h6 class="my-1 d-inline">Additional Prompts</h6>
+                        </summary>
+
+                        
+                        <div id="prompt-input" class=" d-flex flex-column align-items-start w-100 mb-3 position-relative">
+                            <% prompt_verb = [
+                                                    "coaching", "mentoring", "cooking", "gymnastics", "the Olympics",
+                                                    "my last position", "teaching", "researching", "marketing", "programming",
+                                                    "writing", "designing", "consulting", "engineering", "analyzing",
+                                                    "managing", "developing", "training", "planning", "solving",
+                                                    "leading", "organizing", "editing", "singing", "performing"
+                                                ].sample %>
+                            <% prompt_job = [
+                                                "basketcall coach", "animator", "marketing associate", "partner",
+                                                "brand ambassador", "ghost writer", "software developer", "graphic designer",
+                                                "financial analyst", "project manager", "customer service representative",
+                                                "data scientist", "human resources manager", "social media coordinator",
+                                                "sales representative", "event planner", "content creator",
+                                                "accountant", "public relations specialist", "web developer",
+                                                "administrative assistant", "business analyst", "teacher assistant",
+                                                "medical assistant", "photographer"
+                                            ].sample %>
+                            <% prompt_stem = [
+                                                "Emphasize that", "Explain why", "Include how",
+                                            ].sample %>
+                            <% prompt_value = [
+                                    "animal rights", "environmental awareness", "corporate efficiency", "maximizing profit",
+                                    "social responsibility", "sustainability", "innovation", "diversity and inclusion",
+                                    "customer satisfaction", "quality assurance", "ethical business practices", "community engagement",
+                                    "team collaboration", "continuous improvement", "work-life balance", "transparency",
+                                    "integrity", "equality", "health and wellness", "education",
+                                    "caffeine addiction management", "procrastination enhancement", "couch potato empowerment"
+                                ].sample %>
+
+                            <textarea name="prompt"  maxlength="250"
+                            id="express-prompt" class="position-relative form-control" rows="4" onInput="promptChange(event)"
+                            placeholder="<%= "#{prompt_stem} my experience in #{prompt_verb} makes me an effective #{prompt_job}.\nThis company values #{prompt_value} and so do I." %>" 
+                            ></textarea><div class="position-absolute char-counter w-100 text-end">0/250</div>
+                        </div>
+                    </details>
 
 
                     <span class="d-flex align-items-center"><input type="submit" value="Generate" id="express-submit" class="btn btn-success" disabled><span id="status" class="m-1"></span></span>
