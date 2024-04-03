@@ -62,11 +62,11 @@
         </a>
     </div>
 
-    <%= form_with scope: :letter, id: "editor", class: "mx-5 my-3 hidden" do |form|%>
+    <%= form_with scope: :letter, id: "editor", class: "me-5 my-3 hidden" do |form|%>
         <%= form.trix_editor :content %>
     <% end %>
 
-    <section class="w-75"><hr>
+    <section class="w-75">
         <div id="letter-body">
             <% @letter.body.split("\n").each do |line| %>
                 <%= line %><br>
