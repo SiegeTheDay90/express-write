@@ -1,4 +1,5 @@
 import * as Docx from "docx";
+import { saveAs } from 'file-saver';
 
 export function shortDate(dateString) {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -147,4 +148,30 @@ export default function generateDocx(resume) {
     });
     
     return doc;
+}
+
+export async function tempLetterToDocx(e) {
+    
+    const lines = document.getElementById('letter-body').innerText.split("\n");
+    const content = ({
+        properties: {},
+        children: lines.map((line) => new Docx.Paragraph({text: line}))
+    });
+    const doc = new Docx.Document({
+        sections: [content],
+        styles: {
+            default: {
+                document: {
+                    run:{
+                        size: "22pt",
+                        font: "Calibri",
+                        color: "000000"
+                    }
+                }
+            }
+        }
+    });
+    
+    const blob = await Docx.Packer.toBlob(doc);
+    saveAs(blob, 'letter.docx');
 }

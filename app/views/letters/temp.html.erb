@@ -1,14 +1,46 @@
+<script>
+    function copyBody(){
+        const text = document.getElementById("letter-body").innerText
+        navigator.clipboard.writeText(text);
+        const message = document.getElementById("copy-message");
+        message.style.display = "block";
+        message.style.opacity = 1;
+
+        setTimeout(() => {
+            const interval = setInterval(() => {
+                message.style.opacity -= 0.05;
+                if(message.style.opacity <= 0){
+                    message.style.display = "none";
+                    clearInterval(interval);
+                }
+            }, 50);
+        }, 2000);
+
+    }
+</script>
 <main class="pl-1 pt-2 mx-auto">
-    <%= link_to "Return Home", "/", class: "btn btn-primary" %>
-    <h2 class="mb-5">Your Letter</h2>
-    <section id="letter-body" class="w-75"><hr>
-        <div>
+    <div class="btn-group">
+        <button class="btn btn-primary" id="save-doc-btn">
+            <i class="fa-solid fa-feather-pointed"></i> Edit
+        </button>
+        <button class="btn btn-primary" id="save-docx-btn" onClick="">
+            <i class="fa-solid fa-download"></i> DocX
+        </button>
+        <button class="btn btn-secondary position-relative" id="save-doc-btn" onClick="copyBody()">
+            <div id="copy-message" class="bg-secondary">Copied to Clipboard</div><i class="fa-regular fa-clipboard"></i> Copy
+        </button>
+        <a href="/" class="btn btn-danger" id="save-doc-btn">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+    </div>
+    <section class="w-75"><hr>
+        <div id="letter-body">
             <% @letter.body.split("\n").each do |line| %>
                 <%= line %><br>
             <% end %>
         </div>
         <hr>
-        <h6>Consider signing up to save and edit letters.</h6>
+
         <h6>Thank you! :&#41;</h6>
     </section>
 </main>

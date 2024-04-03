@@ -264,3 +264,13 @@ display: block;
     color: black;
   }
 }
+
+#copy-message{
+  position: absolute;
+  top: 101%;
+  left: 0;
+  border-radius: 0 0 8px 8px;
+  z-index: 2;
+  display: none;
+  font-size: 75%;
+}

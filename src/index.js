@@ -1,4 +1,5 @@
 import { ajaxSubmit } from "./scripts/LoadingBar";
+import { tempLetterToDocx } from "./scripts/resume-builder/util/DocX";
 import NoticeBalloon from "./scripts/NoticeBalloon";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -21,5 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ReactDOM.createRoot( builderContainer ).render(
             <ResumeBuilder />
         );       
+    }
+
+    const saveDocXButton = document.getElementById("save-docx-btn");
+
+    if(saveDocXButton){
+        saveDocXButton.addEventListener('click', tempLetterToDocx);
     }
 })
