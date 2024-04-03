@@ -118,7 +118,6 @@ class LoadingBar {
   }
 
   failureCallback(errors){
-    debugger
     console.error("Request Failed: ", errors.join("\n"));
     const alertContainer = document.getElementById("alert-container");
     errors.forEach(error => {
