@@ -33,6 +33,12 @@
 trix-editor.trix-content {
   overflow-y: scroll;
   resize: vertical;
-  height: 20em;
-  max-height: 55vh;
+  width: 75%;
+  height: 30em;
+  max-height: 60vh;
+}
+
+
+trix-toolbar {
+  display: none;
 }

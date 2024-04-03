@@ -57,7 +57,8 @@ class ExpressJob < ApplicationJob
         begin
             @message = response["choices"][0]["message"]["content"]
             @letter = TempLetter.new(profile: @profile.to_json, listing: @listing.to_json, body: @message)
-
+            @letter.content.body = @letter.body.gsub("\n", "<br>")
+            debugger
             if @letter.save
                 #success
                 request.complete!(true, @letter.secure_id, @message)

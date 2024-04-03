@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   # Temp Letter
-  get '/temp/:id', to: 'letters#temp'
+  get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
 
   
   # Stress Test

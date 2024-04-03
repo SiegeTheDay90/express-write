@@ -18,29 +18,59 @@
 
     }
 </script>
+<script>
+
+    function toggleEditor(){
+        const editor = document.getElementById("editor");
+        const body = document.getElementById("letter-body");
+        const saveButton = document.getElementById("save-docx-btn");
+        const copyButton = document.getElementById("copy-btn");
+        const editButton = document.getElementById("edit-btn");
+        window.showEditor = !window.showEditor;
+        editor.classList.toggle('hidden');
+        body.classList.toggle('hidden');
+        saveButton.classList.add('disabled');
+        copyButton.classList.add('disabled');
+        editButton.innerHTML = "<i class=\"fa-solid fa-floppy-disk\"></i> Save"
+
+        if(window.showEditor === false){
+            body.innerHTML = editor.querySelectorAll("[type=hidden]")[1].value.replace("&nbsp;", "");
+            saveButton.classList.remove('disabled');
+            copyButton.classList.remove('disabled');
+            editButton.innerHTML = "<i class=\"fa-solid fa-feather-pointed\"></i> Edit";
+        }
+    }
+</script>
+<%= stylesheet_link_tag "actiontext" %>
+<%= javascript_importmap_tags "trix" %>
+
+
+
 <main class="pl-1 pt-2 mx-auto">
-    <div class="btn-group">
-        <button class="btn btn-primary" id="save-doc-btn">
+    <div class="btn-group mb-3">
+        <button class="btn btn-primary" id="edit-btn" onClick="toggleEditor()">
             <i class="fa-solid fa-feather-pointed"></i> Edit
         </button>
         <button class="btn btn-primary" id="save-docx-btn" onClick="">
             <i class="fa-solid fa-download"></i> DocX
         </button>
-        <button class="btn btn-secondary position-relative" id="save-doc-btn" onClick="copyBody()">
+        <button class="btn btn-secondary position-relative" id="copy-btn" onClick="copyBody()">
             <div id="copy-message" class="bg-secondary">Copied to Clipboard</div><i class="fa-regular fa-clipboard"></i> Copy
         </button>
-        <a href="/" class="btn btn-danger" id="save-doc-btn">
+        <a href="/" class="btn btn-danger" id="home-btn">
             <i class="fa-solid fa-house"></i> Home
         </a>
     </div>
-    <section class="w-75"><hr>
+
+    <%= form_with scope: :letter, id: "editor", class: "me-5 my-3 hidden" do |form|%>
+        <%= form.trix_editor :content %>
+    <% end %>
+
+    <section class="w-75">
         <div id="letter-body">
             <% @letter.body.split("\n").each do |line| %>
                 <%= line %><br>
             <% end %>
         </div>
-        <hr>
-
-        <h6>Thank you! :&#41;</h6>
     </section>
 </main>

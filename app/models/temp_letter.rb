@@ -11,7 +11,7 @@
 #  updated_at :datetime         not null
 #
 class TempLetter < ApplicationRecord
-
+    has_rich_text :content
     before_validation :ensure_secure_id
 
     def ensure_secure_id
