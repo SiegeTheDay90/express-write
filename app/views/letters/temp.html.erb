@@ -42,12 +42,12 @@
     }
 </script>
 <%= stylesheet_link_tag "actiontext" %>
-<%= javascript_importmap_tags "trix" %>
+<%= javascript_import_module_tag "trix" %>
 
 
 
 <main class="pl-1 pt-2 mx-auto">
-    <div class="btn-group mb-3">
+    <div class="btn-group">
         <button class="btn btn-primary" id="edit-btn" onClick="toggleEditor()">
             <i class="fa-solid fa-feather-pointed"></i> Edit
         </button>
@@ -62,11 +62,11 @@
         </a>
     </div>
 
-    <%= form_with scope: :letter, id: "editor", class: "me-5 my-3 hidden" do |form|%>
+    <%= form_with scope: :letter, id: "editor", class: "mx-5 my-3 hidden" do |form|%>
         <%= form.trix_editor :content %>
     <% end %>
 
-    <section class="w-75">
+    <section class="w-75"><hr>
         <div id="letter-body">
             <% @letter.body.split("\n").each do |line| %>
                 <%= line %><br>
