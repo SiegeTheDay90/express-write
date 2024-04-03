@@ -4,7 +4,7 @@ class ExpressJob < ApplicationJob
 
   
     def perform(request, bio_payload, listing_payload, listing_type="url", user_prompt="Write a cover letter for the job listing that uses the resume as support.")
-        debugger
+        # debugger
         user_prompt = "Write a cover letter for the job listing that uses the resume as support." if user_prompt.empty?
         # generate user bio
         @bio = text_to_user_bio(bio_payload)
@@ -93,7 +93,7 @@ class ExpressJob < ApplicationJob
                 # max_tokens: 10000
             }
         )
-        debugger
+        # debugger
         begin
           message = response["choices"][0]["message"]["content"]
           return message

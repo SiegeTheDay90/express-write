@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
 
   def create
-    debugger
+    # debugger
     @user = User.new(user_params)
     @user.email = @user.email.downcase
     @user.password = params["user"]["password"]
