@@ -4,6 +4,7 @@ import NoticeBalloon from "./scripts/NoticeBalloon";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ResumeBuilder from "./scripts/resume-builder/ResumeBuilder";
+import { gsap } from 'gsap';
 
 import "./styles.scss";
 
@@ -28,5 +29,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(saveDocXButton){
         saveDocXButton.addEventListener('click', tempLetterToDocx);
+    }
+
+    const logoImage = document.getElementById("logo-img");
+
+    if(logoImage){
+        // debugger;
+        let imageTL = gsap.timeline({});
+        imageTL
+        .to("#logo-img", {
+            x: "43vw",
+            rotation: 60,
+            duration: 1,
+            ease: "power2.in"
+        }).to("#logo-img",{
+            rotation: 75,
+            x: "44vw",
+            duration: 0.1
+        })
+        .to("#logo-img", {
+            delay: 0.5,
+            x: -5,
+            rotation: 65,
+            duration: 0.1
+        }).to("#logo-img", {
+            x: 0,
+            rotation: 70,
+            duration: 0.2
+        })
+
+        let textTL = gsap.timeline({});
+        textTL
+        .to("#logo-text", {
+            delay:0.35,
+            "--clip": 0,
+            duration: 0.65,
+            ease: "power2.in"
+        })
+
+        
+        let bannerTL = gsap.timeline({});
+        bannerTL
+        .to("#splash-logo", {
+            delay: 2,
+            height: "25vh",
+            duration: 1.5,
+            ease: "power1.inOut"
+        })
+
     }
 })

@@ -155,22 +155,16 @@
 
 <div id="splash" style="backgrond-color: transparent" class="text-center px-4 w-100">
     <span id="splash-logo">
-        <span><img id="logo-img" class="splash" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">WriteWise</span>
+        <span><img id="logo-img" class="splash" src="https://cl-helper-development.s3.amazonaws.com/logo_white.png" alt="Logo">
+            <span id="logo-text">WriteWise</span>
+        </span>
     </span>
-    <!-- <div id="auth">
-        <%= link_to "Sign in with Linked In", "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV["OAUTH_CLIENT_ID"]}&redirect_uri=#{Rack::Utils.escape(ENV["OAUTH_CALLBACK_URI"])}&scope=profile%20email%20openid", class: "btn btn-outline-light w-100 mb-2" %>
-        <br>
-        <%= link_to "Sign in with Email", new_session_url, class: "btn btn-outline-light w-100 mb-2" %>
-        <br>
-        <%= link_to "Sign Up", new_user_url, class: "btn btn-outline-light w-100" %>
-    </div> -->
 </div>
 
 
 <div style="background-color: #eef" class="px-4 py-5 mb-5 text-center" id="t-height">
     <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Express Write</h2>
     <small>Get a cover letter now, no account needed.</small><br/>
-    <%# <p class="mb-4"><small >But you're <a href="#why">missing out!</a></small></p> %>
     <div class="d-flex justify-content-center">
         <div class="col-lg-2 d-flex flex-column align-items-start ps-5">
             <h3>How it works:</h3>
@@ -257,8 +251,6 @@
                     <span class="d-flex align-items-center"><input type="submit" value="Generate" id="express-submit" class="btn btn-success" disabled><span id="status" class="m-1"></span></span>
                 </form>
             </div>
-            <%# <p style="margin-top: 20px; margin-bottom: 0;">Have an account?</p> %>
-            <!-- <p style="margin-top: 0;"><a href="<%= new_session_url %>">Sign In</a></p> -->
         </div>
         <div class="col-lg-2">
             <div class="gap-2 d-sm-flex justify-content-sm-center">
@@ -280,11 +272,6 @@
                 <li class="account-instruction express-instruction"> Relevant bullet-point starters for work experience</li>
                 <li class="account-instruction express-instruction"> Download resumes as Word Documents</li>
             </ul>
-            <%# <h3>Members can:</h3>
-            <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
-                <li class="account-instruction express-instruction"> Save resumes to the cloud</li>
-                <li class="account-instruction express-instruction"> Pre-fill forms with PDF Resume</li>
-            </ul> %>
             <div class="gap-2 d-sm-flex justify-content-sm-center">
                 <%= link_to "Check it Out", "/resumes/new", class: "btn btn-primary btn-lg px-4" %>
             </div>
@@ -314,5 +301,3 @@
         </div>
     </div>
 </div>
-
-<%# <div>&nbsp;</div> %>

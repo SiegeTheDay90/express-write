@@ -103,6 +103,22 @@
   opacity: 0.85;
   margin-right: 1vw;
   transform: rotate(70deg);
+  z-index: 2;
+}
+
+#logo-text{
+  position: relative;
+  --clip: 110%;
+  &::before{
+    position: absolute;
+    right: -10%;
+    top: 0;
+    height: 100%;
+    width: var(--clip);
+    background-color: rgb(70, 70, 180);
+    content: ' ';
+  }
+
 }
 
 #logo-img.splash{
