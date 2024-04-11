@@ -10,7 +10,7 @@ class NoticeBalloon{
         this.balloon.innerText = message;
         if(this.type === "error"){
             const reportButton = document.createElement("span");
-            reportButton.innerHTML = `<a href="/bugreport?error=one">Report</a>`
+            reportButton.innerHTML = `<a href="/bug-report?${new URLSearchParams({error: message})}">Report</a>`
             reportButton.style.position = "absolute";
             reportButton.style.right = "7px";
             reportButton.style.bottom = "4px";

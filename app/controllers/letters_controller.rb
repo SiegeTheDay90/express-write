@@ -29,17 +29,17 @@ class LettersController < ApplicationController
             begin
                 http_response = HTTP.headers("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36").get(params["input"])
             rescue => e
-                errors = ["Error while trying to fetch Listing. Consider copy/pasting the listing a plain text."]
+                errors = ["Error while trying to fetch Listing. Consider copy/pasting the listing as plain text."]
                 req.update!(ok: false, complete: true, messages: errors )
                 render json: {ok: false, errors: errors, id: req.id} and return
             end
 
             if http_response.status >= 400
-                errors =[ "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing a plain text."]
+                errors =[ "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text."]
                 req.update!(ok: false, complete: true, messages: errors )
                 render json: {ok: false, errors: errors, id: req.id} and return
             elsif http_response.status >= 300
-                errors = ["The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing a plain text."]
+                errors = ["The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text."]
                 req.update!(ok: false, complete: true, messages: errors )
                 render json: {ok: false, errors: errors, id: req.id} and return
             else
@@ -106,17 +106,17 @@ class LettersController < ApplicationController
             begin
                 http_response = HTTP.headers("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36").get(params["input"])
             rescue => e
-                errors = ["Error while trying to fetch Listing. Consider copy/pasting the listing a plain text."]
+                errors = ["Error while trying to fetch Listing. Consider copy/pasting the listing as plain text."]
                 req.update!(ok: false, complete: true, messages: errors )
                 render json: {ok: false, errors: errors, id: req.id} and return
             end
 
             if http_response.status >= 400
-                errors =[ "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing a plain text."]
+                errors =[ "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text."]
                 req.update!(ok: false, complete: true, messages: errors )
                 render json: {ok: false, errors: errors, id: req.id} and return
             elsif http_response.status >= 300
-                errors = ["The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing a plain text."]
+                errors = ["The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text."]
                 req.update!(ok: false, complete: true, messages: errors )
                 render json: {ok: false, errors: errors, id: req.id} and return
             else

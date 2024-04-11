@@ -55,10 +55,10 @@ class ListingsController < ApplicationController
 
             
             if http_response.status >= 400
-                flash.now['errors'] = "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing a plain text."
+                flash.now['errors'] = "The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text."
                 render :new and return
             elsif http_response.status >= 300
-                flash.now['errors'] = "The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing a plain text."
+                flash.now['errors'] = "The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text."
                 render :new and return
             else
                 begin
