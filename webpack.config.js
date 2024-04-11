@@ -49,7 +49,9 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
-        config.plugins.push(new MiniCssExtractPlugin());
+        config.plugins.push(new MiniCssExtractPlugin({
+            filename: '../assets/stylesheets/application.css', // Output CSS to a different folder
+        }));
         
         
     } else {
