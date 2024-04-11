@@ -1,0 +1,23 @@
+<main class="p-3">
+<h2>Report a Bug</h2>
+<h6>Thanks!</h6>
+  <%= form_with(model: @bug_report, url: bug_report_path, method: :post, class: "border border-secondary col-lg-6 col-12 p-5") do |form| %>
+    <div class="mb-3">
+      <%= form.label :user, "Your Name or Email", class: "mb-1"%>
+      <%= form.text_field :user, class: "form-control", value: @bug_report.user %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :body, "Bug Description", class: "mb-1"%>
+      <%= form.text_area :body, class: "form-control", value: params["error"] || @bug_report.body %>
+    </div>
+
+    <div class="mb-3 form-check">
+      <%= form.check_box :requires_response, class: "form-check-input", id: "requires_response" %>
+      <%= form.label :requires_response, "Requires Response", class: "form-check-label" %>
+    </div>
+
+    <%= form.submit "Submit", class: "btn btn-primary" %>
+  <% end %>
+
+</main>

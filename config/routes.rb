@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'bug_reports/create'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -34,7 +35,8 @@ Rails.application.routes.draw do
   get '/check/:id', to: 'requests#check', as: 'check'
   
   # Bug Report
-  get '/bugreport', to: 'application#bug', as: 'bug_report'
+  get  '/bug-report', to: 'bug_reports#new', as: 'bug_report'
+  post '/bug-report', to: 'bug_reports#create'
   
   # Mark Letter as Helpful
   patch '/letters/:id/helpful', to: 'letters#helpful', as: 'helpful_letter'
@@ -54,8 +56,9 @@ Rails.application.routes.draw do
   post '/express-member', to: 'letters#express_member', as: 'express_member_letter'
   get '/express', to: 'application#express'
   get '/url-check', to: 'application#url_check', as: 'url_check'
-  
+
   # Other
   get '/homepage', to: 'application#show'
   get '*unmatched_route', to: redirect('/404.html'), via: :all
+
 end
