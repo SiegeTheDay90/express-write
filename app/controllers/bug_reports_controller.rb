@@ -4,7 +4,6 @@ class BugReportsController < ApplicationController
   end
   
   def create
-    debugger
     @bug_report = BugReport.new(bug_report_params)
 
     if @bug_report.save
