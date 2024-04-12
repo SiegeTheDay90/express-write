@@ -20,7 +20,7 @@ class GenerateBioJob < ApplicationJob
       end
       client = OpenAI::Client.new
 
-      # debugger
+      
       
       response = client.chat(
           parameters: {
