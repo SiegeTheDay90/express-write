@@ -19,25 +19,6 @@
       <br>
       <a href="https://siegetheday90.github.io/personal-site/" class="link-light">Developed by Clarence Smith</a>
     </span>
-      <% if current_user %>
-        <span id="hamburger-container">
-          <span id="hamburger">
-          </span>
-        </span>
-        <div id="sidebar">
-            <span class="sidebar-header">Navigation</span>
-            <nav class="menu-options">
-              <a href=<%= user_listings_url(current_user) %>><li class="menu-item" >Listings</li></a>
-              <a href=<%= current_user.profile ? user_profile_url(current_user, current_user.profile) : new_profile_url() %>><li class="menu-item" >Active Resume</li></a>
-              <a href=<%= user_url(current_user) %>><li class="menu-item" >Account</li></a>
-              <form action=<%= session_url() %> method="POST" class="menu-item" >
-                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="submit" class="btn btn-danger" value="Logout">
-              </form>
-            </nav>
-        </div>
-      <% end %>
     </header>
 
       <%= yield %>

@@ -1,26 +1,5 @@
 class LettersController < ApplicationController
-    before_action :require_logged_in, except: [:express, :temp]
-    def new
-        render :new
-    end
-
-    def show
-        @letter = Letter.includes(:listing).find_by(id: params["id"])
-        if !@letter || current_user.id != @letter.user_id
-            redirect_to user_listings_url(current_user)
-        else
-            render :show
-        end
-    end
-    def edit
-        @letter = Letter.includes(:listing).find_by(id: params["id"])
-        if !@letter || current_user.id != @letter.user_id
-            redirect_to user_listings_url(current_user)
-        else
-            render :edit
-        end
-    end
-
+    
     def express
         req = Request.create!(resource_type: "temp_letter")
         # render json: {ok: false, errors: ["First error", "Second error"], id: req.id} and return
@@ -105,33 +84,23 @@ class LettersController < ApplicationController
         @letter = TempLetter.find_by(secure_id: params["id"])
     end
 
-    def generate
-        @listing = Listing.includes(:user).find_by(id: params["listing_id"])
-        return redirect_to edit_user_url(current_user) unless @listing
+    # def helpful
+    #     @letter = Letter.find_by(id: params[:id])
+    #     redirect_to users_url(current_user) and return unless @letter
 
+    #     @letter.helpful = params["status"]
+    #     if @letter.save
+    #         render plain: "Success", status: 200
+    #     else
+    #         render plain: "Failure", status: 418
+    #     end
+    # end
 
-        request = Request.create!(resource_type: "letter")
-        GenerateLetterJob.perform_later(request, @listing, current_user)
-        render json: {ok: true, message: "Letter Started", id: request.id}
-    end
-
-    def helpful
-        @letter = Letter.find_by(id: params[:id])
-        redirect_to users_url(current_user) and return unless @letter
-
-        @letter.helpful = params["status"]
-        if @letter.save
-            render plain: "Success", status: 200
-        else
-            render plain: "Failure", status: 418
-        end
-    end
-
-    def update
-        @letter = Letter.find(params["id"])
-        @letter.update(content: params["letter"]["content"])
-        @letter.body = params["letter"]["content"].gsub("<br>", "\n").gsub("&nbsp;", "").gsub(/<[^>]*>/, "")
-        flash.now["messages"] = ["Letter saved!"]
-        render :show
-    end
+    # def update
+    #     @letter = Letter.find(params["id"])
+    #     @letter.update(content: params["letter"]["content"])
+    #     @letter.body = params["letter"]["content"].gsub("<br>", "\n").gsub("&nbsp;", "").gsub(/<[^>]*>/, "")
+    #     flash.now["messages"] = ["Letter saved!"]
+    #     render :show
+    # end
 end
