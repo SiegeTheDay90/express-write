@@ -37,8 +37,6 @@
 /config/master.key
 /scraps/*
 
-/test/
-/test/test_helper.rb
 /node_modules
 /docx_test
 

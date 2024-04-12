@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: resumes
+#
+#  id         :bigint           not null, primary key
+#  title      :string           default("My Resume")
+#  header     :text             default("")
+#  personal   :text             default("{}")
+#  work       :text             default("[]")
+#  education  :text             default("[]")
+#  links      :text             default("[]")
+#  skills     :text             default("[]")
+#  user_id    :bigint
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the "{}" from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one: {}
+# column: value
+#
+two: {}
+# column: value

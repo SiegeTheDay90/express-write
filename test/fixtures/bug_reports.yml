@@ -1,0 +1,32 @@
+# == Schema Information
+#
+# Table name: bug_reports
+#
+#  id                :bigint           not null, primary key
+#  body              :text             not null
+#  email             :text
+#  replied           :boolean          default(FALSE)
+#  requires_response :boolean          default(FALSE)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  name              :string
+#  user_agent        :text
+#
+
+one:
+  rails: MyString
+  g: MyString
+  model: MyString
+  BugReport: MyString
+  body: MyText
+  user: MyText
+  reply_status: MyString
+
+two:
+  rails: MyString
+  g: MyString
+  model: MyString
+  BugReport: MyString
+  body: MyText
+  user: MyText
+  reply_status: MyString

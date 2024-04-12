@@ -20,10 +20,10 @@ Rails.application.routes.draw do
   # Generators
     get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
     post '/express', to: 'letters#express', as: 'express_letter'
-    get '/url-check', to: 'application#valid_url?', as: 'valid_url?'
+    get '/url-check', to: 'application#valid_url?', as: 'valid_url'
 
   # Testing Routes
-    if !Rails.env.production? do
+    if !Rails.env.production?
       get '/err-test', to: 'application#err_test' # raises uncaught error "Test Error: Date.today"
       get '/test', to: 'application#test' # Test route generates letter using GPT-4 or other test model
       get '/stress-test', to: 'application#stress_test' # Makes multiple Async requests. Default backend maxes out at 3 concurrent processes.
