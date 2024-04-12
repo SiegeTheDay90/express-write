@@ -16,7 +16,9 @@
 #
 class Resume < ApplicationRecord
     validates :title, length: {minimum: 3}
-    validates_each :work, :personal, :education, :links, :skills do |record, col, value|
+    
+    JSON_COLUMNS = [:work, :education, :links, :skills, :personal]
+    validates_each JSON_COLUMNS do |record, col, value|
         begin
             !!JSON.parse(record.read_attribute(col))
         rescue => e
@@ -24,7 +26,6 @@ class Resume < ApplicationRecord
         end
     end
 
-    JSON_COLUMNS = [:work, :education, :links, :skills, :personal]
 
     JSON_COLUMNS.each do |column|
         define_method(column) do 
