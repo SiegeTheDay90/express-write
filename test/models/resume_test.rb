@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: resumes
@@ -14,10 +16,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-require "test_helper"
+require 'test_helper'
 
 class ResumeTest < ActiveSupport::TestCase
-  test "No Tests Here Yet" do
+  test 'No Tests Here Yet' do
     assert true
   end
 end

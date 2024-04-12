@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: listings
@@ -13,6 +15,6 @@
 #  updated_at      :datetime         not null
 #
 class Listing < ApplicationRecord
-    belongs_to :user
-    has_many :letters
+  belongs_to :user
+  has_many :letters
 end

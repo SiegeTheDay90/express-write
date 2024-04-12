@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: temp_letters
@@ -10,16 +12,17 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-require "test_helper"
+require 'test_helper'
 
 class TempLetterTest < ActiveSupport::TestCase
-  test "cannot create without body" do
-    assert_not TempLetter.create(profile: "Resume", listing: "Job").persisted?
+  test 'cannot create without body' do
+    assert_not TempLetter.create(profile: 'Resume', listing: 'Job').persisted?
   end
 
-  test "body is saved as plain and rich content" do
-    t = TempLetter.create(profile: "Resume", listing: "Job", body: "This is the body in plain text. \n This is on a new line.")
+  test 'body is saved as plain and rich content' do
+    t = TempLetter.create(profile: 'Resume', listing: 'Job',
+                          body: "This is the body in plain text. \n This is on a new line.")
     assert t.persisted?
-    assert t.content.to_s.include?(t.body.gsub("\n", "<br>"))
+    assert t.content.to_s.include?(t.body.gsub("\n", '<br>'))
   end
 end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class CreateProfiles < ActiveRecord::Migration[7.0]
   def change
     create_table :profiles do |t|
       t.string :title, null: false
-      t.string :industry, default: ""
-      t.text :aboutme, default: ""
+      t.string :industry, default: ''
+      t.text :aboutme, default: ''
       t.text :skills, array: true, default: []
       t.text :education, array: true, default: []
       t.text :experience, array: true, default: []
@@ -16,7 +18,7 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
 
     User.all.each do |user|
       profile = Profile.create!(
-        title: user.industry&.empty? ? "My First Profile" : user.industry || "My First Profile",
+        title: user.industry && user.industry.empty? ? 'My First Profile' : user.industry || 'My First Profile',
         skills: user.skills,
         education: user.education,
         experience: user.experience,
@@ -27,6 +29,5 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
       )
       user.update!(active_profile: profile.id)
     end
-    
   end
 end

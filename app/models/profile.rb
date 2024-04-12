@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: profiles
@@ -15,15 +17,15 @@
 #  updated_at :datetime         not null
 #
 class Profile < ApplicationRecord
-    # validates :title, presence: true, length: {minimum: 3, message: "must be at least 3 characters."}
-    
-    belongs_to :user
+  # validates :title, presence: true, length: {minimum: 3, message: "must be at least 3 characters."}
 
-    def is_active?
-        user&.active_profile == id
-    end
+  belongs_to :user
 
-    def set_active
-        user.update!(active_profile: id)
-    end
+  def is_active?
+    user&.active_profile == id
+  end
+
+  def set_active
+    user.update!(active_profile: id)
+  end
 end

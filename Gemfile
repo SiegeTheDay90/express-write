@@ -1,22 +1,24 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.1"
+ruby '3.1.1'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.6"
+gem 'rails', '~> 7.0.6'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
+gem 'sprockets-rails'
 
 # Use Postgres as the database for Active Record
-gem "pg"
+gem 'pg'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.6.8"
+gem 'puma', '~> 5.6.8'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
+gem 'importmap-rails'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 
@@ -27,38 +29,37 @@ gem "importmap-rails"
 # gem "kredis"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "bcrypt", "~> 3.1.7"
+gem 'bcrypt', '~> 3.1.7'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem 'bootsnap', require: false
 
 # Text Completion
-gem "ruby-openai"
-
+gem 'ruby-openai'
 
 # Use Sass to process CSS
 # gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "byebug", platforms: %i[ mri mingw x64_mingw ]
-  gem "dotenv"
-  gem "rubocop"
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv'
+  gem 'rubocop'
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
-  gem "annotate", "~> 3.2"
-  gem "better_errors"
-  gem "binding_of_caller"
-  gem "pry-rails"
+  gem 'annotate', '~> 3.2'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'pry-rails'
+  gem 'web-console'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -69,25 +70,23 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-  gem "webdrivers"
-  gem "rails-controller-testing", "~> 1.0"
+  gem 'capybara'
+  gem 'rails-controller-testing', '~> 1.0'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 gem 'actiontext'
+gem 'http', '~> 5.1'
+gem 'trix'
 gem 'trix-rails'
-gem "trix"
-gem "http", "~> 5.1"
 
-gem "pdf-reader", "~> 2.11"
+gem 'pdf-reader', '~> 2.11'
 
-gem "open-uri", "~> 0.3.0"
+gem 'open-uri', '~> 0.3.0'
 
-gem "bootstrap", "~> 5.3"
+gem 'bootstrap', '~> 5.3'
 
+gem 'llama_cpp', '~> 0.10.0'
 
-gem "llama_cpp", "~> 0.10.0"
-
-gem "docx", "~> 0.8.0"
-
+gem 'docx', '~> 0.8.0'

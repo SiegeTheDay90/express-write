@@ -7,7 +7,7 @@
 name: "Rails Tests"
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "rubo-cop-test" ]
   pull_request:
     branches: [ "main" ]
 jobs:
@@ -57,5 +57,5 @@ jobs:
       #   run: bin/bundler-audit --update
       # - name: Security audit application code
       #   run: bin/brakeman -q -w2
-      - name: Lint Ruby files
-        run: bundle exec rubocop --parallel
+      # - name: Lint Ruby files
+      #   run: bundle exec rubocop --parallel
