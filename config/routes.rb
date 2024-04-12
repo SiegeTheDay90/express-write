@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
   
   # Resumes 
-    # resources :resumes
+    resources :resumes
   
   # AJAX Polling
     get '/check/:id', to: 'requests#check', as: 'check'
