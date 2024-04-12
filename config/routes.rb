@@ -10,9 +10,6 @@ Rails.application.routes.draw do
   # Resumes 
   # resources :resumes
   
-  # Stress Test
-  get '/stresstest', to: 'application#stress_test'
-  
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
   
@@ -25,7 +22,13 @@ Rails.application.routes.draw do
   post '/express', to: 'letters#express', as: 'express_letter'
   get '/url-check', to: 'application#url_check', as: 'url_check'
 
-  # Other
+  # Testing Routes
+    # Stress Test
+    if !Rails.env.production? do
+      get '/stresstest', to: 'application#stress_test' 
+    end
+
+  # Catch-all
   get '*unmatched_route', to: redirect('/404.html'), via: :all
 
 end
