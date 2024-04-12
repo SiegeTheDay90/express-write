@@ -27,7 +27,7 @@ function SkillList({resume: [resume, setResume]}){
 
   function remove(e){
     const idx = parseInt(e.currentTarget.dataset.idx);
-    // debugger
+    
     setResume(prevState => ({
       ...prevState,
       skills: prevState.skills.slice(0, idx).concat(prevState.skills.slice(idx+1))

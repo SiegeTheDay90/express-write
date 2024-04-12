@@ -71,6 +71,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem "rails-controller-testing", "~> 1.0"
 end
 
 gem 'actiontext'
@@ -88,3 +89,4 @@ gem "bootstrap", "~> 5.3"
 gem "llama_cpp", "~> 0.10.0"
 
 gem "docx", "~> 0.8.0"
+

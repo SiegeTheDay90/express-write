@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
         begin
             response = URI.open(params["url"])
             if(response.status[0].to_i < 300)
-                render json: {ok: true}
+                render json: {ok: true, status: "WOOF"}
             else
                 render json: {ok: false, status: response.status }
             end

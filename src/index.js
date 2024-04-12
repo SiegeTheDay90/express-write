@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoImage = document.getElementById("logo-img");
 
     if(logoImage){
-        // debugger;
+        
         let imageTL = gsap.timeline({});
         imageTL
         .to("#logo-img", {
