@@ -1,6 +1,7 @@
 <main class="p-3">
-<h2>Report a Bug</h2>
-<h6>Thanks!</h6>
+  <h2>Report a Bug</h2>
+  <h6>Thanks!</h6>
+  
   <%= form_with(model: @bug_report, url: bug_report_path, method: :post, class: "border border-secondary col-lg-6 col-12 p-5") do |form| %>
     <div class="mb-3">
       <%= form.label :user, "Your Name or Email", class: "mb-1"%>
@@ -21,3 +22,4 @@
   <% end %>
 
 </main>
+
