@@ -12,7 +12,7 @@ class RequestsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 'temp_letter', response_body['resource_type']
     assert_equal false, !response_body['complete'].nil?
-    assert_equal false, !response_body['ok'].nil?
+    assert_equal true, !response_body['ok'].nil?
   end
 
   test 'should respond to invalid id with errors' do
