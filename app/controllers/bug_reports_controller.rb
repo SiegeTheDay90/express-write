@@ -7,6 +7,7 @@ class BugReportsController < ApplicationController
 
   def create
     @bug_report = BugReport.new(bug_report_params)
+    @bug_report.user_agent = params["agent"] || "n/a"
 
     if @bug_report.save
       flash['messages'] =

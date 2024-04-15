@@ -52,7 +52,6 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv'
-  gem 'rubocop'
 end
 
 group :development do
@@ -76,6 +75,14 @@ group :test do
   gem 'rails-controller-testing', '~> 1.0'
   gem 'selenium-webdriver'
   gem 'webdrivers'
+
+  # Security Checks  
+  gem "bundler-audit", "~> 0.9.1"
+  gem "brakeman", "~> 6.1"
+  # Style Linting
+  # gem 'rubocop'
+  # gem "rubocop-rails", "~> 2.24"
+  # gem "rubocop-capybara", "~> 2.20"
 end
 
 gem 'actiontext'
@@ -89,10 +96,5 @@ gem 'open-uri', '~> 0.3.0'
 
 gem 'bootstrap', '~> 5.3'
 
-gem 'llama_cpp', '~> 0.10.0'
-
 gem 'docx', '~> 0.8.0'
 
-gem "bundler-audit", "~> 0.9.1"
-
-gem "brakeman", "~> 6.1"
