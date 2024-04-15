@@ -7,6 +7,8 @@ ruby '3.1.1'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.6'
+gem 'activestorage', '~> 7.0.8'
+gem 'actionpack', '~> 7.0.7'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -90,3 +92,7 @@ gem 'bootstrap', '~> 5.3'
 gem 'llama_cpp', '~> 0.10.0'
 
 gem 'docx', '~> 0.8.0'
+
+gem "bundler-audit", "~> 0.9.1"
+
+gem "brakeman", "~> 6.1"
