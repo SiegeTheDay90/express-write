@@ -25,19 +25,34 @@
 
 </main>
 <script>
-  function agentGrab(e){
+  function agentGrab(){
     const agent = window?.navigator?.userAgent;
-    const requires_response = document.getElementById("requires_response").checked
-    const emailGiven = document.getElementById("emailInput").value;
-    if(requires_response && !emailGiven){
-      alert("If you choose \"Requires Response\" you must provide a valid email.")
-      e.preventDefault();
-    }
     if(agent){
       document.getElementById("agentInput").value = agent;
     }
   }
 
-  document.getElementById("bug-report-form").addEventListener("submit", agentGrab);
+  function handleSubmit(e){
+    agentGrab();
+    const requires_response = document.getElementById("requires_response").checked
+    const emailGiven = document.getElementById("emailInput").value;
+
+    // Regular expression for validating email addresses
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailGiven && !emailRegex.test(emailGiven)) {
+      alert('Please enter a valid email address.');
+      e.preventDefault();
+      return;
+    }
+
+    if(requires_response && !emailGiven){
+      alert("If you choose \"Requires Response\" you must provide a valid email.")
+      e.preventDefault();
+      return;
+    }
+
+  }
+
+  document.getElementById("bug-report-form").addEventListener("submit", handleSubmit);
 </script>
 
