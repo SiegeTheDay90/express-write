@@ -23,7 +23,7 @@
   },
   "version": "1.0.0",
   "description": "My webpack project",
-  "name": "my-webpack-project",
+  "name": "write-wise",
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",

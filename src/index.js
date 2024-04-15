@@ -31,28 +31,28 @@ document.addEventListener("DOMContentLoaded", () => {
         saveDocXButton.addEventListener('click', tempLetterToDocx);
     }
 
-    const logoImage = document.getElementById("logo-img");
+    const logoImage = document.querySelector("#logo-img.splash");
 
     if(logoImage){
         
         let imageTL = gsap.timeline({});
         imageTL
-        .to("#logo-img", {
+        .to("#logo-img.splash", {
             x: "43vw",
             rotation: 60,
             duration: 1,
             ease: "power2.in"
-        }).to("#logo-img",{
+        }).to("#logo-img.splash",{
             rotation: 75,
             x: "44vw",
             duration: 0.1
         })
-        .to("#logo-img", {
+        .to("#logo-img.splash", {
             delay: 0.5,
             x: -5,
             rotation: 65,
             duration: 0.1
-        }).to("#logo-img", {
+        }).to("#logo-img.splash", {
             x: 0,
             rotation: 70,
             duration: 0.2
