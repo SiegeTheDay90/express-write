@@ -35,28 +35,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(logoImage){
         
-        let imageTL = gsap.timeline({});
-        imageTL
-        .to("#logo-img.splash", {
-            x: "43vw",
-            rotation: 60,
-            duration: 1,
-            ease: "power2.in"
-        }).to("#logo-img.splash",{
-            rotation: 75,
-            x: "44vw",
-            duration: 0.1
-        })
-        .to("#logo-img.splash", {
-            delay: 0.5,
-            x: -5,
-            rotation: 65,
-            duration: 0.1
-        }).to("#logo-img.splash", {
-            x: 0,
-            rotation: 70,
-            duration: 0.2
-        })
+    //     let imageTL = gsap.timeline({});
+    //     imageTL
+    //     .to("#logo-img.splash", {
+    //         x: "43vw",
+    //         rotation: 60,
+    //         duration: 1,
+    //         ease: "power2.in"
+    //     }).to("#logo-img.splash",{
+    //         rotation: 75,
+    //         x: "44vw",
+    //         duration: 0.1
+    //     })
+    //     .to("#logo-img.splash", {
+    //         delay: 0.5,
+    //         x: -5,
+    //         rotation: 65,
+    //         duration: 0.1
+    //     }).to("#logo-img.splash", {
+    //         x: 0,
+    //         rotation: 70,
+    //         duration: 0.2
+    //     })
 
         let textTL = gsap.timeline({});
         textTL
