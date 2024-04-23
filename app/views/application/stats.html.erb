@@ -1,11 +1,11 @@
 <main>
-  Days since a failed request: <%= days_since_last_error %> <br>
-  Requests this week: <%= requests_this_week.count %> <br>
-  Total Requests: <%= Request.count %> <br>
+  <!-- Days since a failed request: <%= days_since_last_error %> <br> -->
+  AJAX Requests this week: <%= requests_this_week.count %> <br>
+  Lifetime AJAX Requests: <%= Request.count %> <br>
   Letters Generated: <%= TempLetter.count %> <br>
   <hr>
 
-  <div class="col-sm-9 col-md-8 col-lg-6">
+  <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
     <canvas id="dailyChart"></canvas>
     <hr>
     <canvas id="weeklyChart"></canvas>
