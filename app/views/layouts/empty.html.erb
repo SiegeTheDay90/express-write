@@ -15,8 +15,9 @@
   <body id="main" class="splash">
     <%= yield %>
 
-    <footer id="bug-report">
-      <%= link_to "Report a Bug", bug_report_url %>
+    <footer id="bug-report" class="d-flex flex-column">
+      <%= link_to "Report a Bug 🐞", bug_report_url, class: "text-end" %>
+      <%= link_to "Stats for Nerds 📊", stats_url %>
     </footer>
         <span id="alert-container">
         <h3>Notifications</h3>

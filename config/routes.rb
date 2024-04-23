@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   root 'application#splash'
 
   # Stats Page
-  get '/stats', to: 'application#stats'
+  get '/stats', to: 'application#stats', as: 'stats'
 
   # Temp Letter
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
