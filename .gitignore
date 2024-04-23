@@ -42,3 +42,5 @@
 
 .byebug_history
 app/javascript/application.js.LICENSE.txt
+
+./keyfile.json

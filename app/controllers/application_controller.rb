@@ -10,7 +10,19 @@ class ApplicationController < ActionController::Base
 
   def stats
     project_id = "hitcounter-c6795"
-    firestore = Google::Cloud::Firestore.new project_id: project_id
+    firestore = Google::Cloud::Firestore.new project_id: project_id, keyfile: Rails.env.production? ? {
+      "type" => "service_account",
+      "project_id" => "hitcounter-c6795",
+      "private_key_id" => "d01fd1332de21305d7199e44c6ea25694c114dd7",
+      "private_key" => "-----BEGIN PRIVATE KEY-----\n#{ENV["FIRESTORE_KEY"].gsub("@", "\n")}\n-----END PRIVATE KEY-----\n",
+      "client_email" => "firebase-adminsdk-arcz5@hitcounter-c6795.iam.gserviceaccount.com",
+      "client_id" => "107163233339707064765",
+      "auth_uri" => "https://accounts.google.com/o/oauth2/auth",
+      "token_uri" => "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url" => "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-arcz5%40hitcounter-c6795.iam.gserviceaccount.com",
+      "universe_domain" => "googleapis.com"
+    } : "./keyfile.json"
 
     doc = firestore.doc "Hits/write-wise-splash"
     data = doc.get.fields.to_a
