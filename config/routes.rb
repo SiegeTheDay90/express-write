@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'application#splash'
 
+  # Stats Page
+  get '/stats', to: 'application#stats'
+
   # Temp Letter
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
 

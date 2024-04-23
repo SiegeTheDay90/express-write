@@ -1,11 +1,28 @@
 # frozen_string_literal: true
-
+require "google/cloud/firestore"
 class ApplicationController < ActionController::Base
   include ActionController::RequestForgeryProtection
   protect_from_forgery with: :exception
   rescue_from StandardError, with: :unhandled_error
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
   before_action :snake_case_params, :attach_authenticity_token
+
+  def stats
+    project_id = "hitcounter-c6795"
+    firestore = Google::Cloud::Firestore.new project_id: project_id
+
+    doc = firestore.doc "Hits/write-wise-splash"
+    data = doc.get.fields.to_a
+              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
+    
+    @labels ||= []
+    @values ||= []
+    
+    data.each do |entry|
+      @labels << entry[0].to_s # Date String "1-1-2024"
+      @values << entry[1].to_i # Number
+    end
+  end
 
   def valid_url?
     params['url'] = "https://#{params['url']}" if params['url'][0..3] != 'http'
