@@ -1,11 +1,22 @@
-<div>
-  <canvas id="myChart"></canvas>
-</div>
+<main>
+  Days since a failed request: <%= days_since_last_error %> <br>
+  Requests this week: <%= requests_this_week.count %> <br>
+  Total Requests: <%= Request.count %> <br>
+  Letters Generated: <%= TempLetter.count %> <br>
+  <hr>
 
+  <div class="col-sm-9 col-md-8 col-lg-6">
+    <canvas id="dailyChart"></canvas>
+    <hr>
+    <canvas id="weeklyChart"></canvas>
+    <hr>
+  </div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const ctx = document.getElementById('myChart');
+  const ctx = document.getElementById('dailyChart');
+  const ctx2 = document.getElementById('weeklyChart');
 
   new Chart(ctx, {
     type: 'bar',
@@ -17,8 +28,25 @@
       ]
       ,
       datasets: [{
-        label: '# of Page Loads',
+        label: 'Daily Page Loads',
         data: <%= @values %>,
+        borderWidth: 3
+      }]
+    },
+  });
+
+  new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: [
+        <% @weekly_labels.each do |label| %>
+            "<%= label %>",
+        <% end %>
+      ]
+      ,
+      datasets: [{
+        label: 'Weekly Page Loads',
+        data: <%= @weekly_values %>,
         borderWidth: 3
       }]
     },

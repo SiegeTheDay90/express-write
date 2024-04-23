@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from StandardError, with: :unhandled_error
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
   before_action :snake_case_params, :attach_authenticity_token
+  helper_method :days_since_last_error, :requests_this_week
 
   def stats
     project_id = "hitcounter-c6795"
@@ -14,7 +15,18 @@ class ApplicationController < ActionController::Base
     doc = firestore.doc "Hits/write-wise-splash"
     data = doc.get.fields.to_a
               .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
+    weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
     
+    @weekly_labels ||= []
+    @weekly_values ||= []
+    weekly = weekly.each do |cweek, data|
+      date = Date.new(2024) + (cweek-1).week
+
+      @weekly_labels << date.to_s
+      @weekly_values << data.inject(0){|acc, datum| acc + datum[1]}
+
+    end
+
     @labels ||= []
     @values ||= []
     
@@ -114,5 +126,13 @@ class ApplicationController < ActionController::Base
     end
 
     render plain: "Stressing with #{stress} jobs. Check server logs."
+  end
+
+  def days_since_last_error
+    (Date.today - Request.select(:created_at).where.not(ok: true).order(created_at: :desc).limit(1)[0].created_at.to_date).to_i
+  end
+
+  def requests_this_week
+    Request.where(created_at: Date.today-1.week..Date.today)
   end
 end
