@@ -2,13 +2,18 @@
 
 class ResumesController < ApplicationController
   def create
-    resume = Resume.new(JSON.parse(request.body.read))
+    content_type = request.headers['Content-Type']
+    raise TypeError.new('Content-Type must be application/pdf or application/vnd.openxmlformats-officedocument.wordprocessingml.document') unless ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].include?(content_type)
+    req = Request.create!(resource_type: 'resume')
+    if content_type == "application/pdf"
+      text = helpers.pdf_to_text(request.body)
+    else
+      text = helpers.docx_to_text(request.body)
+    end
+    
+    GenerateResumeJob.perform_later(req, text)
 
-    render json: resume.save
-  end
-
-  def show
-    render json: Resume.find_by(id: params['id']).to_json
+    render json: {ok: true, status: 'Resume In Progress', id: req.id}
   end
 
   def suggest_bullets

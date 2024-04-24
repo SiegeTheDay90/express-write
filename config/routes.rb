@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'application#splash'
+  get '/csrf', to: "application#csrf"
 
   # Stats Page
   get '/stats', to: 'application#stats', as: 'stats'
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
 
   # Resumes
-  resources :resumes
+  resources :resumes, only: :create
 
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
