@@ -8,6 +8,11 @@ class ApplicationController < ActionController::Base
   before_action :snake_case_params, :attach_authenticity_token
   helper_method :days_since_last_error, :requests_this_week
 
+  def csrf
+    headers['X-CSRF-Token'] = masked_authenticity_token(session)
+    render json: {token: masked_authenticity_token(session)}
+  end
+
   def stats
     project_id = "hitcounter-c6795"
     firestore = Google::Cloud::Firestore.new project_id: project_id, keyfile: Rails.env.production? ? {

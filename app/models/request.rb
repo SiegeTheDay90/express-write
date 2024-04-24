@@ -14,7 +14,7 @@
 #  resource_id   :string
 #
 class Request < ApplicationRecord
-  validates :resource_type, inclusion: { in: %w[letter listing bio temp_letter] }
+  validates :resource_type, inclusion: %w[letter listing resume temp_letter]
 
   def complete!(status, resource_id, messages = [''])
     return if complete

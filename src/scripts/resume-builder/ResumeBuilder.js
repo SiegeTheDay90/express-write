@@ -18,33 +18,16 @@ function ResumeBuilder() {
         const blob = await Docx.Packer.toBlob(doc);
         saveAs(blob, 'resume.docx');
     }
-    
-    async function cloudSave() {
-        const csrfRes = await fetch('/session');
-        const data = await csrfRes.json();
-        const csrfToken = csrfRes.headers["X-CSRF-Token"] || data.token;
-        const user = data.user;
-        if(user  === "null"){
-            alert("You must be signed in to access cloud saves.");
-            return
-        }
-        const res = await fetch('/resumes', {
-            method: "POST",
-            headers: {
-                "X-CSRF-Token": csrfToken
-            },
-            body: JSON.stringify({...resume, user_id: user.id})
-        }) 
-        
 
-        const success = await res.json();
-        if(success){
-            alert(`Successfully saved resume "${resume.title}" for ${user.first_name}`)
-        } else {
-            alert(`Unsuccessful save. Try again.`)
-        }
-
+    function showUploadModal(){
+        const modal = document.getElementById("upload-modal");
+        modal.showModal();
     }
+
+    function closeUploadModal(){
+        document.getElementById("upload-modal").close();
+    }
+    
 
     function reset(){
         if(confirm("Are you sure? Your local save will be lost.")){
@@ -83,7 +66,7 @@ function ResumeBuilder() {
     }
 
 
-
+    const [errors, setErrors] = useState(null);
     const [resume, setResume] = useState({
         personal: {
             firstName: '',
@@ -133,25 +116,84 @@ function ResumeBuilder() {
         e.currentTarget.parentElement.classList.toggle('closed');
     }
 
+    async function prefill(e){
+        e.preventDefault();
+
+        if(window.confirm("You will lose unsaved work. Are you sure?")){
+            const tokenRes = await fetch("/csrf");
+            const data = await tokenRes.json();
+            const csrfToken = data.token;
+            sessionStorage.setItem("X-CSRF-Token", csrfToken);
+    
+    
+            const file = document.getElementById("file").files[0];
+            const options = {
+                body: file,
+                method: "POST",
+                headers: {
+                    "Content-Type": file.type,
+                    "X-CSRF-Token": csrfToken
+                }
+            };
+    
+            const response = await fetch("/resumes", options);
+            const {ok, status, id} = await response.json();
+            console.log({ok, status, id});
+            const loadingImage = document.createElement('img');
+            loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif";
+            loadingImage.id = "loading-gif";
+            document.getElementById("modal-form").appendChild(loadingImage);
+            const interval = setInterval(async () => {
+                const res = await fetch(`/check/${id}`);
+                const data = await res.json();
+                if(data.complete){
+                    clearInterval(interval);
+                    loadingImage.remove();
+                    if(data.ok){
+                        setResume(JSON.parse(data.messages));
+                        document.getElementById("upload-modal").close();
+                    } else {
+                        setErrors([`${data.messages}`]);
+                    }
+                }
+            }, 5000)
+        }
+
+    }
+
     return (
         <>
+            <dialog id="upload-modal">
+                <div className="mb-1">
+                    <button onClick={closeUploadModal}> X </button>
+                </div>
+                <form id="modal-form" className="p-2 background-secondary" onSubmit={prefill}>
+                    <input type="hidden" name="authenticity_token" value="" />
+                    <input type="file" name="file" id="file" accept=".pdf, .docx, .doc" className="mb-3" required />
+                    <input type="submit" value="Submit" />
+                </form>
+                {errors && <div id="errors">
+                    Something went wrong. Try again or <a href={`/bug-report?${new URLSearchParams({error: errors[0]})}`} target="_blank">report a bug.</a> <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                    <details>
+                        <summary>Error Message</summary>
+                        {errors[0]}
+                    </details>
+                </div>}
+            </dialog>
             <div className="btn-group hover-menu" role="group">
-                {/* <div className="btn btn-success">
-                    <i className="fa-solid fa-floppy-disk"></i>
-                </div> */}
+
+                <div className="btn btn-primary" onClick={showUploadModal}>
+                    Fill with Resume <i className="fa-solid fa-cloud-arrow-up"></i>
+                </div>
                 
                 <div className="btn btn-danger" onClick={reset}>
                     Start Over <i className="fa-solid fa-rotate-right"></i>
                 </div>
-                {/* <div className="btn btn-primary" onClick={cloudSave}>
-                    Cloud Save <i className="fa-solid fa-cloud-arrow-up"></i>
-                </div> */}
-                <div className="btn btn-primary" onClick={saveResume}>
+
+                <div className="btn btn-success" onClick={saveResume}>
                     Download <i className="fa-solid fa-download"></i>
                 </div>
-                {/* <div className="btn btn-light">
-                    <i className="fa-solid fa-gear"></i>
-                </div> */}
+
             </div>
             <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >
