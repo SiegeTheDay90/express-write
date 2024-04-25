@@ -20,12 +20,7 @@ class Request < ApplicationRecord
     raise TypeError unless range.class == Range
 
     successful_requests = self.where(ok: true, created_at: range) 
-    begin
     avg = successful_requests.length > 0 ? successful_requests.inject(0) { |acc, request| request.uptime }/successful_requests.length : "No Requests"
-    rescue => e
-      debugger
-      puts e
-    end
   end
 
   def complete!(status, resource_id, messages = [''])
