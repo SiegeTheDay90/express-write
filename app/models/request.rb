@@ -16,13 +16,11 @@
 class Request < ApplicationRecord
   validates :resource_type, inclusion: %w[letter listing resume temp_letter]
 
-  def self.average_uptime(range = nil)
-    raise TypeError unless range.nil? || range.class == Range
+  def self.average_uptime(range = (Date.today-7.days..Date.today))
+    raise TypeError unless range.class == Range
 
-    successful_requests = self.where(ok: true) 
-    # debugger
-    avg = successful_requests.inject(0) { |acc, request| request.uptime }/successful_requests.length
-  
+    successful_requests = self.where(ok: true, created_at: range) 
+    avg = successful_requests.length > 0 ? successful_requests.inject(0) { |acc, request| request.uptime }/successful_requests.length : "No Requests"
   end
 
   def complete!(status, resource_id, messages = [''])
