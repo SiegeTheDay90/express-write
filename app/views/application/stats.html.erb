@@ -1,6 +1,6 @@
 <main class="pt-2">
   <span class="fw-bold">Letters Generated:</span> <%= TempLetter.count %> <br>
-  <span class="fw-bold">Average Request Time:</span> <%= Request.average_uptime.round(2) %> seconds <br>
+  <span class="fw-bold">Avg Request Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg} seconds" : avg %> <br>
   <span class="fw-bold">Lifetime AJAX Requests:</span> <%= Request.count %> <br>
   <span class="fw-bold">AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
   <span class="fw-bold">Days since a failed request:</span> <%= days_since_last_error %> <br>
