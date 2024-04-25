@@ -1,8 +1,9 @@
 <main class="pt-2">
-  <!-- Days since a failed request: <%= days_since_last_error %> <br> -->
-  AJAX Requests this week: <%= requests_this_week.count %> <br>
-  Lifetime AJAX Requests: <%= Request.count %> <br>
-  Letters Generated: <%= TempLetter.count %> <br>
+  <span class="fw-bold">Letters Generated:</span> <%= TempLetter.count %> <br>
+  <span class="fw-bold">Average Request Time:</span> <%= Request.average_uptime.round(2) %> seconds <br>
+  <span class="fw-bold">Lifetime AJAX Requests:</span> <%= Request.count %> <br>
+  <span class="fw-bold">AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
+  <span class="fw-bold">Days since a failed request:</span> <%= days_since_last_error %> <br>
   <hr>
 
   <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">

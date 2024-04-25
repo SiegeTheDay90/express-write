@@ -16,6 +16,15 @@
 class Request < ApplicationRecord
   validates :resource_type, inclusion: %w[letter listing resume temp_letter]
 
+  def self.average_uptime(range = nil)
+    raise TypeError unless range.nil? || range.class == Range
+
+    successful_requests = self.where(ok: true) 
+    # debugger
+    avg = successful_requests.inject(0) { |acc, request| request.uptime }/successful_requests.length
+  
+  end
+
   def complete!(status, resource_id, messages = [''])
     return if complete
 
@@ -24,5 +33,9 @@ class Request < ApplicationRecord
     self.ok = status
     self.messages = messages
     save!
+  end
+
+  def uptime
+    (self.updated_at - self.created_at)
   end
 end
