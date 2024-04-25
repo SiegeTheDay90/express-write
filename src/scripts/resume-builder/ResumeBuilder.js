@@ -139,25 +139,34 @@ function ResumeBuilder() {
             const response = await fetch("/resumes", options);
             const {ok, status, id} = await response.json();
             console.log({ok, status, id});
+
             const loadingImage = document.createElement('img');
             loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif";
             loadingImage.id = "loading-gif";
             document.getElementById("modal-form").appendChild(loadingImage);
+
             const interval = setInterval(async () => {
                 const res = await fetch(`/check/${id}`);
                 const data = await res.json();
+                
+                // Poll /check/:id until data.complete == true
                 if(data.complete){
                     clearInterval(interval);
                     loadingImage.remove();
+
                     if(data.ok){
+                        // Set Resume on success
                         setResume(JSON.parse(data.messages));
                         document.getElementById("upload-modal").close();
                     } else {
+                        // Set Errors on failure
                         setErrors([`${data.messages}`]);
                     }
                 }
+
             }, 5000)
         }
+
 
     }
 
