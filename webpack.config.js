@@ -11,9 +11,15 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 const config = {
-    entry: './src/index.js',
+    // mode: 'development',
+    entry: {
+        application: './src/index.js',
+        'resume-builder': './src/resume-builder.js',
+        gsap: './src/gsap.js',
+        letterToDocx: './src/letterToDocx.js'
+    },
     output: {
-        filename: 'application.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'app/javascript')
     },
     plugins: [
@@ -50,7 +56,7 @@ module.exports = () => {
         config.mode = 'production';
         
         config.plugins.push(new MiniCssExtractPlugin({
-            filename: '../assets/stylesheets/application.css', // Output CSS to a different folder
+            filename: '../assets/stylesheets/[name].css', // Output CSS to a different folder
         }));
         
         

@@ -1,23 +1,52 @@
 <main class="pt-2">
-  <span class="fw-bold">📝 Letters Generated:</span> <%= TempLetter.count %> <br>
-  <span class="fw-bold">⌛ Avg Request Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg.round(3)} seconds" : avg %> <br>
-  <span class="fw-bold">🔄 AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
-  <span class="fw-bold">⚠️ Days since a failed request:</span> <%= days_since_last_error %> 
-  <span class="tool-tip"><i class="fa-regular fa-circle-question tool-tip-icon"></i><span class="tool-tip-text"><%= Request.where(ok: false).last.messages %></span></span><br>
-  <hr>
+  <div class="d-flex justify-content-between col-lg-8 col-sm-10">
+    <div>
+      <span class="fw-bold">📝 Letters Generated:</span> <%= TempLetter.count %> <br>
+      <span class="fw-bold">🔄 AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
+      <span class="fw-bold">⌛ Avg Request Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg.round(3)} seconds" : avg %> <br>
+      <span class="fw-bold">⚠️ Days since a failed request:</span> <%= days_since_last_error %> 
+      <span class="tool-tip"><i class="fa-regular fa-circle-question tool-tip-icon"></i><span class="tool-tip-text"><%= Request.where(ok: false).last.messages %></span></span><br>
+    </div>
 
+    <div>
+      Ruby on Rails 7<br>
+      React 18 (Resume Builder)<br>
+      Webpack 5<br>
+      FontAwesome<br>
+    </div>
+
+  </div>
+  <hr>
+  <div>
+    <script>
+      function chartTypeChange(e){
+        const chartClass = e.target.dataset.category;
+        const visibleChart = document.querySelector(`.${chartClass}:not(.d-none)`);
+        const targetChart = document.getElementById(e.target.value);
+        targetChart.classList.remove('d-none');
+        visibleChart.classList.add('d-none');
+      }
+    </script>
+    <div>
+      <h6>Chart Type</h6>
+      <label>Weekly
+        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="weeklyHitChart" onChange="chartTypeChange(event)" checked />
+      </label>
+      <label>Daily
+        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="dailyHitChart" onChange="chartTypeChange(event)" />
+      </label>
+    </div>
+  </div>
   <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
-    <canvas id="dailyChart"></canvas>
-    <hr>
-    <canvas id="weeklyChart"></canvas>
-    <hr>
+    <canvas id="dailyHitChart" class="hitChart d-none"></canvas>
+    <canvas id="weeklyHitChart" class="hitChart"></canvas>
   </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-  const ctx = document.getElementById('dailyChart');
-  const ctx2 = document.getElementById('weeklyChart');
+<script defer>
+  const ctx = document.getElementById('dailyHitChart');
+  const ctx2 = document.getElementById('weeklyHitChart');
 
   new Chart(ctx, {
     type: 'bar',
@@ -29,7 +58,7 @@
       ]
       ,
       datasets: [{
-        label: 'Daily Page Loads',
+        label: 'Splash Page Loads',
         data: <%= @values %>,
         borderWidth: 3
       }]

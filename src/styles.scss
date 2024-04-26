@@ -6,6 +6,30 @@
 @import './styles/ListingsIndex.scss';
 @import './styles/ActiveContainer.scss';
 
+.tool-tip{
+  position: relative;
+  font-size: 11px;
+  .tool-tip-icon{
+    cursor: pointer;
+  }
+  .tool-tip-text{
+    position: absolute;
+    left: calc(101% + 5px);
+    display: inline-block;
+    width: max-content;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s;
+    padding: 5px;
+    background-color: #b3b3ff;
+    border-radius: 8px;
+  }
+
+  &:hover .tool-tip-text{
+    visibility: visible;
+    opacity: 1;
+  }
+}
 
 #main.splash{
   background-color: rgb(70, 70, 180);
@@ -293,27 +317,3 @@ display: block;
 }
 
 
-.tool-tip{
-  position: relative;
-  font-size: 11px;
-  .tool-tip-icon{
-    cursor: pointer;
-  }
-  .tool-tip-text{
-    position: absolute;
-    left: calc(101% + 5px);
-    display: inline-block;
-    width: max-content;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s;
-    padding: 5px;
-    background-color: #b3b3ff;
-    border-radius: 8px;
-  }
-
-  &:hover .tool-tip-text{
-    visibility: visible;
-    opacity: 1;
-  }
-}
