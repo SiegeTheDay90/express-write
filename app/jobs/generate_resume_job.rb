@@ -29,7 +29,7 @@ class GenerateResumeJob < ApplicationJob
         model: 'gpt-3.5-turbo',
         messages: [
           { role: 'system',
-            content: 'Covert input to JSON with values that summarize this document. Use exactly this shape, keys, and data types: {
+            content: "Covert input to JSON with values that summarize this document. Use exactly this shape, keys, and data types: {
               personal: {
                   firstName: '',
                   lastName: '',
@@ -45,7 +45,7 @@ class GenerateResumeJob < ApplicationJob
                   location: '',
                   from: '',
                   to: '',
-                  description: '',
+                  description: 'Bullet 1\nBullet2\nBullet3',
                   current: boolean
                 }],
               education: [{
@@ -55,11 +55,11 @@ class GenerateResumeJob < ApplicationJob
                   city: '',
                   location: '',
                   to: '',
-                  description: '',
+                  description: 'Bullet 1\nBullet2\nBullet3',
                   current: boolean
                 }],
-              skills: str[],
-          }. If "skills" array would be empty, use two generic professional skills such as Time Management, Communication, Teamwork, or Problem Solving' },
+              skills: ['Skill 1', 'Skill 2', 'Skill 3'],
+          }. If 'skills' array would be empty, use two generic professional skills such as Time Management, Communication, Teamwork, or Problem Solving" },
           { role: 'user', content: text }
         ],
         response_format: { type: 'json_object' },
