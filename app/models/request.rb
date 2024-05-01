@@ -15,6 +15,11 @@
 #
 class Request < ApplicationRecord
   validates :resource_type, inclusion: %w[letter listing resume temp_letter]
+  before_validation :update_session
+
+  belongs_to :session,
+    primary_key: :session_id,
+    optional: true
 
   def self.average_uptime(range = (Date.today-7.days..Date.today))
     raise TypeError unless range.class == Range
@@ -35,5 +40,10 @@ class Request < ApplicationRecord
 
   def uptime
     (self.updated_at - self.created_at)
+  end
+
+  def update_session
+    return false unless self.session
+    self.session.update!(last_request_id: id)
   end
 end

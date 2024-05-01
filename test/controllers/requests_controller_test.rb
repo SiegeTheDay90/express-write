@@ -4,7 +4,7 @@ require 'test_helper'
 
 class RequestsControllerTest < ActionDispatch::IntegrationTest
   test 'should check valid id' do
-    id = Request.create!(resource_type: 'temp_letter').id
+    id = Request.create!(resource_type: 'temp_letter', session_id: @session.session_id).id
     get "/check/#{id}"
     assert_response :success
     assert @response.content_type.include?('application/json')

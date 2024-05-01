@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   rescue_from StandardError, with: :unhandled_error
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
-  before_action :snake_case_params, :attach_authenticity_token
+  before_action :snake_case_params, :attach_authenticity_token, :track_session
   helper_method :days_since_last_error, :requests_this_week
 
   def csrf
@@ -138,7 +138,8 @@ class ApplicationController < ActionController::Base
   def stress_test
     stress = params['amount'] || 10
 
-    stress.times do |i|
+    stres
+    s.times do |i|
       StressTestJob.perform_later(i)
     end
 
@@ -151,5 +152,20 @@ class ApplicationController < ActionController::Base
 
   def requests_this_week
     Request.where(created_at: Date.today-1.week..Date.today)
+  end
+
+  def track_session
+    @session = Session.find_by(session_id: session["session_id"])
+    if @session
+      @session.update!(hits: @session.hits+1)
+    else
+      # create session
+      @session = Session.create!(
+        session_id: session["session_id"],
+        ip_address: request.remote_ip,
+        hits: 1,
+        user_agent: request.user_agent
+      )
+    end
   end
 end

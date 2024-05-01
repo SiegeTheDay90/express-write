@@ -2,7 +2,7 @@
 
 class LettersController < ApplicationController
   def express
-    req = Request.create!(resource_type: 'temp_letter')
+    req = Request.create!(resource_type: 'temp_letter', session_id: @session.session_id)
     # render json: {ok: false, errors: ["First error", "Second error"], id: req.id} and return
     # Listing to Text Payload
     if params['listing_type'] == 'url'
