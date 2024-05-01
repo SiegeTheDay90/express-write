@@ -4,7 +4,7 @@ class ResumesController < ApplicationController
   def create
     content_type = request.headers['Content-Type']
     raise TypeError.new('Content-Type must be application/pdf or application/vnd.openxmlformats-officedocument.wordprocessingml.document') unless ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].include?(content_type)
-    req = Request.create!(resource_type: 'resume')
+    req = Request.create!(resource_type: 'resume', session_id: @session.session_id)
     if content_type == "application/pdf"
       text = helpers.pdf_to_text(request.body)
     else
