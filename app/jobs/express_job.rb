@@ -43,7 +43,7 @@ class ExpressJob < ApplicationJob
       parameters: {
         model: 'gpt-3.5-turbo',
         messages: [
-          { role: 'system', content: "Write cover 2-3 paragraph cover letter as job candidate. Do not include address, phone number, or email. Include details about education and work experience from the users resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
+          { role: 'system', content: "Write cover 2-3 paragraph cover letter as job candidate. Do not include address, phone number, or email. Do not use 'thrilled'. Include details about education and work experience from the users resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
                 Resume: #{resume}}" },
           { role: 'user', content: user_prompt.to_s }
         ],
