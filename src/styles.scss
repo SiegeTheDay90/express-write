@@ -25,7 +25,7 @@
     border-radius: 8px;
   }
 
-  &:hover .tool-tip-text{
+  &:has(.tool-tip-icon:hover) .tool-tip-text{
     visibility: visible;
     opacity: 1;
   }

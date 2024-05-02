@@ -3,8 +3,7 @@ import { shortDate } from './util/DocX';
 import '../../styles/ResumePreview.scss';
 
 function EducationForm({ resume }){
-    const { personal, education, work, skills } = resume;
-
+    const { bulletMap, personal, education, work, skills } = resume;
     return (
         <div id="resume-preview-container" className="p-4 h-100">
             <section id="resume-preview-personal" className="resume-preview-section">
@@ -18,7 +17,9 @@ function EducationForm({ resume }){
             <section id="resume-preview-work" className="mt-4 resume-preview-section">
                 {work.length ? <h5>Experience</h5> : null}
                     {
-                        work.map( (item, idx) => (
+                        work.map( (item, idx) => {
+                            const bulletMapEle = bulletMap[idx];
+                            return (
                             <div key={idx} className="resume-preview-work-item mt-1">
                                 <h6 className="d-flex flex-row justify-content-between">
                                     <span>
@@ -28,13 +29,38 @@ function EducationForm({ resume }){
                                         {item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.current ? 'Present' : item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}
                                     </span>
                                 </h6>
-                                <p>{item.city || 'City, State'}</p>
-                                {item.description?.split("\n").map((bullet, idx) => (
-                                    bullet.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet}</div></li>: null
-                                ))}
+                                <p>{item.city || 'City, State'}</p>{}
+                                {item.description?.split("\n").map((bullet, idx) => {
+                                    if(bullet.trim()){
+                                        return (
+                                            <li style={{position: "relative"}} className={`bullet-point ${bulletMapEle[idx]["total"] < 3 ? "text-danger" : "text-success"}`} key={idx}>
+                                                <span>{bullet}</span>&nbsp;
+                                                {bulletMapEle[idx]["total"] < 3 &&
+                                                <span className="tool-tip" style={{position: "static"}}>
+                                                    <i className="fa-solid fa-circle-exclamation tool-tip-icon"></i>
+                                                    <span className="tool-tip-text" style={{position: "absolute", top: "100%", left: 0, zIndex: 5}}>
+                                                        <ol style={{margin: 0, padding: 0, listStylePosition: "inside", fontSize: "larger"}}>{
+                                                        ["A", "B", "C"].map((key) =>{
+                                                            return !bulletMapEle[idx][key] ?
+                                                            <li>{{
+                                                                    A: "Be brief; consider decreasing the length to less than 150 characters.", 
+                                                                    B: "Be specific; consider including a different action verb.", 
+                                                                    C: "Highlight metrics; include a numeric measurement to show the impact of your skills."
+                                                                }[key]}
+                                                            </li> : null;
+                                                        })
+                                                        }</ol>
+                                                    </span>
+                                                </span>
+                                                }
+                                            </li>
+                                        )
+                                    } else { return null };
+
+                                })}
                                 {/* <p>{item.description || 'Description'}</p> */}
                             </div>
-                        ))
+                        )})
                     }
             </section>
 

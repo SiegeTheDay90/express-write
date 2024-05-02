@@ -40,6 +40,7 @@ function ResumeBuilder() {
                     email: '',
                     website: ''
                 },
+                bulletMap: [],
                 work: [{
                     companyName: '',
                     jobTitle: '',
@@ -76,6 +77,7 @@ function ResumeBuilder() {
             email: '',
             website: ''
         },
+        bulletMap: [],
         work: [{
             companyName: '',
             jobTitle: '',
@@ -169,7 +171,7 @@ function ResumeBuilder() {
 
 
     }
-
+    console.log(resume);
     return (
         <>
             <dialog id="upload-modal">
