@@ -183,7 +183,7 @@ function ResumeBuilder() {
                     if(!bullet[key]){
                         setIssues( prev =>
                             prev.concat([
-                                <li onClick={focusPreview} key={bullet["id"] + idx} data-id={"_"+bullet["id"]}>{{
+                                <li onMouseEnter={focusPreview} onMouseLeave={focusPreview} className="bullet-issue" key={bullet["id"] + idx} data-id={"_"+bullet["id"]}>{{
                                         A: "Be brief; consider decreasing the length to less than 150 characters.", 
                                         B: "Be specific; consider including a different action verb.", 
                                         C: "Highlight metrics; include a numeric measurement to show the impact of your skills."
@@ -201,7 +201,9 @@ function ResumeBuilder() {
         const id = e.target.dataset.id;
         const previewLi = document.getElementById(id.slice(1));
         // Scroll into view preview Li
-        previewLi.style.border = "1px solid red";
+        previewLi.scrollIntoView({block: 'center', behavior: 'smooth'});
+        previewLi.classList.toggle("border");
+        previewLi.classList.toggle("border-primary");
     }
     console.log(resume);
     
@@ -243,7 +245,7 @@ function ResumeBuilder() {
                 {   hasIssues() && 
                     <div className="resume-builder-sub-section closed">
                         <h4 onClick={focusClick} >Issues</h4>
-                        <ol>{ issues }</ol>
+                        <ol className="ps-3">{ issues }</ol>
                     </div>
                 }
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >

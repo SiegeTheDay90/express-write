@@ -1,6 +1,16 @@
 /*!************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/ResumeBuilder.scss ***!
   \************************************************************************************************************************/
+.bullet-issue {
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: 0.2s;
+  padding: 10px 5px;
+}
+.bullet-issue:hover {
+  border-color: blue;
+}
+
 .focused {
   background-color: #ccf;
 }
@@ -123,6 +133,7 @@ li.bp-input-point::before {
 @charset "UTF-8";
 .text-caution {
   color: rgb(211, 140, 0);
+  padding: 10px 5px;
 }
 
 #resume-preview-container {
@@ -141,6 +152,8 @@ li.bp-input-point::before {
 
 .bullet-point {
   display: flex;
+  transition: border-color ease 0.7s;
+  border: 1px solid transparent;
 }
 .bullet-point::before {
   content: "•";
