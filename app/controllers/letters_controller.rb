@@ -76,7 +76,8 @@ class LettersController < ApplicationController
     end
 
     user_prompt = params['prompt']
-    ExpressJob.perform_later(req, @bio_payload, @listing_payload, params['listing_type'], user_prompt)
+    tone = params['tone']
+    ExpressJob.perform_later(req, @bio_payload, @listing_payload, params['listing_type'], user_prompt, tone)
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end
 
