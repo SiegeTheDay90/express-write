@@ -10,27 +10,47 @@ class LoadingBar {
       this.loadingImage.id = "loading-gif"
       this.container = form.parentElement;
       this.originalForm = form;
-      form.remove();
+      // form.remove();
       this.action = action;
       this.complete = 0;
       this.timeElapsed = 0;
       this.resourceId;
       this.progressMessages = ["Dipping pen...", "Mixing Ink...", "Ruffling paper..."]
       this.defaultMessage = "Writing... This can take a few minutes."
-
+      
       this.completionCallback ||= completionCallback;
+      
+      this.popUp = document.createElement('dialog');
+      const closePopUp = document.createElement('button');
+      this.popUp.innerHTML = `
+      <div>
+        <p>While you wait, consider sharing us on LinkedIn! It takes a few seconds an means the world to me!</p>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwrite-wise-4d2bfd5abb7a.herokuapp.com%2F&text=" target="_blank">
+          LinkedIn
+        </a>
+      </div>
+      `
+      closePopUp.innerText = "x";
+      closePopUp.addEventListener("click", () => {
+        this.popUp.remove();
+        this.popUp.close();
+      });
+      this.popUp.append(closePopUp);
+      this.popUp.append(document.createElement('br'));
+      this.popUp.append(this.bar);
 
-      this.container.append(this.bar);
       this.statusBox.append(this.status);
       this.statusBox.append(this.loadingImage);
-      this.container.append(this.statusBox);
+      this.popUp.append(this.statusBox);
+      this.container.append(this.popUp);
+      this.popUp.showModal();
 
       this.bar.innerText = 0;
       this.bar.max = 100;
 
       this.status.innerHTML = "Getting Started..."
       // options["authenticity_token"] = "<%= form_authenticity_token %>";
-      fetch(url, options).then((res) => this.loadingCallback(res)).catch(this.failureCallback);
+      fetch(url, options).then((res) => {this.loadingCallback(res)}).catch(() => {this.popUp.remove(); this.failureCallback()});
   }
 
   incComplete(num){
