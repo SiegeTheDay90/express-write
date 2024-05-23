@@ -5,8 +5,7 @@ class ExpressJob < ApplicationJob
   BLACKLIST = Set.new(%w[header footer a code template text form link script img
                          iframe icon comment button input head meta style])
 
-  def perform(request, bio_payload, listing_payload, listing_type = 'url',
-              user_prompt = 'Write a cover letter for the job listing that uses the resume as support.', tone=:passion)
+  def perform(request, bio_payload, listing_payload, listing_type = 'url', user_prompt = '', tone=:passion)
 
     user_prompt = 'Write a cover letter for the job listing that uses the resume as support.' if user_prompt.empty?
 
