@@ -52,18 +52,18 @@ class ExpressJob < ApplicationJob
       \"I considered submitting my latest credit card statement as proof of just how much I love online shopping, but I thought a safer approach might be writing this cover letter and describing all the reasons I’m the one who can take [E-Commerce Company]’s business to the next level.\",
       \"I never thought that accidentally dropping my iPhone out of a second story window would change my life (it’s a funny story—ask me about it). But thanks to my misfortune, I discovered [Phone Repair Company]—and found my dream job as an expansion associate.\""
 
-      }[tone.to_sym]
+    }[tone.to_sym]
 
-      OpenAI.configure do |config|
-        config.access_token = ENV['OPENAI']
-      end
-      resume = JSON.parse(
-        @profile.to_json(except: %i[id title]).gsub("\r", '')
-      )
-      resume['first_name'] = 'WriteWise'
-      resume['last_name'] = 'User'
+    OpenAI.configure do |config|
+      config.access_token = ENV['OPENAI']
+    end
+    resume = JSON.parse(
+      @profile.to_json(except: %i[id title]).gsub("\r", '')
+    )
+    resume['first_name'] = 'WriteWise'
+    resume['last_name'] = 'User'
       
-    system_prompt = "Write cover 2-3 paragraph cover letter as job candidate. Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
+    system_prompt = "Write cover 2-3 paragraph cover letter as job candidate. Make sure to include a greeting and closing signature. Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
     Resume: #{resume}}.
     "
     client = OpenAI::Client.new
@@ -75,22 +75,33 @@ class ExpressJob < ApplicationJob
           { role: 'user', content: user_prompt.to_s + "I want the tone to be #{tone}. "+ "Examples of strong openers include: #{openers}" }
         ],
         temperature: 1.3
-        # max_tokens: 10000
       }
-      )
+    )
+
+    
+    response = client.chat(
+      parameters: {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: 'Rewrite the input at a 12th grade level' },
+          { role: 'user', content: response['choices'][0]['message']['content'] }
+        ],
+        temperature: 1.3
+      }
+    ) unless !response['choices'][0]['message']['content']
       
-      begin
-        @message = response['choices'][0]['message']['content']
-        @letter = TempLetter.new(profile: @profile.to_json, listing: @listing.to_json, body: @message)
-        
-        if @letter.save
-          # success
-          request.complete!(true, @letter.secure_id, @message)
-        else
-          # failure
-          request.complete!(false, nil, @letter.errors.full_messages.to_s)
-        end
-      rescue StandardError
+    begin
+      @message = response['choices'][0]['message']['content']
+      @letter = TempLetter.new(profile: @profile.to_json, listing: @listing.to_json, body: @message)
+      
+      if @letter.save
+        # success
+        request.complete!(true, @letter.secure_id, @message)
+      else
+        # failure
+        request.complete!(false, nil, @letter.errors.full_messages.to_s)
+      end
+    rescue StandardError
         @message = response.to_json
         request.complete!(false, nil, @message)
       end
