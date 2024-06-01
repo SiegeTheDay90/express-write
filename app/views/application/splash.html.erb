@@ -19,7 +19,7 @@
                 if(uploadType === "File"){
                     input.innerHTML += `<input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>`
                 } else {
-                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
+                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3" required>`
                 }
             break;
 
@@ -31,9 +31,9 @@
                                     </div>`
                                     
                 if(uploadType === "File"){
-                    input.innerHTML += `<input type="file" name="file" id="file" accept=".doc, .docx" class="mb-3">`
+                    input.innerHTML += `<input type="file" name="file" id="file" accept=".doc, .docx" class="mb-3" required>`
                 } else {
-                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
+                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3" required>`
                 }
             break;
 
@@ -204,6 +204,15 @@
                             <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text" onChange="listingInputChange(event)" class="listing-type"></label>
                         </div>
                         <input name="input" placeholder="Paste Here" id="link-to-listing" class="form-control" onInput="listingInputChange(event)">
+                    </div>
+                    <div id="tone-input" class="d-flex flex-column align-items-start w-100 mb-2">
+                            <label for="tone-select">Tone: </label>
+                            <select class="mb-1" name="tone" id="tone-select">
+                                <option value="passionate" selected>Passionate</option>
+                                <option value="humorous">Humorous</option>
+                                <option value="admiration">Admiration</option>
+                                <option value="confident">Confident</option>
+                            </select>                       
                     </div>
                     <details class="w-100 text-start">
                         <summary class="mb-2">

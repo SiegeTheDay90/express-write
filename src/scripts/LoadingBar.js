@@ -1,36 +1,118 @@
 import NoticeBallon from "./NoticeBalloon";
 
 class LoadingBar {
-  constructor(form, url, options={}, action, completionCallback){
+  constructor(_form, url, options={}, action, completionCallback){
       this.bar = document.createElement('progress');
+      this.action = action;
+      this.maxTime = 60;
       this.status = document.createElement('span');
       this.statusBox = document.createElement('p');
       this.loadingImage = new Image();
-      this.loadingImage.src = ["https://cl-helper-development.s3.amazonaws.com/loading-box.gif", "https://cl-helper-development.s3.amazonaws.com/loading-ball.gif"][Math.floor(Math.random()*2)]
-      this.loadingImage.id = "loading-gif"
-      this.container = form.parentElement;
-      this.originalForm = form;
-      form.remove();
-      this.action = action;
-      this.complete = 0;
+      this.loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif";
+      this.loadingImage.id = "loading-gif";
+      
       this.timeElapsed = 0;
-      this.resourceId;
-      this.progressMessages = ["Dipping pen...", "Mixing Ink...", "Ruffling paper..."]
-      this.defaultMessage = "Writing... This can take a few minutes."
-
+      this.progressMessages = ["Mixing Ink...", "Dipping pen...", "Shuffling papers...", "Thinking...", "Writing..."]
+      this.defaultMessage = "Writing... This can take a minute."
+      
       this.completionCallback ||= completionCallback;
+      
+      this.popUp = document.createElement('dialog');
+      this.popUp.id = 'loadingModal';
+      this.popUp.style = {
+        ...this.popUp.style,
+        border: '2px solid green',
+        padding: '20px',
+        display: 'flex',
+        gap: '10px'
+      }
+      this.popUp.innerHTML = `
+      <style>
+      #modal {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      #closeButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      
+      #modalContent {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      #modalText {
+        flex: 1;
+        padding-right: 20px;
+      }
+      
+      #modalLinks {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      
+      #modalLinks a {
+        margin-bottom: 10px;
+      }
+      
+      #modalLinks img {
+        width: 85px;
+        height: auto;
+      }
+    </style>      
+      <div id="modal">
+        <div id="modalContent">
+          <div id="modalText">
+            <p>While you wait, consider sharing and following 
+              <a href="https://www.linkedin.com/company/write-wise-job-seekers/" target="_blank">WriteWise</a>
+              ! It takes a few seconds and means the world to me!
+            </p>
+          </div>
+          <div id="modalLinks">  
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwrite-wise-4d2bfd5abb7a.herokuapp.com%2F&text=WriteWise%20is%20a%20project%20built%20by%20one%20developer.%20Test%20it%20out%20for%20free%21" target="_blank">
+              <img src="https://cl-helper-development.s3.amazonaws.com/linkedin-share-button-icon.png" />
+            </a> 
+            <br/>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwrite-wise-4d2bfd5abb7a.herokuapp.com%2F" target="_blank">
+              <img src="https://cl-helper-development.s3.amazonaws.com/facebook-share-button-icon.png" />
+            </a>
+          </div>
+        </div>
+      </div>
+    `
+      this.popUp.append(document.createElement('br'));
+      this.popUp.append(this.bar);
 
-      this.container.append(this.bar);
       this.statusBox.append(this.status);
       this.statusBox.append(this.loadingImage);
-      this.container.append(this.statusBox);
+      this.popUp.append(this.statusBox);
+      document.querySelector('*').append(this.popUp);
+      this.popUp.showModal();
 
       this.bar.innerText = 0;
       this.bar.max = 100;
 
       this.status.innerHTML = "Getting Started..."
       // options["authenticity_token"] = "<%= form_authenticity_token %>";
-      fetch(url, options).then((res) => this.loadingCallback(res)).catch(this.failureCallback);
+      fetch(url, options).then((res) => {this.loadingCallback(res)}).catch((error) => {
+        this.failureCallback([error.toString()]);
+      });
   }
 
   incComplete(num){
@@ -55,9 +137,22 @@ class LoadingBar {
           } else{ // Failure
             this.failureCallback(JSON.parse(data.messages));
           }
-        } else if(this.timeElapsed > 240){ // Timeout
-          clearInterval(this.interval);
-          this.failureCallback("Timeout");
+        } else if(this.timeElapsed > this.maxTime){ // Timeout
+          this.status.innerHTML = "";
+          const statusText = document.createElement('p');
+          statusText.innerText = "This is taking longer than usual."
+          const cancelButton = document.createElement('button');
+          cancelButton.innerText = "Cancel & Try Again";
+          cancelButton.classList.add("btn");
+          cancelButton.classList.add("btn-primary");
+
+          cancelButton.addEventListener('click', () => {
+            this.failureCallback("cancel");
+          })
+          this.status.append(statusText);
+          this.status.append(cancelButton);
+          this.status.append(" or wait a little longer!")
+          return;
         }
         
         this.status.innerText = this.progressMessages.length ? this.progressMessages.pop() : this.defaultMessage;
@@ -74,7 +169,7 @@ class LoadingBar {
       let count = 5;
       let bio;
       let params;
-      this.status.innerText = `Complete! Redirecting in ${count}.....`
+      this.status.innerText = `Complete! Link ready in ${count}.....`
       switch(this.action){
         case "listings#generate":
           this.nextPath = `/listings/${id}/`;
@@ -109,33 +204,27 @@ class LoadingBar {
       }
 
       setTimeout(() => {
-        window.location.href = window.location.origin + this.nextPath;
+        this.status.innerHTML = `<a href="${window.location.origin + this.nextPath}">Your Letter</a>`;
+        this.loadingImage.remove();
       }, 5000);
       setInterval(() => {
-        this.status.innerText = `Complete! Redirecting in ${--count}`+'.'.repeat(count);
+        this.status.innerText = `Complete! Link ready in ${--count}`+'.'.repeat(count);
       }, 990);
 
   }
 
   failureCallback(errors){
+    this.popUp.remove();
+    if(errors === "cancel"){
+      clearInterval(this.interval);
+      errors = ["Action cancelled."]
+    }
     console.error("Request Failed: ", errors.join("\n"));
     const alertContainer = document.getElementById("alert-container");
     errors.forEach(error => {
       new NoticeBallon(alertContainer, "error", error)
     })
-    this.status.innerText = "ERROR";
-    const tryAgain = document.createElement("button");
-    tryAgain.classList.add("btn");
-    tryAgain.classList.add("btn-primary");
-    tryAgain.innerText = "Try Again?";
-    tryAgain.addEventListener("click", (e) => {
-      this.container.append(this.originalForm);
-      this.bar.remove();
-      this.status.remove();
-      this.loadingImage.remove();
-      tryAgain.remove();
-    })
-    this.container.append(tryAgain);
+
   }
 }
 
