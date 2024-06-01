@@ -27,7 +27,9 @@ function ResumeBuilder() {
     function closeUploadModal(){
         document.getElementById("upload-modal").close();
     }
-    
+    function hasIssues(){
+        return resume.bulletMap.some((bulletMapEle) => bulletMapEle.some((subEle) => subEle.total < 3))
+    }
 
     function reset(){
         if(confirm("Are you sure? Your local save will be lost.")){
@@ -65,6 +67,7 @@ function ResumeBuilder() {
             })
         }
     }
+
 
 
     const [errors, setErrors] = useState(null);
@@ -171,7 +174,39 @@ function ResumeBuilder() {
 
 
     }
-    console.log(resume);
+
+    const [issues, setIssues] = useState([]);
+    useEffect(() => {
+        resume.bulletMap.forEach((bulletArray) => {
+            bulletArray.forEach((bullet) => {
+                ["A", "B", "C"].forEach((key, idx) =>{
+                    if(!bullet[key]){
+                        setIssues( prev =>
+                            prev.concat([
+                                <li onMouseEnter={focusPreview} onMouseLeave={focusPreview} className="bullet-issue" key={bullet["id"] + idx} data-id={"_"+bullet["id"]}>{{
+                                        A: "Be brief; consider decreasing the length to less than 150 characters.", 
+                                        B: "Be specific; consider including a different action verb.", 
+                                        C: "Highlight metrics; include a numeric measurement to show the impact of your skills."
+                                    }[key]}
+                                </li> ]
+                            )
+                        )
+                    }
+                })
+                
+            })
+        })
+    }, [resume.bulletMap]);
+
+    function focusPreview(e){
+        const id = e.target.dataset.id;
+        const previewLi = document.getElementById(id.slice(1));
+        // Scroll into view preview Li
+        previewLi.scrollIntoView({block: 'center', behavior: 'smooth'});
+        previewLi.classList.toggle("border");
+        previewLi.classList.toggle("border-primary");
+    };
+    
     return (
         <>
             <dialog id="upload-modal">
@@ -207,6 +242,12 @@ function ResumeBuilder() {
 
             </div>
             <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
+                {   hasIssues() && 
+                    <div className="resume-builder-sub-section closed">
+                        <h4 onClick={focusClick} >Issues</h4>
+                        <ol className="ps-3">{ issues }</ol>
+                    </div>
+                }
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >
                     <h4 onClick={focusClick} >Personal Info</h4>
                     <PersonalInfoForm resume={[resume, setResume]}/>

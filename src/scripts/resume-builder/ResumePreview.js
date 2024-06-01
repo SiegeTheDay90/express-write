@@ -2,8 +2,17 @@ import React from 'react';
 import { shortDate } from './util/DocX';
 import '../../styles/ResumePreview.scss';
 
-function EducationForm({ resume }){
+function ResumePreview({ resume }){
     const { bulletMap, personal, education, work, skills } = resume;
+    function bulletStyle(total){
+        if(total < 2){
+            return "text-danger"
+        } else if(total >= 3){
+            return "text-success"
+        } else {
+            return "text-caution"
+        }
+    }
     return (
         <div id="resume-preview-container" className="p-4 h-100">
             <section id="resume-preview-personal" className="resume-preview-section">
@@ -33,7 +42,7 @@ function EducationForm({ resume }){
                                 {item.description?.split("\n").map((bullet, idx) => {
                                     if(bullet.trim()){
                                         return (
-                                            <li style={{position: "relative"}} className={`bullet-point ${bulletMapEle[idx]["total"] < 3 ? "text-danger" : "text-success"}`} key={idx}>
+                                            <li id={bulletMapEle[idx].id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(bulletMapEle[idx]["total"])}`} key={idx}>
                                                 <span>{bullet}</span>&nbsp;
                                                 {bulletMapEle[idx]["total"] < 3 &&
                                                 <span className="tool-tip" style={{position: "static"}}>
@@ -94,4 +103,4 @@ function EducationForm({ resume }){
     );
 }
 
-export default EducationForm
+export default ResumePreview

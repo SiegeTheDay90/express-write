@@ -1,3 +1,8 @@
+.text-caution{
+    color: rgb(211, 140, 0);
+    padding: 10px 5px;
+}
+
 #resume-preview-container{
     border-radius: 2px;
     border: 1px solid #bbd;
@@ -14,6 +19,8 @@
 
 .bullet-point {
     display: flex;
+    transition: border-color ease 0.7s;
+    border: 1px solid transparent;
     &::before{
         content: "•";
         margin-right: 8px;
