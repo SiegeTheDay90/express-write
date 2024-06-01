@@ -40,6 +40,7 @@ class GenerateResumeJob < ApplicationJob
     result = JSON.parse(response['choices'][0]['message']['content'])
     result["A"] = bullet.gsub(" ", "").length < 150
     result["total"] = result.values.inject(0){|acc, val| acc + (val ? 1 : 0)}
+    result["id"] = SecureRandom.alphanumeric
     return result
 
     return 
