@@ -29,7 +29,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
     }
 
     const handleChange = (e) => {
-      let { name, value, checked } = e.target;
+      let { name, value, checked, append } = e.target;
       if(e.target.type === "checkbox"){
         value = checked;
       }
@@ -39,9 +39,25 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
         ...newWork[idx],
         [name]: value
       }
+      console.log({
+        ...resume,
+        work: newWork
+      });
+      debugger;
+      if(append){
+        var newBulletMap = [...resume.bulletMap];
+        newBulletMap[idx].push({
+          "A": true,
+          "B": true,
+          "C": true,
+          "total": 3,
+          "id": Math.random().toString(36).substring(2,10+2)
+      })
+      }
       setResume(prevState => ({
         ...prevState,
-        work: newWork
+        work: newWork,
+        bulletMap: newBulletMap || prevState.bulletMap
       }));
 
     };
@@ -120,7 +136,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
 
       <div className="row mb-3">
         <div className="col-sm-10">
-            <BulletPointInput id={"description"} label={"Description"} value={formData.description} setValue={handleChange}/>
+            <BulletPointInput idx={idx} name={"description"} label={"Bullet Points"} value={formData.description} setValue={handleChange}/>
         </div>
       </div>
       <div className="row mb-3">
