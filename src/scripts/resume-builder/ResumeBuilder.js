@@ -196,7 +196,8 @@ function ResumeBuilder() {
                 
             })
         })
-    }, [resume.bulletMap])
+    }, [resume.bulletMap]);
+
     function focusPreview(e){
         const id = e.target.dataset.id;
         const previewLi = document.getElementById(id.slice(1));
@@ -204,8 +205,7 @@ function ResumeBuilder() {
         previewLi.scrollIntoView({block: 'center', behavior: 'smooth'});
         previewLi.classList.toggle("border");
         previewLi.classList.toggle("border-primary");
-    }
-    console.log(resume);
+    };
     
     return (
         <>
