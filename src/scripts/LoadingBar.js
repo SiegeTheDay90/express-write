@@ -111,7 +111,6 @@ class LoadingBar {
       this.status.innerHTML = "Getting Started..."
       // options["authenticity_token"] = "<%= form_authenticity_token %>";
       fetch(url, options).then((res) => {this.loadingCallback(res)}).catch((error) => {
-        this.popUp.remove(); 
         this.failureCallback([error.toString()]);
       });
   }
@@ -149,7 +148,6 @@ class LoadingBar {
 
           cancelButton.addEventListener('click', () => {
             this.failureCallback("cancel");
-            this.popUp.remove();
           })
           this.status.append(statusText);
           this.status.append(cancelButton);
@@ -216,6 +214,7 @@ class LoadingBar {
   }
 
   failureCallback(errors){
+    this.popUp.remove();
     if(errors === "cancel"){
       clearInterval(this.interval);
       errors = ["Action cancelled."]
@@ -225,6 +224,7 @@ class LoadingBar {
     errors.forEach(error => {
       new NoticeBallon(alertContainer, "error", error)
     })
+
   }
 }
 

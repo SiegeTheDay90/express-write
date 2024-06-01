@@ -69,8 +69,7 @@ class LettersController < ApplicationController
         @bio_payload = helpers.docx_to_text(@bio_payload)
       end
     rescue StandardError => e
-      errors = ['File is corrupted or in the wrong format. If you think this is wrong, please report a bug.',
-                e.to_s]
+      errors = ["Error: #{e.to_s}"]
       req.update!(ok: false, complete: true, messages: errors)
       render json: { ok: false, errors:, id: req.id } and return
     end

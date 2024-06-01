@@ -19,7 +19,7 @@
                 if(uploadType === "File"){
                     input.innerHTML += `<input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>`
                 } else {
-                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
+                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3" required>`
                 }
             break;
 
@@ -31,9 +31,9 @@
                                     </div>`
                                     
                 if(uploadType === "File"){
-                    input.innerHTML += `<input type="file" name="file" id="file" accept=".doc, .docx" class="mb-3">`
+                    input.innerHTML += `<input type="file" name="file" id="file" accept=".doc, .docx" class="mb-3" required>`
                 } else {
-                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3">`
+                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3" required>`
                 }
             break;
 
