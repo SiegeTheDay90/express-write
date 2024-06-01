@@ -42,6 +42,7 @@ export default function BulletPointInput({idx, name, label, value, setValue}){
         setValue({
             ...e, target: {...e.target, value: Array.from(inputElements).map(bullet => bullet.value).concat([newInputRef.current.value]).join("\n"), name, append: true}
         });
+        newInputRef.current.value = "";
     }
 
     return(

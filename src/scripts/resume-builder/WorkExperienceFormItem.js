@@ -39,11 +39,10 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
         ...newWork[idx],
         [name]: value
       }
-      console.log({
-        ...resume,
-        work: newWork
-      });
-      debugger;
+      // console.log({
+      //   ...resume,
+      //   work: newWork
+      // });
       if(append){
         var newBulletMap = [...resume.bulletMap];
         newBulletMap[idx].push({
