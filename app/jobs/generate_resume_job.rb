@@ -38,9 +38,27 @@ class GenerateResumeJob < ApplicationJob
     )
 
     result = JSON.parse(response['choices'][0]['message']['content'])
-    result["A"] = bullet.gsub(" ", "").length < 150
-    result["total"] = result.values.inject(0){|acc, val| acc + (val ? 1 : 0)}
-    result["id"] = SecureRandom.alphanumeric
+
+
+    # Manually added ratings fields
+    result["A"] = bullet.gsub(" ", "").length > 150
+
+    # Additional fields
+    result["meta"] = {}
+    result["meta"]["total"] = result.values.inject(0){|acc, val| acc + (val ? 0 : 1)}
+    result["meta"]["id"] = SecureRandom.alphanumeric
+    result["meta"]["dismissed"] = false
+
+
+    descriptions = { 
+      "A" => "Be brief; consider decreasing the length to less than 150 characters.", 
+      "B" => "Be specific; consider including a different action verb.", 
+      "C" =>  "Highlight metrics; include a numeric measurement to show the impact of your skills."
+    }
+
+    descriptions.each_key{|key| result[key] ? result[key] = descriptions[key] : result.delete(key)}
+
+    
     return result
 
     return 
@@ -99,13 +117,11 @@ class GenerateResumeJob < ApplicationJob
 
     begin
       resume = JSON.parse(response['choices'][0]['message']['content'])
-      resume["bulletMap"] = [];
       resume["work"].each do |work|
-        bullets = work["description"]
-        work["description"] = work["description"].join("\n")
-        bulletRatings = []
-        bullets.each{|bullet| bulletRatings.push(gptEval(bullet))}
-        resume["bulletMap"].push(bulletRatings)
+        bullets = work["description"] # Save the array of bullets
+        work["description"] = work["description"].join("\n") # Change the 'description' to a \n separated string for frontend. TODO: Keep as array always.
+        work["bulletRatings"] = []
+        bullets.each{|bullet| work["bulletRatings"].push(gptEval(bullet))}
       end
       return JSON.unparse(resume)
     rescue JSON::ParserError

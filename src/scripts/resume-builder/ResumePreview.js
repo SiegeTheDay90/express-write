@@ -3,12 +3,12 @@ import { shortDate } from './util/DocX';
 import '../../styles/ResumePreview.scss';
 
 function ResumePreview({ resume }){
-    const { bulletMap, personal, education, work, skills } = resume;
+    const { personal, education, work, skills } = resume;
     function bulletStyle(total){
-        if(total < 2){
-            return "text-danger"
-        } else if(total >= 3){
+        if(total == 0){
             return "text-success"
+        } else if(total >= 2){
+            return "text-danger"
         } else {
             return "text-caution"
         }
@@ -26,8 +26,7 @@ function ResumePreview({ resume }){
             <section id="resume-preview-work" className="mt-4 resume-preview-section">
                 {work.length ? <h5>Experience</h5> : null}
                     {
-                        work.map( (item, idx) => {
-                            const bulletMapEle = bulletMap[idx];
+                        work.map( (item, idx) => {                            
                             return (
                             <div key={idx} className="resume-preview-work-item mt-1">
                                 <h6 className="d-flex flex-row justify-content-between">
@@ -39,35 +38,28 @@ function ResumePreview({ resume }){
                                     </span>
                                 </h6>
                                 <p>{item.city || 'City, State'}</p>{}
-                                {item.description?.split("\n").map((bullet, idx) => {
-                                    if(bullet.trim()){
-                                        return (
-                                            <li id={bulletMapEle[idx].id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(bulletMapEle[idx]["total"])}`} key={idx}>
-                                                <span>{bullet}</span>&nbsp;
-                                                {bulletMapEle[idx]["total"] < 3 &&
-                                                <span className="tool-tip" style={{position: "static"}}>
-                                                    <i className="fa-solid fa-circle-exclamation tool-tip-icon"></i>
-                                                    <span className="tool-tip-text" style={{position: "absolute", top: "100%", left: 0, zIndex: 5}}>
-                                                        <ol style={{margin: 0, padding: 0, listStylePosition: "inside", fontSize: "larger"}}>{
-                                                        ["A", "B", "C"].map((key) =>{
-                                                            return !bulletMapEle[idx][key] ?
-                                                            <li>{{
-                                                                    A: "Be brief; consider decreasing the length to less than 150 characters.", 
-                                                                    B: "Be specific; consider including a different action verb.", 
-                                                                    C: "Highlight metrics; include a numeric measurement to show the impact of your skills."
-                                                                }[key]}
-                                                            </li> : null;
+                                {item.bulletRatings.map((rating, idx) => {
+                                    return (
+                                        <li id={rating?.meta.id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(rating?.meta.total)}`} key={rating?.meta.id+idx}>
+                                            <span>{item.description.split("\n")[idx]}</span>&nbsp;
+                                            {rating?.meta.total > 0 &&
+                                            <span className="tool-tip" style={{position: "static"}}>
+                                                <i className="fa-solid fa-circle-exclamation tool-tip-icon"></i>
+                                                <span className="tool-tip-text" style={{position: "absolute", top: "100%", left: 0, zIndex: 5}}>
+                                                    
+                                                    <ol style={{margin: 0, padding: 0, listStylePosition: "inside", fontSize: "larger"}}>{
+                                                        Object.entries(rating).map(([key, value]) =>{
+                                                            return key !== 'total' && key !== 'meta' ? <li key={value}>{value}</li> : null;
                                                         })
-                                                        }</ol>
-                                                    </span>
+                                                    }</ol>
+
                                                 </span>
-                                                }
-                                            </li>
-                                        )
-                                    } else { return null };
+                                            </span>
+                                            }
+                                        </li>
+                                    )
 
                                 })}
-                                {/* <p>{item.description || 'Description'}</p> */}
                             </div>
                         )})
                     }

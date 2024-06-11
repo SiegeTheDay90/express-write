@@ -9,21 +9,6 @@ export default function BulletPointInput({idx, name, label, value, setValue}){
         setBullets(value?.split("\n") || [""]);
     }, [value])
 
-    function leaveInput(){
-        inputRef.current.classList.add("invisible");
-        inputRef.current.classList.add("position-absolute");
-        listRef.current.classList.remove("invisible");
-        listRef.current.classList.remove("position-absolute");
-    }
-
-    function listClick(e){
-        e.preventDefault();
-        inputRef.current.classList.remove("invisible");
-        inputRef.current.classList.remove("position-absolute");
-        listRef.current.classList.add("invisible");
-        listRef.current.classList.add("position-absolute");
-        inputRef.current.focus();
-    }
 
     // Each bullet should be an individual text input. The values of the overall bullet input will be a \n separated strings combined from the different inputs.
 
@@ -48,7 +33,7 @@ export default function BulletPointInput({idx, name, label, value, setValue}){
     return(
         <>
         <h3>{label}</h3>
-            {bullets.map((bullet) => <>
+            {bullets.map((bullet, idx) => <>
                 <input type="text" className={idx+"_bullet_input mb-2 w-100"} value={bullet} onChange={bulletUpdate} onKeyDown={(event) => {if(event.key === "Enter" ||event.keyCode === 13) event.preventDefault()}} />
                 <br/>
             </>)}
