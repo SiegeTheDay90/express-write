@@ -26,7 +26,7 @@ function WorkExperienceForm( {resume: [resume, setResume]}){
     return (
       <>
         <ul className='ps-1'>
-          {formItems.map((item, idx) => <WorkExperienceFormItem key={idx} resume={[resume, setResume]} idx={idx} item={item} />)}
+          {formItems.map((item, idx) => {return <WorkExperienceFormItem key={idx} resume={[resume, setResume]} idx={idx} item={item} />})}
         </ul>
         <button className="btn btn-sm btn-secondary" onClick={AddItem}>+ Add New Experience</button>
       </>

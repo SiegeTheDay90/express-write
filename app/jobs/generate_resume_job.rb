@@ -73,7 +73,7 @@ class GenerateResumeJob < ApplicationJob
                   location: '',
                   from: '',
                   to: '',
-                  description: 'Bullet 1\nBullet2\nBullet3',
+                  description: [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\"],
                   current: boolean
                 }],
               education: [{
@@ -100,9 +100,9 @@ class GenerateResumeJob < ApplicationJob
     begin
       resume = JSON.parse(response['choices'][0]['message']['content'])
       resume["bulletMap"] = [];
-
       resume["work"].each do |work|
-        bullets = work["description"].split("\n")
+        bullets = work["description"]
+        work["description"] = work["description"].join("\n")
         bulletRatings = []
         bullets.each{|bullet| bulletRatings.push(gptEval(bullet))}
         resume["bulletMap"].push(bulletRatings)
