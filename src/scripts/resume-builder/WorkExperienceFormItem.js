@@ -43,20 +43,9 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
       //   ...resume,
       //   work: newWork
       // });
-      if(append){
-        var newBulletMap = [...resume.bulletMap];
-        newBulletMap[idx].push({
-          "A": true,
-          "B": true,
-          "C": true,
-          "total": 3,
-          "id": Math.random().toString(36).substring(2,10+2)
-      })
-      }
       setResume(prevState => ({
         ...prevState,
-        work: newWork,
-        bulletMap: newBulletMap || prevState.bulletMap
+        work: newWork
       }));
 
     };

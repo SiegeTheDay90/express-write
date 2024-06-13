@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./BulletPointInput.scss"
+import BulletPointInputItem from "./BulletPointInputItem";
 
 export default function BulletPointInput({idx, name, label, value, setValue}){
     const newInputRef = useRef();
@@ -34,12 +35,10 @@ export default function BulletPointInput({idx, name, label, value, setValue}){
         <>
         <h3>{label}</h3>
             {bullets.map((bullet, idx) => <>
-                <input type="text" className={idx+"_bullet_input mb-2 w-100"} value={bullet} onChange={bulletUpdate} onKeyDown={(event) => {if(event.key === "Enter" ||event.keyCode === 13) event.preventDefault()}} />
+                <BulletPointInputItem idx={idx} value={bullet} onChange={bulletUpdate} />
                 <br/>
             </>)}
-            <label>New Bullet: 
-                <input ref={newInputRef} type="text" className="new_bullet_input mb-2 w-100" onBlur={newBulletUpdate} onKeyDown={(event) => {if(event.key === "Enter" ||event.keyCode === 13) event.preventDefault()}}/>
-            </label>
+
         </>
     )
 }
