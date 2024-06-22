@@ -28,7 +28,7 @@ function ResumeBuilder() {
         document.getElementById("upload-modal").close();
     }
     function hasIssues(){
-        return resume.bulletMap.some((bulletMapEle) => bulletMapEle.some((subEle) => subEle.total < 3))
+        return resume.work.some((workItem) => workItem.bulletRatings?.some((bulletRating) => bulletRating?.meta.total > 0));
     }
 
     function reset(){
@@ -42,7 +42,6 @@ function ResumeBuilder() {
                     email: '',
                     website: ''
                 },
-                bulletMap: [],
                 work: [{
                     companyName: '',
                     jobTitle: '',
@@ -51,6 +50,7 @@ function ResumeBuilder() {
                     from: '',
                     to: '',
                     description: '',
+                    bulletRatings: [],
                     current: false
                   }],
                 education: [{
@@ -80,9 +80,9 @@ function ResumeBuilder() {
             email: '',
             website: ''
         },
-        bulletMap: [],
         work: [{
             companyName: '',
+            bulletRatings: [],
             jobTitle: '',
             city: '',
             location: '',
@@ -143,7 +143,6 @@ function ResumeBuilder() {
     
             const response = await fetch("/resumes", options);
             const {ok, status, id} = await response.json();
-            console.log({ok, status, id});
 
             const loadingImage = document.createElement('img');
             loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif";
@@ -177,26 +176,28 @@ function ResumeBuilder() {
 
     const [issues, setIssues] = useState([]);
     useEffect(() => {
-        resume.bulletMap.forEach((bulletArray) => {
-            bulletArray.forEach((bullet) => {
-                ["A", "B", "C"].forEach((key, idx) =>{
-                    if(!bullet[key]){
+        resume.work.forEach((workItem) => { // { ...workItem, description, bulletRatings }
+            workItem.bulletRatings.forEach((rating) => {
+                if(rating?.meta.total > 0){
+                    Object.entries(rating).forEach(([key, text], idx) =>{
+                        if(key === "meta") return;
                         setIssues( prev =>
                             prev.concat([
-                                <li onMouseEnter={focusPreview} onMouseLeave={focusPreview} className="bullet-issue" key={bullet["id"] + idx} data-id={"_"+bullet["id"]}>{{
-                                        A: "Be brief; consider decreasing the length to less than 150 characters.", 
-                                        B: "Be specific; consider including a different action verb.", 
-                                        C: "Highlight metrics; include a numeric measurement to show the impact of your skills."
-                                    }[key]}
-                                </li> ]
-                            )
+                                <li 
+                                onMouseEnter={focusPreview} 
+                                onMouseLeave={focusPreview} 
+                                className="bullet-issue" 
+                                // key={rating?.meta.id +'_'+ idx} 
+                                data-id={"_"+rating?.meta.id}>
+                                    {text}
+                                </li>
+                            ])
                         )
-                    }
-                })
-                
+                    })
+                }
             })
         })
-    }, [resume.bulletMap]);
+    }, [resume.work]);
 
     function focusPreview(e){
         const id = e.target.dataset.id;

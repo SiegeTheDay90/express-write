@@ -95,7 +95,7 @@ function EducationFormItem( { item: formData, resume: [resume, setResume], idx} 
 
       <div className="row mb-3">
         <div className="col-sm-10">
-          <BulletPointInput id={"description"} label={"Description"} value={formData.description} setValue={handleChange}/>
+          <BulletPointInput type={"education"} name={"description"} label={"Bullet Points"} value={formData.description} setValue={handleChange}/>
         </div>
       </div>
     </form>
