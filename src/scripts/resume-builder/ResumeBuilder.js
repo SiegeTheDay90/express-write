@@ -143,7 +143,6 @@ function ResumeBuilder() {
     
             const response = await fetch("/resumes", options);
             const {ok, status, id} = await response.json();
-            console.log({ok, status, id});
 
             const loadingImage = document.createElement('img');
             loadingImage.src = "https://cl-helper-development.s3.amazonaws.com/loading-box.gif";
@@ -188,7 +187,7 @@ function ResumeBuilder() {
                                 onMouseEnter={focusPreview} 
                                 onMouseLeave={focusPreview} 
                                 className="bullet-issue" 
-                                key={rating?.meta.id +'_'+ idx} 
+                                // key={rating?.meta.id +'_'+ idx} 
                                 data-id={"_"+rating?.meta.id}>
                                     {text}
                                 </li>

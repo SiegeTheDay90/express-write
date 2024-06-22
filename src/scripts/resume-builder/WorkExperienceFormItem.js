@@ -29,20 +29,34 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
     }
 
     const handleChange = (e) => {
-      let { name, value, checked, append } = e.target;
+      let { name, value, checked, append, removal, move } = e.target;
       if(e.target.type === "checkbox"){
         value = checked;
       }
-
       let newWork = [...resume.work];
       newWork[idx] = {
         ...newWork[idx],
         [name]: value
       }
-      // console.log({
-      //   ...resume,
-      //   work: newWork
-      // });
+
+      if(append){
+        newWork[idx].bulletRatings.push({meta: {id: null, total: null, dismissed: true}})
+      }
+
+      if(removal){
+        newWork[idx].bulletRatings.splice(removal-1, 1);
+      }
+
+      if(move){
+        let [bulletIdx, dir] = move;
+        dir = dir === "up" ? -1 : 1;
+        
+        let holder = newWork[idx].bulletRatings[bulletIdx+dir];
+        newWork[idx].bulletRatings[bulletIdx+dir] = newWork[idx].bulletRatings[bulletIdx];
+        newWork[idx].bulletRatings[bulletIdx] = holder;
+      }
+
+      
       setResume(prevState => ({
         ...prevState,
         work: newWork
@@ -124,7 +138,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
 
       <div className="row mb-3">
         <div className="col-sm-10">
-            <BulletPointInput idx={idx} name={"description"} label={"Bullet Points"} value={formData.description} setValue={handleChange}/>
+            <BulletPointInput idx={idx} type={"experience"} name={"description"} label={"Bullet Points"} value={formData.description} setValue={handleChange}/>
         </div>
       </div>
       <div className="row mb-3">

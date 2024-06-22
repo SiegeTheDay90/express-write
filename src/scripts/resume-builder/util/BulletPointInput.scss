@@ -1,9 +1,8 @@
-li.bp-input-point {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    list-style-type: disc;
-    &::before{
-        content: "•";
-        margin-right: 8px;
+.bpi-li {
+    transition: background-color 0.2s;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.080);
     }
 }   

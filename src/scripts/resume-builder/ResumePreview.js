@@ -9,8 +9,10 @@ function ResumePreview({ resume }){
             return "text-success"
         } else if(total >= 2){
             return "text-danger"
-        } else {
+        } else if(total == 1){
             return "text-caution"
+        } else {
+            return "text-primary"
         }
     }
     return (
