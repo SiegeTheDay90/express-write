@@ -80,12 +80,12 @@ class LoadingBar {
         <div id="modalContent">
           <div id="modalText">
             <p>While you wait, consider sharing and following 
-              <a href="https://www.linkedin.com/company/write-wise-job-seekers/" target="_blank">WriteWise</a>
+              <a href="https://www.linkedin.com/company/write-wise-job-seekers/" target="_blank">ExpressWrite</a>
               ! It takes a few seconds and means the world to me!
             </p>
           </div>
           <div id="modalLinks">  
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwrite-wise-4d2bfd5abb7a.herokuapp.com%2F&text=WriteWise%20is%20a%20project%20built%20by%20one%20developer.%20Test%20it%20out%20for%20free%21" target="_blank">
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwrite-wise-4d2bfd5abb7a.herokuapp.com%2F&text=ExpressWrite%20is%20a%20project%20built%20by%20one%20developer.%20Test%20it%20out%20for%20free%21" target="_blank">
               <img src="https://cl-helper-development.s3.amazonaws.com/linkedin-share-button-icon.png" />
             </a> 
             <br/>

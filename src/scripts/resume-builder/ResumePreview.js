@@ -20,7 +20,7 @@ function ResumePreview({ resume }){
             <section id="resume-preview-personal" className="resume-preview-section">
                 <h4 id="resume-preview-name">{`${personal.firstName.trim() || 'Jay'} ${personal.lastName.trim() || 'Doe'}`}</h4>
                 {personal.profession && <h6 id="resume-preview-profession">{`${personal.profession.trim() || ''}`}</h6>}
-                <p id="resume-preview-email">{personal.email.trim() || 'JayDoe@writewise.io'}</p>
+                <p id="resume-preview-email">{personal.email.trim() || 'JayDoe@ExpressWrite.io'}</p>
                 {personal.phoneNumber && <p id="resume-preview-phone">{personal.phoneNumber.trim() || ''}</p>}
                 {personal.website && <p id="resume-preview-website">{personal.website.trim() || ''}</p>}
             </section>

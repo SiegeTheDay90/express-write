@@ -16,7 +16,7 @@ export default function generateDocx(resume) {
     const personalInfo = [
         `${personal.firstName.trim() || 'Jay'} ${personal.lastName.trim() || 'Doe'}`,
         personal.profession.trim() || '',
-        personal.email.trim() || 'JayDoe@writewise.io',
+        personal.email.trim() || 'JayDoe@ExpressWrite.io',
         personal.phoneNumber.trim() || '',
         personal.website.trim() || ''
     ];

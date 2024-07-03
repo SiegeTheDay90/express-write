@@ -4,7 +4,7 @@ class UserMailer < ApplicationMailer
   def welcome_email
     @user = params[:user]
     @token = params[:token]
-    mail(to: @user.email, subject: 'Welcome to WriteWise!')
+    mail(to: @user.email, subject: 'Welcome to ExpressWrite!')
   end
 
   def reset_request

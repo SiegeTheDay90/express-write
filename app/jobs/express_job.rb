@@ -60,7 +60,7 @@ class ExpressJob < ApplicationJob
     resume = JSON.parse(
       @profile.to_json(except: %i[id title]).gsub("\r", '')
     )
-    resume['first_name'] = 'WriteWise'
+    resume['first_name'] = 'ExpressWrite'
     resume['last_name'] = 'User'
       
     system_prompt = "Write cover 2-3 paragraph cover letter as job candidate. Make sure to include a greeting and closing signature. Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
