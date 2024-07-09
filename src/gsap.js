@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(logoImage){
         
-    //     let imageTL = gsap.timeline({});
+    //     let imageTL = gsap.timeline({}); // The quill used to slide over and "write" the logo
     //     imageTL
     //     .to("#logo-img.splash", {
     //         x: "43vw",
@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
         })
 
         
-        let bannerTL = gsap.timeline({});
-        bannerTL
-        .to("#splash-logo", {
-            delay: 2,
-            height: "25vh",
-            duration: 1.5,
-            ease: "power1.inOut"
-        })
+        // let bannerTL = gsap.timeline({}); // The banner used to start at 40vh and would shrink to 25vh
+        // bannerTL
+        // .to("#splash-logo", {
+        //     delay: 2,
+        //     height: "25vh",
+        //     duration: 1.5,
+        //     ease: "power1.inOut"
+        // })
     }
 })
