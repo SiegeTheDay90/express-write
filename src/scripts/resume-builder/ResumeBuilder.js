@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import React from 'react';
+// import { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react';
 import '../../styles/ResumeBuilder.scss'
 import PersonalInfoForm from './PersonalInfoForm';
 import WorkExperienceForm from './WorkExperienceForm';
@@ -7,7 +7,7 @@ import EducationForm from './EducationForm';
 import SkillList from './SkillList';
 import ResumePreview from './ResumePreview';
 import { saveAs } from 'file-saver';
-import * as Docx from "docx";
+import { Packer } from "docx";
 import generateDocx from './util/DocX';
 
 function ResumeBuilder() {
@@ -15,7 +15,7 @@ function ResumeBuilder() {
     
     async function saveResume() {
         const doc = generateDocx(resume);
-        const blob = await Docx.Packer.toBlob(doc);
+        const blob = await Packer.toBlob(doc);
         saveAs(blob, 'resume.docx');
     }
 

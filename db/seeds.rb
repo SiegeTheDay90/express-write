@@ -8,83 +8,83 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-ApplicationRecord.transaction do
-  # Unnecessary if using `rails db:seed:replant`
-  puts 'Destroying tables...'
-  Request.destroy_all
-  Profile.destroy_all
-  Letter.destroy_all
-  Listing.destroy_all
-  User.destroy_all
+# ApplicationRecord.transaction do
+#   # Unnecessary if using `rails db:seed:replant`
+#   puts 'Destroying tables...'
+#   Request.destroy_all
+#   Profile.destroy_all
+#   Letter.destroy_all
+#   Listing.destroy_all
+#   User.destroy_all
 
-  puts 'Resetting primary keys...'
-  # For easy testing, so that after seeding, the first `User` has `id` of 1
-  ApplicationRecord.connection.reset_pk_sequence!('users')
-  ApplicationRecord.connection.reset_pk_sequence!('listings')
-  ApplicationRecord.connection.reset_pk_sequence!('letters')
-  ApplicationRecord.connection.reset_pk_sequence!('profiles')
-  ApplicationRecord.connection.reset_pk_sequence!('requests')
-  puts
-  puts 'Creating demo user...'
-  User.create!(first_name: 'Demo', last_name: 'User', email: 'demo@user.io', password: 'password')
-  puts 'Creating demo profiles...'
-  first_profile = Profile.create!(
-    title: 'Frontend',
-    industry: 'Web Development',
-    skills: ['Next.js', 'CSS', 'Rails'],
-    user_id: 1
-  )
-  first_profile.set_active
-  Profile.create!(
-    title: 'Backend',
-    industry: 'Data Analysis',
-    skills: ['Node.js', 'Express.js', 'MySQL'],
-    user_id: 1
-  )
-  puts 'Creating demo listings...'
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
-                  requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
-  puts 'Creating demo letter...'
-  Letter.create!(body: "Seeded this body. This would normally be written by ChatGPT. The following is from GPT: I hope this letter finds you in good health and high spirits. It has been quite some time since we last caught up, and I wanted to take a moment to send you my warmest greetings and well wishes.
+#   puts 'Resetting primary keys...'
+#   # For easy testing, so that after seeding, the first `User` has `id` of 1
+#   ApplicationRecord.connection.reset_pk_sequence!('users')
+#   ApplicationRecord.connection.reset_pk_sequence!('listings')
+#   ApplicationRecord.connection.reset_pk_sequence!('letters')
+#   ApplicationRecord.connection.reset_pk_sequence!('profiles')
+#   ApplicationRecord.connection.reset_pk_sequence!('requests')
+#   puts
+#   puts 'Creating demo user...'
+#   User.create!(first_name: 'Demo', last_name: 'User', email: 'demo@user.io', password: 'password')
+#   puts 'Creating demo profiles...'
+#   first_profile = Profile.create!(
+#     title: 'Frontend',
+#     industry: 'Web Development',
+#     skills: ['Next.js', 'CSS', 'Rails'],
+#     user_id: 1
+#   )
+#   first_profile.set_active
+#   Profile.create!(
+#     title: 'Backend',
+#     industry: 'Data Analysis',
+#     skills: ['Node.js', 'Express.js', 'MySQL'],
+#     user_id: 1
+#   )
+#   puts 'Creating demo listings...'
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   Listing.create!(company: 'Seed Company', job_title: 'Job', job_description: 'Seed Job',
+#                   requirements: ['Req 1', 'Req 2', 'Req 3'], benefits: [], user_id: 1)
+#   puts 'Creating demo letter...'
+#   Letter.create!(body: "Seeded this body. This would normally be written by ChatGPT. The following is from GPT: I hope this letter finds you in good health and high spirits. It has been quite some time since we last caught up, and I wanted to take a moment to send you my warmest greetings and well wishes.
 
-        Life has been busy on my end, but I often find myself reminiscing about the great times we've shared. From our adventures in college to the countless laughs we've had, those memories are truly cherished.
+#         Life has been busy on my end, but I often find myself reminiscing about the great times we've shared. From our adventures in college to the countless laughs we've had, those memories are truly cherished.
 
-        I hear you've been doing amazing work in your career, and I couldn't be prouder of your achievements. Your dedication and determination have always been an inspiration to me.
+#         I hear you've been doing amazing work in your career, and I couldn't be prouder of your achievements. Your dedication and determination have always been an inspiration to me.
 
-        If you ever find yourself in my neck of the woods, please do let me know. I would love to catch up and share stories over a cup of coffee.
+#         If you ever find yourself in my neck of the woods, please do let me know. I would love to catch up and share stories over a cup of coffee.
 
-        Wishing you continued success and happiness in all your endeavors. Please give my regards to your family.
+#         Wishing you continued success and happiness in all your endeavors. Please give my regards to your family.
 
-        Take care, Jane, and here's to our enduring friendship.
+#         Take care, Jane, and here's to our enduring friendship.
 
-        Warmest regards,
+#         Warmest regards,
 
-        John", listing_id: 1, user_id: 1)
-  puts
-end
+#         John", listing_id: 1, user_id: 1)
+#   puts
+# end
