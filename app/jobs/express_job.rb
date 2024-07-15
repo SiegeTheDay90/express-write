@@ -10,11 +10,13 @@ class ExpressJob < ApplicationJob
     user_prompt = 'Write a cover letter for the job listing that uses the resume as support.' if user_prompt.empty?
 
     # generate user bio
+    
     @bio = text_to_user_bio(bio_payload)
 
     return request.complete!(false, nil, ['Error while generating bio.']) unless @bio
 
     # generate listing
+    
     begin
       if listing_type == 'url'
         listing_obj = http_to_listing(listing_payload)

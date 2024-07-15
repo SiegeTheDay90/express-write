@@ -59,12 +59,12 @@ class LoadingBar {
       #modalText {
         flex: 1;
         padding-right: 20px;
+        line-height: 175%;
       }
       
       #modalLinks {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
       }
       
       #modalLinks a {
@@ -79,12 +79,22 @@ class LoadingBar {
       <div id="modal">
         <div id="modalContent">
           <div id="modalText">
-            <p>While you wait, consider sharing and following 
-              <a href="https://www.linkedin.com/company/express-write/" target="_blank">ExpressWrite</a>
-              ! It takes a few seconds and means the world to me!
+            <p>While you wait, consider following 
+              <a href="https://www.linkedin.com/company/express-write/" target="_blank">ExpressWrite</a>!<br/> It takes a few seconds and means the world to me!
             </p>
           </div>
-          <div id="modalLinks">  
+          <div id="modalLinks">
+            <h5>Support ExpressWrite</h5>
+            <h6>Donate</h6>
+            <span style="display:flex;gap:10px;">
+              <a href="https://cash.app/CJS90" target="_blank">
+                <img style="border-radius: 100%; width: 50px" src="https://cl-helper-development.s3.amazonaws.com/cashapp.png" />
+              </a> 
+              <a href="https://venmo.com/clarence-james-1" target="_blank">
+                <img style="border-radius: 100%; width: 50px" src="https://cl-helper-development.s3.amazonaws.com/venmo.png" />
+              </a> 
+            </span>
+            <h6>Share</h6>  
             <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.expresswrite.ai%2F&text=ExpressWrite%20is%20a%20project%20built%20by%20one%20developer.%20Test%20it%20out%20for%20free%21" target="_blank">
               <img src="https://cl-helper-development.s3.amazonaws.com/linkedin-share-button-icon.png" />
             </a> 
