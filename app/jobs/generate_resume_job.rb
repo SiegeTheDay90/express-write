@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GenerateResumeJob < ApplicationJob
-  ACTION_VERBS = [
+  ACTION_VERBS_PAST = Set.new([
     "Administered", "Arranged", "Chaired", "Coordinated", "Directed", "Executed", "Delegated", "Headed", "Managed", "Operated", "Orchestrated", "Organized", "Oversaw", "Planned", "Produced", "Programmed", "Spearheaded",
     "Built", "Charted", "Created", "Designed", "Developed", "Devised", "Founded", "Engineered", "Established", "Formalized", "Formed", "Formulated", "Implemented", "Incorporated", "Initiated", "Instituted", "Introduced", "Launched", "Pioneered", "Proposed",
     "Accelerated", "Achieved", "Advanced", "Amplified", "Boosted", "Capitalized", "Conserved", "Consolidated", "Decreased", "Deducted", "Delivered", "Enhanced", "Expanded", "Expedited", "Furthered", "Gained", "Generated", "Improved", "Increased", "Lifted", "Maximized", "Outpaced", "Reconciled", "Reduced", "Saved", "Stimulated", "Sustained", "Yielded",
@@ -13,7 +13,21 @@ class GenerateResumeJob < ApplicationJob
     "Authored", "Briefed", "Campaigned", "Coauthored", "Composed", "Conveyed", "Convinced", "Corresponded", "Counseled", "Critiqued", "Defined", "Documented", "Drafted", "Edited", "Illustrated", "Lobbied", "Outlined", "Persuaded", "Presented", "Promoted", "Publicized", "Reviewed", "Wrote",
     "Adjudicated", "Authorized", "Blocked", "Dispatched", "Enforced", "Ensured", "Inspected", "Itemized", "Monitored", "Screened", "Scrutinized", "Verified",
     "Attained", "Completed", "Demonstrated", "Finished", "Earned", "Exceeded", "Outperformed", "Overcame", "Reached", "Showcased", "Succeeded", "Surpassed", "Targeted", "Won"
-  ]
+  ])
+
+  ACTION_VERBS_PRESENT = Set.new([
+    "Administer", "Arrange", "Chair", "Coordinate", "Direct", "Execute", "Delegate", "Head", "Manage", "Operate", "Orchestrate", "Organize", "Oversee", "Plan", "Produce", "Program", "Spearhead",
+    "Build", "Chart", "Create", "Design", "Develop", "Devise", "Found", "Engineer", "Establish", "Formalize", "Form", "Formulate", "Implement", "Incorporate", "Initiate", "Institute", "Introduce", "Launch", "Pioneer", "Propose",
+    "Accelerate", "Achieve", "Advance", "Amplify", "Boost", "Capitalize", "Conserve", "Consolidate", "Decrease", "Deduct", "Deliver", "Enhance", "Expand", "Expedite", "Further", "Gain", "Generate", "Improve", "Increase", "Lift", "Maximize", "Outpace", "Reconcile", "Reduce", "Save", "Stimulate", "Sustain", "Yield",
+    "Centralize", "Clarify", "Convert", "Customize", "Digitize", "Integrate", "Merge", "Modernize", "Modify", "Overhaul", "Redesign", "Refine", "Refocus", "Rehabilitate", "Remodel", "Reorganize", "Replace", "Restructure", "Revamp", "Revitalize", "Simplify", "Standardize", "Streamline", "Strengthen", "Transform", "Update", "Upgrade",
+    "Align", "Cultivate", "Direct", "Enable", "Facilitate", "Foster", "Guide", "Hire", "Mentor", "Mobilize", "Motivate", "Recruit", "Shape", "Supervise", "Teach", "Train", "Unify", "Unite",
+    "Acquire", "Close", "Forge", "Navigate", "Negotiate", "Partner", "Pitch", "Secure", "Sign", "Source", "Upsell",
+    "Advise", "Advocate", "Coach", "Consult", "Educate", "Field", "Inform", "Recommend", "Resolve",
+    "Analyze", "Assemble", "Assess", "Audit", "Calculate", "Compile", "Discover", "Evaluate", "Examine", "Explore", "Forecast", "Identify", "Interpret", "Interview", "Investigate", "Map", "Measure", "Model", "Project", "Qualify", "Quantify", "Report", "Survey", "Test", "Track", "Visualize",
+    "Author", "Brief", "Campaign", "Coauthor", "Compose", "Convey", "Convince", "Correspond", "Counsel", "Critique", "Define", "Document", "Draft", "Edit", "Illustrate", "Lobby", "Outline", "Persuade", "Present", "Promote", "Publicize", "Review", "Write",
+    "Adjudicate", "Authorize", "Block", "Dispatch", "Enforce", "Ensure", "Inspect", "Itemize", "Monitor", "Screen", "Scrutinize", "Verify",
+    "Attain", "Complete", "Demonstrate", "Finish", "Earn", "Exceed", "Outperform", "Overcome", "Reach", "Showcase", "Succeed", "Surpass", "Target", "Win"
+])
 
   queue_as :default
 
@@ -58,15 +72,15 @@ class GenerateResumeJob < ApplicationJob
       grammatical_errors = JSON.parse(response['choices'][0]['message']['content'])
       
 
-      result = {}
-
-                                                                            # Every truthy field represents an issue
-      result["Exceeds_150_characters"] = bullet.gsub(" ", "").length > 150 ? 1 : 0           # Length greater than 150
-      result["errors"] = grammatical_errors["errors"]                        # Array of identified gramatical errors
-      result["suggestion"] = grammatical_errors["suggestion"]                # Suggestion, if any
-
-                                                                            # Meta fields to be used on frontend
-      result["meta"] = {}
+      result = {}                                                                      # Every truthy field represents an issue
+      result["Exceeds_150_characters"] = bullet.gsub(" ", "").length > 150 ? 1 : 0     # Length greater than 150
+      result["Missing_an_approved_action_verb"] = bullet.downcase.split(" ").any? do |word| # Missing approved action verb
+        ACTION_VERBS_PAST.include?(word) || ACTION_VERBS_PRESENT.include?(word) 
+      end
+      result["errors"] = grammatical_errors["errors"]                                  # Array of identified gramatical errors
+      result["suggestion"] = grammatical_errors["suggestion"]                          # Suggestion, if any
+                                                                            
+      result["meta"] = {}                                                               # Meta fields to be used on frontend
       result["meta"]["id"] = SecureRandom.alphanumeric
       result["meta"]["total"] = result["errors"].length + result["length"]
       result["meta"]["dismissed"] = false
@@ -119,7 +133,8 @@ class GenerateResumeJob < ApplicationJob
                   current: boolean
                 }],
               skills: [\"Skill 1\", \"Skill 2\", \"Skill 3\"],
-          }. If 'skills' array would be empty, use two generic professional skills such as Time Management, Communication, Teamwork, or Problem Solving" },
+            }. If 'skills' array would be empty, use two generic professional skills such as Time Management, Communication, Teamwork, or Problem Solving" 
+          },
           { role: 'user', content: text }
         ],
         response_format: { type: 'json_object' },
@@ -133,7 +148,7 @@ class GenerateResumeJob < ApplicationJob
       resume["totalIssues"] ||= 0
       resume["work"].each do |work|
         work["totalIssues"] ||= 0
-        work["bullets"].map!{|bullet|                        # Map text bullets to objects containing text and a rating
+        work["bullets"].map!{|bullet|                        # Map bullet strings to objects containing text and a rating
          obj = {text: bullet, rating: gptEval(bullet)}
          resume["totalIssues"] += obj[:rating]["meta"]["total"]
          work["totalIssues"] += obj[:rating]["meta"]["total"]
