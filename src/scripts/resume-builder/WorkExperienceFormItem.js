@@ -38,24 +38,6 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
         ...newWork[idx],
         [name]: value
       }
-
-      if(append){
-        newWork[idx].bulletRatings.push({meta: {id: null, total: null, dismissed: true}})
-      }
-
-      if(removal){
-        newWork[idx].bulletRatings.splice(removal-1, 1);
-      }
-
-      if(move){
-        let [bulletIdx, dir] = move;
-        dir = dir === "up" ? -1 : 1;
-        
-        let holder = newWork[idx].bulletRatings[bulletIdx+dir];
-        newWork[idx].bulletRatings[bulletIdx+dir] = newWork[idx].bulletRatings[bulletIdx];
-        newWork[idx].bulletRatings[bulletIdx] = holder;
-      }
-
       
       setResume(prevState => ({
         ...prevState,

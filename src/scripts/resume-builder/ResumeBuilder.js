@@ -28,7 +28,7 @@ function ResumeBuilder() {
         document.getElementById("upload-modal").close();
     }
     function hasIssues(){
-        return resume.work.some((workItem) => workItem.bulletRatings?.some((bulletRating) => bulletRating?.meta.total > 0));
+        return resume.totalIssues > 0;
     }
 
     function reset(){
@@ -49,8 +49,7 @@ function ResumeBuilder() {
                     location: '',
                     from: '',
                     to: '',
-                    description: '',
-                    bulletRatings: [],
+                    bullets: [],
                     current: false
                   }],
                 education: [{
@@ -60,15 +59,13 @@ function ResumeBuilder() {
                     city: '',
                     location: '',
                     to: '',
-                    description: '',
+                    bullets: [],
                     current: false
                   }],
                 skills: [],
             })
         }
     }
-
-
 
     const [errors, setErrors] = useState(null);
     const [resume, setResume] = useState({
@@ -82,13 +79,12 @@ function ResumeBuilder() {
         },
         work: [{
             companyName: '',
-            bulletRatings: [],
             jobTitle: '',
             city: '',
             location: '',
             from: '',
             to: '',
-            description: '',
+            bullets: [],
             current: false
           }],
         education: [{
@@ -98,22 +94,21 @@ function ResumeBuilder() {
             city: '',
             location: '',
             to: '',
-            description: '',
+            bullets: [],
             current: false
           }],
         skills: [],
     })
 
     useEffect(() => {
-        let storedResume = localStorage.getItem("resume");
+        let storedResume = localStorage.getItem("ew-resume");
     
-        if(storedResume){
-            setResume(JSON.parse(storedResume));
-        }
+        if(storedResume) setResume(JSON.parse(storedResume));
+        
     }, [])
     
     useEffect(() => {
-        localStorage.setItem("resume", JSON.stringify(resume))
+        localStorage.setItem("ew-resume", JSON.stringify(resume))
     }, [resume])
 
     function focusClick(e){
@@ -176,11 +171,17 @@ function ResumeBuilder() {
 
     const [issues, setIssues] = useState([]);
     useEffect(() => {
-        resume.work.forEach((workItem) => { // { ...workItem, description, bulletRatings }
-            workItem.bulletRatings.forEach((rating) => {
-                if(rating?.meta.total > 0){
+        resume.work.forEach((workItem) => {
+            workItem.bullets.forEach((bullet) => {
+                if(bullet.rating?.meta?.total > 0){
+
                     Object.entries(rating).forEach(([key, text], idx) =>{
-                        if(key === "meta") return;
+                        if(key === "meta" || key === "errors" || key === "suggestion") return;
+
+                        if(typeof(text) === 'boolean'){
+                            text = key.replaceAll('_', ' ')+'.'
+                        }
+
                         setIssues( prev =>
                             prev.concat([
                                 <li 
@@ -194,6 +195,22 @@ function ResumeBuilder() {
                             ])
                         )
                     })
+
+                    rating.errors.forEach(error => {
+                        setIssues( prev =>
+                            prev.concat([
+                                <li 
+                                onMouseEnter={focusPreview} 
+                                onMouseLeave={focusPreview} 
+                                className="bullet-issue" 
+                                data-id={"_"+rating?.meta.id}>
+                                    {text}
+                                </li>
+                            ])
+                        )
+                    })
+
+                    console.log("Suggestion: ", rating.suggestion)
                 }
             })
         })

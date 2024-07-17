@@ -40,18 +40,18 @@ function ResumePreview({ resume }){
                                     </span>
                                 </h6>
                                 <p>{item.city || 'City, State'}</p>{}
-                                {item.bulletRatings.map((rating, idx) => {
+                                {item.bullets.map((bullet, idx) => {
                                     return (
-                                        <li id={rating?.meta.id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(rating?.meta.total)}`} key={rating?.meta.id+idx}>
-                                            <span>{item.description.split("\n")[idx]}</span>&nbsp;
-                                            {rating?.meta.total > 0 &&
+                                        <li id={bullet.rating?.meta.id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(bullet.rating?.meta.total)}`} key={bullet.rating?.meta.id+idx}>
+                                            <span>{bullet.text}</span>&nbsp;
+                                            {bullet.rating?.meta.total > 0 &&
                                             <span className="tool-tip" style={{position: "static"}}>
                                                 <i className="fa-solid fa-circle-exclamation tool-tip-icon"></i>
                                                 <span className="tool-tip-text" style={{position: "absolute", top: "100%", left: 0, zIndex: 5}}>
                                                     
                                                     <ol style={{margin: 0, padding: 0, listStylePosition: "inside", fontSize: "larger"}}>{
-                                                        Object.entries(rating).map(([key, value]) =>{
-                                                            return key !== 'total' && key !== 'meta' ? <li key={value}>{value}</li> : null;
+                                                        bullet.rating.errors.map((error) =>{
+                                                            return <li key={error+bullet.rating?.meta.id}>{error}</li>;
                                                         })
                                                     }</ol>
 
