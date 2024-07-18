@@ -24,7 +24,7 @@ function EducationFormItem( { item: formData, resume: [resume, setResume], idx} 
 
     function move(e){
       e.preventDefault();
-      const dir = e.target.dataset.dir === "up" ? -1 : 1;
+      const dir = e.target.dataset.dir * 1;
 
       setResume(prevState => {
         const items = [...prevState.education];
@@ -64,8 +64,8 @@ function EducationFormItem( { item: formData, resume: [resume, setResume], idx} 
         </div>
         <div className="col-sm-3 d-flex justify-content-end mb-3">
           <div className="btn-group" role="group" >
-            <button onClick={move} data-dir="up" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
-            <button onClick={move} data-dir="down" className={`btn btn-sm btn-secondary ${idx == resume.education.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
+            <button onClick={move} data-dir="-1" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
+            <button onClick={move} data-dir="1" className={`btn btn-sm btn-secondary ${idx == resume.education.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
             <button onClick={remove} className={`btn btn-sm btn-danger`}><i className="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
@@ -95,7 +95,7 @@ function EducationFormItem( { item: formData, resume: [resume, setResume], idx} 
 
       <div className="row mb-3">
         <div className="col-sm-10">
-          <BulletPointInput type={"education"} name={"description"} label={"Bullet Points"} value={formData.description} setValue={handleChange}/>
+          <BulletPointInput type={"education"} name={"bullets"} label={"Bullet Points"} value={formData.bullets} setValue={handleChange}/>
         </div>
       </div>
     </form>

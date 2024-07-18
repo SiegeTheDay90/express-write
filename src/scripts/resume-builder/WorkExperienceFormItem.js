@@ -5,6 +5,7 @@ import BulletPointInput from './util/BulletPointInput';
 function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], idx} ){
 
     const [canUndo, setCanUndo] = useState(false);
+   
     const generateBullets = (e) => {
       e.preventDefault();
       const params = new URLSearchParams({item: JSON.stringify(formData), description: formData.description});
@@ -12,16 +13,17 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
       .then((data) => {
         localStorage.setItem(`undo`, formData.description);
         setCanUndo(true);
-        handleChange({target: {name: "description", value: data}});
+        handleChange({target: {name: "bullets", value: data}});
       });
     }
 
     const undo = (e) => {
       e.preventDefault();
       setCanUndo(false);
-      handleChange({target: {name: 'description', value: localStorage.getItem('undo')}});
+      handleChange({target: {name: 'bullets', value: localStorage.getItem('undo')}});
       localStorage.removeItem('undo');
     }
+
     const accept = (e) => {
       e.preventDefault();
       setCanUndo(false);
@@ -29,7 +31,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
     }
 
     const handleChange = (e) => {
-      let { name, value, checked, append, removal, move } = e.target;
+      let { name, value, checked } = e.target;
       if(e.target.type === "checkbox"){
         value = checked;
       }
@@ -48,8 +50,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
 
     function move(e){
       e.preventDefault();
-      const dir = e.target.dataset.dir === "up" ? -1 : 1;
-
+      let dir = e.tartget.dataset.dir * 1;
       setResume(prevState => {
         const items = [...prevState.work];
         const holder = prevState.work[idx];
@@ -89,8 +90,8 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
         </div>
         <div className="col-sm-4 d-flex justify-content-end mb-3">
           <div className="btn-group" role="group" >
-            <button onClick={move} data-dir="up" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
-            <button onClick={move} data-dir="down" className={`btn btn-sm btn-secondary ${idx == resume.work.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
+            <button onClick={move} data-dir="-1" className={`btn btn-sm btn-secondary ${idx == 0 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-up"></i></button>
+            <button onClick={move} data-dir="1" className={`btn btn-sm btn-secondary ${idx == resume.work.length-1 ? 'disabled' : ''}`}><i className="fa-solid fa-arrow-down"></i></button>
             <button onClick={remove} className={`btn btn-sm btn-danger`}><i className="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
@@ -120,7 +121,7 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
 
       <div className="row mb-3">
         <div className="col-sm-10">
-            <BulletPointInput idx={idx} type={"experience"} name={"description"} label={"Bullet Points"} value={formData.description} setValue={handleChange}/>
+            <BulletPointInput idx={idx} type={"experience"} name={"bullets"} label={"Bullet Points"} value={formData.bullets} setValue={handleChange}/>
         </div>
       </div>
       <div className="row mb-3">

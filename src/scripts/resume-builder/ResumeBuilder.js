@@ -204,7 +204,7 @@ function ResumeBuilder() {
                                 onMouseLeave={focusPreview} 
                                 className="bullet-issue" 
                                 data-id={"_"+rating?.meta.id}>
-                                    {text}
+                                    {error}
                                 </li>
                             ])
                         )
