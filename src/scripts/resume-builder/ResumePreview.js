@@ -30,7 +30,7 @@ function ResumePreview({ resume }){
                     {
                         work.map( (item, idx) => {                            
                             return (
-                            <div key={idx} className="resume-preview-work-item mt-1">
+                            <div key={JSON.stringify(item.bullets) + idx} className="resume-preview-work-item mt-1">
                                 <h6 className="d-flex flex-row justify-content-between">
                                     <span>
                                         {item.companyName || 'company'} - {item.jobTitle || 'title'}
@@ -39,7 +39,7 @@ function ResumePreview({ resume }){
                                         {item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.current ? 'Present' : item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}
                                     </span>
                                 </h6>
-                                <p>{item.city || 'City, State'}</p>{}
+                                <p>{item.city || 'City, State'}</p>
                                 {item.bullets.map((bullet, idx) => {
                                     return (
                                         <li id={bullet.rating?.meta.id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(bullet.rating?.meta.total)}`} key={bullet.rating?.meta.id+idx}>
@@ -78,8 +78,8 @@ function ResumePreview({ resume }){
                                     <span>{item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.to ? (item.current && !item.from ? 'Graduating ' : '') + shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}</span>
                                 </h6>
                                 <p>{item.institutionName || 'School'}</p>
-                                {item.description?.split("\n").map((bullet, idx) => (
-                                    bullet.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet}</div></li>: null
+                                {item.bullets.map((bullet, idx) => (
+                                    bullet.text.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet.text}</div></li>: null
                                 ))}                           
                             </div>
                         )})

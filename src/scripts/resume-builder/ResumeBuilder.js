@@ -175,11 +175,11 @@ function ResumeBuilder() {
             workItem.bullets.forEach((bullet) => {
                 if(bullet.rating?.meta?.total > 0){
 
-                    Object.entries(rating).forEach(([key, text], idx) =>{
+                    Object.entries(bullet.rating).forEach(([key, text], idx) =>{
                         if(key === "meta" || key === "errors" || key === "suggestion") return;
 
                         if(typeof(text) === 'boolean'){
-                            text = key.replaceAll('_', ' ')+'.'
+                            text = key.replaceAll('_', ' ')
                         }
 
                         setIssues( prev =>
@@ -188,29 +188,28 @@ function ResumeBuilder() {
                                 onMouseEnter={focusPreview} 
                                 onMouseLeave={focusPreview} 
                                 className="bullet-issue" 
-                                // key={rating?.meta.id +'_'+ idx} 
-                                data-id={"_"+rating?.meta.id}>
+                                data-id={"_"+bullet.rating?.meta.id}>
                                     {text}
                                 </li>
                             ])
                         )
                     })
 
-                    rating.errors.forEach(error => {
+                    bullet.rating.errors.forEach(error => {
                         setIssues( prev =>
                             prev.concat([
                                 <li 
                                 onMouseEnter={focusPreview} 
                                 onMouseLeave={focusPreview} 
                                 className="bullet-issue" 
-                                data-id={"_"+rating?.meta.id}>
+                                data-id={"_"+bullet.rating?.meta.id}>
                                     {error}
                                 </li>
                             ])
                         )
                     })
 
-                    console.log("Suggestion: ", rating.suggestion)
+                    console.log("Suggestion: ", bullet.rating.suggestion)
                 }
             })
         })
@@ -262,26 +261,26 @@ function ResumeBuilder() {
             <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
                 {   hasIssues() && 
                     <div className="resume-builder-sub-section closed">
-                        <h4 onClick={focusClick} >Issues</h4>
+                        <h5 onClick={focusClick} >Issues <span className="text-muted">({issues.length})</span></h5>
                         <ol className="ps-3">{ issues }</ol>
                     </div>
                 }
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Personal Info</h4>
+                    <h5 onClick={focusClick} >Personal Info</h5>
                     <PersonalInfoForm resume={[resume, setResume]}/>
 
                 </div>
                 <div id="resume-builder-two"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Experience</h4> 
+                    <h5 onClick={focusClick} >Experience</h5> 
                     <WorkExperienceForm resume={[resume, setResume]}/>
 
                 </div>
                 <div id="resume-builder-three"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Education</h4>
+                    <h5 onClick={focusClick} >Education</h5>
                     <EducationForm resume={[resume, setResume]}/>
                 </div>
                 <div id="resume-builder-four"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Skills</h4>
+                    <h5 onClick={focusClick} >Skills</h5>
                     <SkillList resume={[resume, setResume]}/>
                 </div>
             </div>

@@ -1,33 +1,9 @@
 # frozen_string_literal: true
 
 class GenerateResumeJob < ApplicationJob
-  ACTION_VERBS_PAST = Set.new([
-    "Administered", "Arranged", "Chaired", "Coordinated", "Directed", "Executed", "Delegated", "Headed", "Managed", "Operated", "Orchestrated", "Organized", "Oversaw", "Planned", "Produced", "Programmed", "Spearheaded",
-    "Built", "Charted", "Created", "Designed", "Developed", "Devised", "Founded", "Engineered", "Established", "Formalized", "Formed", "Formulated", "Implemented", "Incorporated", "Initiated", "Instituted", "Introduced", "Launched", "Pioneered", "Proposed",
-    "Accelerated", "Achieved", "Advanced", "Amplified", "Boosted", "Capitalized", "Conserved", "Consolidated", "Decreased", "Deducted", "Delivered", "Enhanced", "Expanded", "Expedited", "Furthered", "Gained", "Generated", "Improved", "Increased", "Lifted", "Maximized", "Outpaced", "Reconciled", "Reduced", "Saved", "Stimulated", "Sustained", "Yielded",
-    "Centralized", "Clarified", "Converted", "Customized", "Digitized", "Integrated", "Merged", "Modernized", "Modified", "Overhauled", "Redesigned", "Refined", "Refocused", "Rehabilitated", "Remodeled", "Reorganized", "Replaced", "Restructured", "Revamped", "Revitalized", "Simplified", "Standardized", "Streamlined", "Strengthened", "Transformed", "Updated", "Upgraded",
-    "Aligned", "Cultivated", "Directed", "Enabled", "Facilitated", "Fostered", "Guided", "Hired", "Mentored", "Mobilized", "Motivated", "Recruited", "Shaped", "Supervised", "Taught", "Trained", "Unified", "United",
-    "Acquired", "Closed", "Forged", "Navigated", "Negotiated", "Partnered", "Pitched", "Secured", "Signed", "Sourced", "Upsold",
-    "Advised", "Advocated", "Coached", "Consulted", "Educated", "Fielded", "Informed", "Recommended", "Resolved",
-    "Analyzed", "Assembled", "Assessed", "Audited", "Calculated", "Compiled", "Discovered", "Evaluated", "Examined", "Explored", "Forecasted", "Identified", "Interpreted", "Interviewed", "Investigated", "Mapped", "Measured", "Modeled", "Projected", "Qualified", "Quantified", "Reported", "Surveyed", "Tested", "Tracked", "Visualized",
-    "Authored", "Briefed", "Campaigned", "Coauthored", "Composed", "Conveyed", "Convinced", "Corresponded", "Counseled", "Critiqued", "Defined", "Documented", "Drafted", "Edited", "Illustrated", "Lobbied", "Outlined", "Persuaded", "Presented", "Promoted", "Publicized", "Reviewed", "Wrote",
-    "Adjudicated", "Authorized", "Blocked", "Dispatched", "Enforced", "Ensured", "Inspected", "Itemized", "Monitored", "Screened", "Scrutinized", "Verified",
-    "Attained", "Completed", "Demonstrated", "Finished", "Earned", "Exceeded", "Outperformed", "Overcame", "Reached", "Showcased", "Succeeded", "Surpassed", "Targeted", "Won"
-  ])
+  ACTION_VERBS_PAST = Set.new(["administered", "arranged", "chaired", "coordinated", "directed", "executed", "delegated", "headed", "managed", "operated", "orchestrated", "organized", "oversaw", "planned", "produced", "programmed", "spearheaded", "built", "charted", "created", "designed", "developed", "devised", "founded", "engineered", "established", "formalized", "formed", "formulated", "implemented", "incorporated", "initiated", "instituted", "introduced", "launched", "pioneered", "proposed", "accelerated", "achieved", "advanced", "amplified", "boosted", "capitalized", "conserved", "consolidated", "decreased", "deducted", "delivered", "enhanced", "expanded", "expedited", "furthered", "gained", "generated", "improved", "increased", "lifted", "maximized", "outpaced", "reconciled", "reduced", "saved", "stimulated", "sustained", "yielded", "centralized", "clarified", "converted", "customized", "digitized", "integrated", "merged", "modernized", "modified", "overhauled", "redesigned", "refined", "refocused", "rehabilitated", "remodeled", "reorganized", "replaced", "restructured", "revamped", "revitalized", "simplified", "standardized", "streamlined", "strengthened", "transformed", "updated", "upgraded", "aligned", "cultivated", "directed", "enabled", "facilitated", "fostered", "guided", "hired", "mentored", "mobilized", "motivated", "recruited", "shaped", "supervised", "taught", "trained", "unified", "united", "acquired", "closed", "forged", "navigated", "negotiated", "partnered", "pitched", "secured", "signed", "sourced", "upsold", "advised", "advocated", "coached", "consulted", "educated", "fielded", "informed", "recommended", "resolved", "analyzed", "assembled", "assessed", "audited", "calculated", "compiled", "discovered", "differentiated", "evaluated", "examined", "explored", "forecasted", "identified", "interpreted", "interviewed", "investigated", "mapped", "measured", "modeled", "projected", "qualified", "quantified", "reported", "surveyed", "tested", "tracked", "visualized", "authored", "briefed", "campaigned", "coauthored", "composed", "conveyed", "convinced", "corresponded", "counseled", "critiqued", "defined", "documented", "drafted", "edited", "illustrated", "lobbied", "outlined", "persuaded", "presented", "promoted", "publicized", "reviewed", "wrote", "adjudicated", "authorized", "blocked", "dispatched", "enforced", "ensured", "inspected", "itemized", "monitored", "screened", "scrutinized", "verified", "attained", "completed", "demonstrated", "finished", "earned", "exceeded", "outperformed", "overcame", "reached", "showcased", "succeeded", "surpassed", "targeted", "won"])
 
-  ACTION_VERBS_PRESENT = Set.new([
-    "Administer", "Arrange", "Chair", "Coordinate", "Direct", "Execute", "Delegate", "Head", "Manage", "Operate", "Orchestrate", "Organize", "Oversee", "Plan", "Produce", "Program", "Spearhead",
-    "Build", "Chart", "Create", "Design", "Develop", "Devise", "Found", "Engineer", "Establish", "Formalize", "Form", "Formulate", "Implement", "Incorporate", "Initiate", "Institute", "Introduce", "Launch", "Pioneer", "Propose",
-    "Accelerate", "Achieve", "Advance", "Amplify", "Boost", "Capitalize", "Conserve", "Consolidate", "Decrease", "Deduct", "Deliver", "Enhance", "Expand", "Expedite", "Further", "Gain", "Generate", "Improve", "Increase", "Lift", "Maximize", "Outpace", "Reconcile", "Reduce", "Save", "Stimulate", "Sustain", "Yield",
-    "Centralize", "Clarify", "Convert", "Customize", "Digitize", "Integrate", "Merge", "Modernize", "Modify", "Overhaul", "Redesign", "Refine", "Refocus", "Rehabilitate", "Remodel", "Reorganize", "Replace", "Restructure", "Revamp", "Revitalize", "Simplify", "Standardize", "Streamline", "Strengthen", "Transform", "Update", "Upgrade",
-    "Align", "Cultivate", "Direct", "Enable", "Facilitate", "Foster", "Guide", "Hire", "Mentor", "Mobilize", "Motivate", "Recruit", "Shape", "Supervise", "Teach", "Train", "Unify", "Unite",
-    "Acquire", "Close", "Forge", "Navigate", "Negotiate", "Partner", "Pitch", "Secure", "Sign", "Source", "Upsell",
-    "Advise", "Advocate", "Coach", "Consult", "Educate", "Field", "Inform", "Recommend", "Resolve",
-    "Analyze", "Assemble", "Assess", "Audit", "Calculate", "Compile", "Discover", "Evaluate", "Examine", "Explore", "Forecast", "Identify", "Interpret", "Interview", "Investigate", "Map", "Measure", "Model", "Project", "Qualify", "Quantify", "Report", "Survey", "Test", "Track", "Visualize",
-    "Author", "Brief", "Campaign", "Coauthor", "Compose", "Convey", "Convince", "Correspond", "Counsel", "Critique", "Define", "Document", "Draft", "Edit", "Illustrate", "Lobby", "Outline", "Persuade", "Present", "Promote", "Publicize", "Review", "Write",
-    "Adjudicate", "Authorize", "Block", "Dispatch", "Enforce", "Ensure", "Inspect", "Itemize", "Monitor", "Screen", "Scrutinize", "Verify",
-    "Attain", "Complete", "Demonstrate", "Finish", "Earn", "Exceed", "Outperform", "Overcome", "Reach", "Showcase", "Succeed", "Surpass", "Target", "Win"
-])
+  ACTION_VERBS_PRESENT = Set.new(["administer", "arrange", "chair", "coordinate", "direct", "execute", "delegate", "head", "manage", "operate", "orchestrate", "organize", "oversee", "plan", "produce", "program", "spearhead", "build", "chart", "create", "design", "develop", "devise", "found", "engineer", "establish", "formalize", "form", "formulate", "implement", "incorporate", "initiate", "institute", "introduce", "launch", "pioneer", "propose", "accelerate", "achieve", "advance", "amplify", "boost", "capitalize", "conserve", "consolidate", "decrease", "deduct", "deliver", "enhance", "expand", "expedite", "further", "gain", "generate", "improve", "increase", "lift", "maximize", "outpace", "reconcile", "reduce", "save", "stimulate", "sustain", "yield", "centralize", "clarify", "convert", "customize", "digitize", "integrate", "merge", "modernize", "modify", "overhaul", "redesign", "refine", "refocus", "rehabilitate", "remodel", "reorganize", "replace", "restructure", "revamp", "revitalize", "simplify", "standardize", "streamline", "strengthen", "transform", "update", "upgrade", "align", "cultivate", "direct", "enable", "facilitate", "foster", "guide", "hire", "mentor", "mobilize", "motivate", "recruit", "shape", "supervise", "teach", "train", "unify", "unite", "acquire", "close", "forge", "navigate", "negotiate", "partner", "pitch", "secure", "sign", "source", "upsell", "advise", "advocate", "coach", "consult", "educate", "field", "inform", "recommend", "resolve", "analyze", "assemble", "assess", "audit", "calculate", "compile", "discover", "differentiate", "evaluate", "examine", "explore", "forecast", "identify", "interpret", "interview", "investigate", "map", "measure", "model", "project", "qualify", "quantify", "report", "survey", "test", "track", "visualize", "author", "brief", "campaign", "coauthor", "compose", "convey", "convince", "correspond", "counsel", "critique", "define", "document", "draft", "edit", "illustrate", "lobby", "outline", "persuade", "present", "promote", "publicize", "review", "write", "adjudicate", "authorize", "block", "dispatch", "enforce", "ensure", "inspect", "itemize", "monitor", "screen", "scrutinize", "verify", "attain", "complete", "demonstrate", "finish", "earn", "exceed", "outperform", "overcome", "reach", "showcase", "succeed", "surpass", "target", "win"])
 
   queue_as :default
 
@@ -39,6 +15,7 @@ class GenerateResumeJob < ApplicationJob
     elsif resume.include?("-@-ErrorString-@-")
       request.complete!(false, nil, resume.gsub("-@-ErrorString-@-", ""))
     else
+      
       request.complete!(true, nil, resume)
     end
   end
@@ -73,16 +50,18 @@ class GenerateResumeJob < ApplicationJob
       
 
       result = {}                                                                      # Every truthy field represents an issue
-      result["Exceeds_150_characters"] = bullet.gsub(" ", "").length > 150 ? 1 : 0     # Length greater than 150
-      result["Missing_an_approved_action_verb"] = bullet.downcase.split(" ").any? do |word| # Missing approved action verb
-        ACTION_VERBS_PAST.include?(word) || ACTION_VERBS_PRESENT.include?(word) 
+      if bullet.gsub(" ", "").length > 150
+        result["Exceeds_150_characters"] = true    # Length greater than 150
+      end
+      if bullet.downcase.split(" ").none?{|word| ACTION_VERBS_PAST.include?(word) || ACTION_VERBS_PRESENT.include?(word) }
+        result["Missing_an_approved_action_verb"] = true
       end
       result["errors"] = grammatical_errors["errors"]                                  # Array of identified gramatical errors
       result["suggestion"] = grammatical_errors["suggestion"]                          # Suggestion, if any
                                                                             
       result["meta"] = {}                                                               # Meta fields to be used on frontend
       result["meta"]["id"] = SecureRandom.alphanumeric
-      result["meta"]["total"] = result["errors"].length + result["length"]
+      result["meta"]["total"] = result["errors"].length + result.keys.length-3
       result["meta"]["dismissed"] = false
       
       return result
@@ -146,14 +125,22 @@ class GenerateResumeJob < ApplicationJob
     begin 
       resume = JSON.parse(response['choices'][0]['message']['content'])
       resume["totalIssues"] ||= 0
-      resume["work"].each do |work|
-        work["totalIssues"] ||= 0
-        work["bullets"].map!{|bullet|                        # Map bullet strings to objects containing text and a rating
-         obj = {text: bullet, rating: gptEval(bullet)}
-         resume["totalIssues"] += obj[:rating]["meta"]["total"]
-         work["totalIssues"] += obj[:rating]["meta"]["total"]
-         return obj
-        } 
+      resume["work"].each do |item|
+        item["totalIssues"] ||= 0
+        item["bullets"].map! do |bullet|                        # Map bullet strings to objects containing text and a rating
+          obj = {"text" => bullet, "rating" => gptEval(bullet)}
+          resume["totalIssues"] += obj["rating"]["meta"]["total"]
+          item["totalIssues"] += obj["rating"]["meta"]["total"]
+          obj
+        end
+      end
+
+      resume["education"].each do |item|
+        item["totalIssues"] ||= 0
+        item["bullets"].map! do |bullet|                        # Map bullet strings to objects containing text and a rating
+          obj = {"text" => bullet, "rating" => nil}
+          obj
+        end
       end
       return JSON.unparse(resume)
     rescue JSON::ParserError
