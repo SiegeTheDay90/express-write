@@ -46,14 +46,18 @@
 .resume-builder-sub-section{
   vertical-align: middle;
   user-select: none;
-  padding: 1em 12px;
+  padding: 0.25em 12px;
   // max-height: min-content;
   height: min-content;
   transition: height 0.7s ease-in-out, background-color 0.3s linear;
   overflow-y: hidden;
   border: 1px solid #bbd;
+  &.open{
+    padding-bottom: 1em;
+  }
   &.closed:hover{
     background-color: #ccf;
+    cursor: pointer;
   }
   
   h4{
@@ -61,14 +65,9 @@
     padding: 0;
     cursor: pointer;
   }
-  .content{
-    transform: scaleY(1);
-    transition: all 0.18s ease;
-    transform-origin: top;
-  }
 
   &.closed .content{
-    transform: scaleY(0);
+    display: none;
   }
 
   &:first-of-type{
@@ -82,8 +81,9 @@
 }
 
 .closed{
-    height: 4em;
+    height: 2em;
 }
+
 .resume-builder-section{
   padding: 10px;
   max-height: 82dvh;

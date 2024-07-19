@@ -258,34 +258,34 @@ function ResumeBuilder() {
                 </div>
 
             </div>
-            <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
+            <div className="resume-builder-section accordion border-end border-light col-lg-5 col-md-4 col-sm-3" id="resume-builder-left">
                 {   hasIssues() && 
                     <div className="resume-builder-sub-section closed">
-                        <h5 onClick={focusClick} >Issues <span className="text-muted">({issues.length})</span></h5>
-                        <ol className="ps-3">{ issues }</ol>
+                        <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Issues <span className="text-muted">({issues.length})</span></div>
+                        <ol className="content ps-3">{ issues }</ol>
                     </div>
                 }
                 <div id="resume-builder-one" className="resume-builder-sub-section closed" >
-                    <h5 onClick={focusClick} >Personal Info</h5>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Personal Info</div>
                     <PersonalInfoForm resume={[resume, setResume]}/>
 
                 </div>
                 <div id="resume-builder-two"  className="resume-builder-sub-section closed" >
-                    <h5 onClick={focusClick} >Experience</h5> 
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Experience</div> 
                     <WorkExperienceForm resume={[resume, setResume]}/>
 
                 </div>
                 <div id="resume-builder-three"  className="resume-builder-sub-section closed" >
-                    <h5 onClick={focusClick} >Education</h5>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Education</div>
                     <EducationForm resume={[resume, setResume]}/>
                 </div>
                 <div id="resume-builder-four"  className="resume-builder-sub-section closed" >
-                    <h5 onClick={focusClick} >Skills</h5>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Skills</div>
                     <SkillList resume={[resume, setResume]}/>
                 </div>
             </div>
 
-            <div className="resume-builder-section w-50" id="resume-builder-right">
+            <div className="resume-builder-section col-lg-7 col-md-8 col-sm-9" id="resume-builder-right">
                 <ResumePreview resume={resume} />
             </div>
         </>
