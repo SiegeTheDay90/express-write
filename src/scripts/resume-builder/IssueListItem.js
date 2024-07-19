@@ -25,6 +25,8 @@ function IssueListItem({text, bullet, workItemIdx, bulletIdx, subIdx, type, setR
                 bullet.rating.errors.splice(subIdx, 1);
             }
 
+            bullet.rating.meta.total -= 1;
+
             return {
                 ...prev
             }

@@ -230,7 +230,7 @@ function ResumeBuilder() {
             <div className="btn-group hover-menu" role="group">
 
                 <div className="btn btn-primary" onClick={showUploadModal}>
-                    Fill with Resume <i className="fa-solid fa-cloud-arrow-up"></i>
+                    Upload Resume <i className="fa-solid fa-cloud-arrow-up"></i>
                 </div>
                 
                 <div className="btn btn-danger" onClick={reset}>
