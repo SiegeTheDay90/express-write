@@ -234,7 +234,7 @@ function ResumeBuilder() {
                 </div>
                 
                 <div className="btn btn-danger" onClick={reset}>
-                    Start Over <i className="fa-solid fa-rotate-right"></i>
+                    Clear <i className="fa-solid fa-rotate-right"></i>
                 </div>
 
                 <div className="btn btn-success" onClick={saveResume}>

@@ -4,17 +4,23 @@ import React from 'react';
 function IssueListItem({text, bullet, workItemIdx, bulletIdx, subIdx, type, setResume}){
 
     const liRef = useRef();
-    function focusPreview(e){
+    function focusIn(e){
         const id = e.target.dataset.id;
         const previewLi = document.getElementById(id.slice(1));
         // Scroll into view preview Li
         previewLi.scrollIntoView({block: 'center', behavior: 'smooth'});
-        previewLi.classList.toggle("border");
-        previewLi.classList.toggle("border-primary");
+        previewLi.classList.add("border");
+        previewLi.classList.add("border-primary");
     };
 
-    function dismiss(){
+    function focusOut(e){
+        const id = e.target.dataset.id;
+        const previewLi = document.getElementById(id.slice(1));
+        previewLi.classList.remove("border");
+        previewLi.classList.remove("border-primary");
+    }
 
+    function dismiss(e){
         setResume(prev => {
             const workItem = prev.work[workItemIdx];
             const bullet = workItem.bullets[bulletIdx];
@@ -35,11 +41,11 @@ function IssueListItem({text, bullet, workItemIdx, bulletIdx, subIdx, type, setR
 
     return (
         <li ref={liRef}
-        onMouseEnter={focusPreview} 
-        onMouseLeave={focusPreview} 
+        onMouseEnter={focusIn} 
+        onMouseLeave={focusOut} 
         className="bullet-issue" 
         data-id={"_"+bullet.rating?.meta.id}>
-            {text} <button onClick={dismiss}>Dismiss</button>
+            {text} <br/> <span className="btn-group"><button style={{fontSize: "0.7em"}}className="btn btn-sm btn-primary" onClick={dismiss}>Dismiss</button><a href={`https://www.expresswrite.ai/bug-report?${new URLSearchParams({"error": `Reported Issue: ${text}`})}`} style={{fontSize: "0.7em"}}className="btn btn-sm btn-danger">Report</a></span>
         </li>
     );
 }

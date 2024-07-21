@@ -66,6 +66,7 @@
     top: 0.5em;
     cursor: pointer;
     color: rgb(70, 70, 180);
+    transition: 0.1s;
   }
 
   &.closed .fa-chevron-up{
