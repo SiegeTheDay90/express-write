@@ -52,7 +52,7 @@ function SkillList({resume: [resume, setResume]}){
   }
 
     return (
-      <>
+      <div className="content">
         <form onSubmit={AddItem} className='col-sm-6 d-flex'>
           <input ref={input} type="text" className="form-control-sm bg-light" name="new-skill" value={newSkill} onChange={newSkillChange} />
           <button className="btn btn-sm btn-secondary ms-2" >Save</button>
@@ -69,7 +69,7 @@ function SkillList({resume: [resume, setResume]}){
             </li>
           })}
         </ul>
-      </>
+      </div>
     );
 }
 

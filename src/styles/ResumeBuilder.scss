@@ -4,18 +4,19 @@
   transition: 0.2s;
   padding: 10px 5px;
   &:hover{
-    border-color: blue;
+    border-color: rgb(70, 70, 180);;
   }
 }
 
-.focused {
+.focused { // .open
   background-color: #ccf;
+  padding-bottom: 1em;
 }
 
 .hover-menu {
   position: fixed;
-  top: 8vh;
-  right: 1.50em;
+  top: 40px;
+  right: 40px;
   z-index: 100;
   color: white;
   cursor: pointer;
@@ -46,14 +47,34 @@
 .resume-builder-sub-section{
   vertical-align: middle;
   user-select: none;
-  padding: 1em 12px;
+  padding: 0.25em 12px;
   // max-height: min-content;
   height: min-content;
   transition: height 0.7s ease-in-out, background-color 0.3s linear;
   overflow-y: hidden;
   border: 1px solid #bbd;
+
+
   &.closed:hover{
     background-color: #ccf;
+    cursor: pointer;
+  }
+
+  .fa-chevron-up{
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    cursor: pointer;
+    color: rgb(70, 70, 180);
+    transition: 0.1s;
+  }
+
+  &.closed .fa-chevron-up{
+    transform: rotate(270deg);
+  }
+
+  &.focused .fa-chevron-up{
+    transform: rotate(180deg);
   }
   
   h4{
@@ -61,14 +82,9 @@
     padding: 0;
     cursor: pointer;
   }
-  .content{
-    transform: scaleY(1);
-    transition: all 0.18s ease;
-    transform-origin: top;
-  }
 
   &.closed .content{
-    transform: scaleY(0);
+    display: none;
   }
 
   &:first-of-type{
@@ -82,8 +98,9 @@
 }
 
 .closed{
-    height: 4em;
+    height: 2em;
 }
+
 .resume-builder-section{
   padding: 10px;
   max-height: 82dvh;

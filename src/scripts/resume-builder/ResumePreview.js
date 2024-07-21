@@ -30,7 +30,7 @@ function ResumePreview({ resume }){
                     {
                         work.map( (item, idx) => {                            
                             return (
-                            <div key={idx} className="resume-preview-work-item mt-1">
+                            <div key={JSON.stringify(item.bullets) + idx} className="resume-preview-work-item mt-1">
                                 <h6 className="d-flex flex-row justify-content-between">
                                     <span>
                                         {item.companyName || 'company'} - {item.jobTitle || 'title'}
@@ -39,19 +39,19 @@ function ResumePreview({ resume }){
                                         {item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.current ? 'Present' : item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}
                                     </span>
                                 </h6>
-                                <p>{item.city || 'City, State'}</p>{}
-                                {item.bulletRatings.map((rating, idx) => {
+                                <p>{item.city || 'City, State'}</p>
+                                {item.bullets.map((bullet, idx) => {
                                     return (
-                                        <li id={rating?.meta.id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(rating?.meta.total)}`} key={rating?.meta.id+idx}>
-                                            <span>{item.description.split("\n")[idx]}</span>&nbsp;
-                                            {rating?.meta.total > 0 &&
+                                        <li id={bullet.rating?.meta.id} style={{position: "relative"}} className={`bullet-point ${bulletStyle(bullet.rating?.meta.total)}`} key={bullet.rating?.meta.id+idx}>
+                                            <span>{bullet.text}</span>&nbsp;
+                                            {bullet.rating?.meta.total > 0 &&
                                             <span className="tool-tip" style={{position: "static"}}>
                                                 <i className="fa-solid fa-circle-exclamation tool-tip-icon"></i>
                                                 <span className="tool-tip-text" style={{position: "absolute", top: "100%", left: 0, zIndex: 5}}>
                                                     
                                                     <ol style={{margin: 0, padding: 0, listStylePosition: "inside", fontSize: "larger"}}>{
-                                                        Object.entries(rating).map(([key, value]) =>{
-                                                            return key !== 'total' && key !== 'meta' ? <li key={value}>{value}</li> : null;
+                                                        bullet.rating.errors.map((error) =>{
+                                                            return <li key={error+bullet.rating?.meta.id}>{error}</li>;
                                                         })
                                                     }</ol>
 
@@ -78,8 +78,8 @@ function ResumePreview({ resume }){
                                     <span>{item.from ? shortDate(new Date(item.from).toLocaleDateString('en-US'))+' to ' : ''}{item.to ? (item.current && !item.from ? 'Graduating ' : '') + shortDate(new Date(item.to).toLocaleDateString('en-US')) : ''}</span>
                                 </h6>
                                 <p>{item.institutionName || 'School'}</p>
-                                {item.description?.split("\n").map((bullet, idx) => (
-                                    bullet.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet}</div></li>: null
+                                {item.bullets.map((bullet, idx) => (
+                                    bullet.text.trim() ? <li className={"bullet-point"} key={idx}><div>{bullet.text}</div></li>: null
                                 ))}                           
                             </div>
                         )})

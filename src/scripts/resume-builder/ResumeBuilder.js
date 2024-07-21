@@ -9,6 +9,7 @@ import ResumePreview from './ResumePreview';
 import { saveAs } from 'file-saver';
 import { Packer } from "docx";
 import generateDocx from './util/DocX';
+import IssueListItem from './IssueListItem';
 
 function ResumeBuilder() {
     
@@ -28,7 +29,7 @@ function ResumeBuilder() {
         document.getElementById("upload-modal").close();
     }
     function hasIssues(){
-        return resume.work.some((workItem) => workItem.bulletRatings?.some((bulletRating) => bulletRating?.meta.total > 0));
+        return resume.totalIssues > 0;
     }
 
     function reset(){
@@ -49,8 +50,7 @@ function ResumeBuilder() {
                     location: '',
                     from: '',
                     to: '',
-                    description: '',
-                    bulletRatings: [],
+                    bullets: [],
                     current: false
                   }],
                 education: [{
@@ -60,15 +60,13 @@ function ResumeBuilder() {
                     city: '',
                     location: '',
                     to: '',
-                    description: '',
+                    bullets: [],
                     current: false
                   }],
                 skills: [],
             })
         }
     }
-
-
 
     const [errors, setErrors] = useState(null);
     const [resume, setResume] = useState({
@@ -82,13 +80,12 @@ function ResumeBuilder() {
         },
         work: [{
             companyName: '',
-            bulletRatings: [],
             jobTitle: '',
             city: '',
             location: '',
             from: '',
             to: '',
-            description: '',
+            bullets: [],
             current: false
           }],
         education: [{
@@ -98,22 +95,21 @@ function ResumeBuilder() {
             city: '',
             location: '',
             to: '',
-            description: '',
+            bullets: [],
             current: false
           }],
         skills: [],
     })
 
     useEffect(() => {
-        let storedResume = localStorage.getItem("resume");
+        let storedResume = localStorage.getItem("ew-resume");
     
-        if(storedResume){
-            setResume(JSON.parse(storedResume));
-        }
+        if(storedResume) setResume(JSON.parse(storedResume));
+        
     }, [])
     
     useEffect(() => {
-        localStorage.setItem("resume", JSON.stringify(resume))
+        localStorage.setItem("ew-resume", JSON.stringify(resume))
     }, [resume])
 
     function focusClick(e){
@@ -175,38 +171,42 @@ function ResumeBuilder() {
     }
 
     const [issues, setIssues] = useState([]);
-    useEffect(() => {
-        resume.work.forEach((workItem) => { // { ...workItem, description, bulletRatings }
-            workItem.bulletRatings.forEach((rating) => {
-                if(rating?.meta.total > 0){
-                    Object.entries(rating).forEach(([key, text], idx) =>{
-                        if(key === "meta") return;
+
+    function refreshIssues(){
+        setIssues(prev => []);
+        resume.work.forEach((workItem, workItemIdx) => {
+            workItem.bullets.forEach((bullet, bulletIdx) => {
+                if(bullet.rating?.meta?.total > 0 && !bullet.rating?.meta?.dismissed){
+                    Object.entries(bullet.rating).forEach(([key, text]) =>{
+                        if(key === "meta" || key === "errors" || key === "suggestion") return;
+
+                        if(typeof(text) === 'boolean'){
+                            text = key.replaceAll('_', ' ')
+                        }
+
                         setIssues( prev =>
                             prev.concat([
-                                <li 
-                                onMouseEnter={focusPreview} 
-                                onMouseLeave={focusPreview} 
-                                className="bullet-issue" 
-                                // key={rating?.meta.id +'_'+ idx} 
-                                data-id={"_"+rating?.meta.id}>
-                                    {text}
-                                </li>
+                                <IssueListItem text={text} bullet={bullet} workItemIdx={workItemIdx} bulletIdx={bulletIdx} type="manual" setResume={setResume} subIdx={key} />
                             ])
                         )
                     })
+
+                    bullet.rating.errors.forEach((error, errorIdx) => {
+                        setIssues( prev =>
+                            prev.concat([
+                                <IssueListItem text={error} bullet={bullet} workItemIdx={workItemIdx} bulletIdx={bulletIdx} type="auto" setResume={setResume} subIdx={errorIdx}/>
+                            ])
+                        )
+                    })
+
+                    console.log("Suggestion: ", bullet.rating.suggestion)
                 }
             })
         })
-    }, [resume.work]);
+    }
+    useEffect(refreshIssues, [resume]);
 
-    function focusPreview(e){
-        const id = e.target.dataset.id;
-        const previewLi = document.getElementById(id.slice(1));
-        // Scroll into view preview Li
-        previewLi.scrollIntoView({block: 'center', behavior: 'smooth'});
-        previewLi.classList.toggle("border");
-        previewLi.classList.toggle("border-primary");
-    };
+
     
     return (
         <>
@@ -230,11 +230,11 @@ function ResumeBuilder() {
             <div className="btn-group hover-menu" role="group">
 
                 <div className="btn btn-primary" onClick={showUploadModal}>
-                    Fill with Resume <i className="fa-solid fa-cloud-arrow-up"></i>
+                    Upload Resume <i className="fa-solid fa-cloud-arrow-up"></i>
                 </div>
                 
                 <div className="btn btn-danger" onClick={reset}>
-                    Start Over <i className="fa-solid fa-rotate-right"></i>
+                    Clear <i className="fa-solid fa-rotate-right"></i>
                 </div>
 
                 <div className="btn btn-success" onClick={saveResume}>
@@ -242,34 +242,39 @@ function ResumeBuilder() {
                 </div>
 
             </div>
-            <div className="resume-builder-section accordion border-end border-light w-50" id="resume-builder-left">
+            <div className="resume-builder-section accordion border-end border-light col-lg-5 col-md-4 col-sm-3" id="resume-builder-left">
                 {   hasIssues() && 
-                    <div className="resume-builder-sub-section closed">
-                        <h4 onClick={focusClick} >Issues</h4>
-                        <ol className="ps-3">{ issues }</ol>
+                    <div className="resume-builder-sub-section closed position-relative" >
+                        <i class="fa-solid fa-chevron-up" onClick={focusClick} ></i>
+                        <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Issues <span className="text-muted">({issues.length})</span></div>
+                        <ol className="content ps-3">{ issues }</ol>
                     </div>
                 }
-                <div id="resume-builder-one" className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Personal Info</h4>
+                <div id="resume-builder-one" className="resume-builder-sub-section closed position-relative" >
+                    <i class="fa-solid fa-chevron-up" onClick={focusClick} ></i>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Personal Info</div>
                     <PersonalInfoForm resume={[resume, setResume]}/>
 
                 </div>
-                <div id="resume-builder-two"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Experience</h4> 
+                <div id="resume-builder-two"  className="resume-builder-sub-section closed position-relative" >
+                    <i class="fa-solid fa-chevron-up" onClick={focusClick} ></i>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Experience</div> 
                     <WorkExperienceForm resume={[resume, setResume]}/>
 
                 </div>
-                <div id="resume-builder-three"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Education</h4>
+                <div id="resume-builder-three"  className="resume-builder-sub-section closed position-relative" >
+                    <i class="fa-solid fa-chevron-up" onClick={focusClick} ></i>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Education</div>
                     <EducationForm resume={[resume, setResume]}/>
                 </div>
-                <div id="resume-builder-four"  className="resume-builder-sub-section closed" >
-                    <h4 onClick={focusClick} >Skills</h4>
+                <div id="resume-builder-four"  className="resume-builder-sub-section closed position-relative" >
+                    <i class="fa-solid fa-chevron-up" onClick={focusClick} ></i>
+                    <div onClick={focusClick} style={{fontSize: "1.5em; padding: 0"}} >Skills</div>
                     <SkillList resume={[resume, setResume]}/>
                 </div>
             </div>
 
-            <div className="resume-builder-section w-50" id="resume-builder-right">
+            <div className="resume-builder-section col-lg-7 col-md-8 col-sm-9" id="resume-builder-right">
                 <ResumePreview resume={resume} />
             </div>
         </>

@@ -3,7 +3,7 @@ import "./BulletPointInput.scss"
 
 export default function BulletPointInputItem({idx, name, type: uniqName, value: bullet, onDelete: deleteBullet, onChange: bulletUpdate, bulletIdx, move}){
     const [active, setActive] = useState(false);
-    const [value, setValue] = useState(bullet);
+    const [value, setValue] = useState(bullet.text);
     const didChange = useRef(false);
     const ref = useRef();
     const classId = uniqName+"_bullet_input_"+idx;
@@ -13,10 +13,11 @@ export default function BulletPointInputItem({idx, name, type: uniqName, value: 
     }, [active])
 
     useEffect(() => {
-        setValue(bullet);
+        setValue(bullet.text);
     }, [bullet]);
 
     function handleChange(e){
+        e.target.dataset.value = JSON.stringify({text: e.target.value, rating: null})
         setValue(e.target.value);
         didChange.current = true;
     }
@@ -24,7 +25,7 @@ export default function BulletPointInputItem({idx, name, type: uniqName, value: 
     if(!active){
         return (
             <div className="d-flex">
-                <li className={classId+" ms-4 bpi-li p-2"} data-value={value} tabIndex="0" onFocus={()=>setActive(true)}>{value}</li>
+                <li className={classId+" ms-4 bpi-li p-2"} data-value={JSON.stringify(bullet)} tabIndex="0" onFocus={()=>setActive(true)}>{bullet.text}</li>
                 <div className="btn-group">
                     <div className="btn btn-primary" onClick={()=>setActive(true)}>
                         <i className="fa-regular fa-pen-to-square"></i>
@@ -42,7 +43,7 @@ export default function BulletPointInputItem({idx, name, type: uniqName, value: 
             </div>
         )
     } else {
-        return <textarea name={name} ref={ref} className={classId+" ms-3 mb-2 p-2 w-100"} data-value={value} value={value} onChange={handleChange} onKeyDown={(event) => {if(event.key === "Enter" ||event.keyCode === 13) event.preventDefault()}} onBlur={(e)=>{setActive(false); if(didChange.current) bulletUpdate(classId)}}/>
+        return <textarea name={name} ref={ref} className={classId+" ms-3 mb-2 p-2 w-100"} data-value={JSON.stringify(bullet)} value={value} onChange={handleChange} onKeyDown={(event) => {if(event.key === "Enter" ||event.keyCode === 13) event.preventDefault()}} onBlur={(e)=>{setActive(false); if(didChange.current) bulletUpdate(classId)}}/>
 
     }
 }

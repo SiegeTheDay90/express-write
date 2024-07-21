@@ -11,13 +11,12 @@ function WorkExperienceForm( {resume: [resume, setResume]}){
         ...prevState,
         work: prevState.work.concat([{
           companyName: '',
-          bulletRatings: [],
           jobTitle: '',
           city: '',
           location: '',
           from: '',
           to: '',
-          description: '',
+          bullets: [],
           current: false
         }])
       }

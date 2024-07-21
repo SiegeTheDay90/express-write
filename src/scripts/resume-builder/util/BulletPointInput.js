@@ -3,36 +3,36 @@ import "./BulletPointInput.scss"
 import BulletPointInputItem from "./BulletPointInputItem";
 
 export default function BulletPointInput({idx, name, type, label, value, setValue}){
-    const  [bullets, setBullets] = useState(value?.length ? value?.split("\n") : []);
+    const  [bullets, setBullets] = useState(value || []);
     const classId = type+"_bullet_input_"+idx;
 
     useEffect(() => {
-        setBullets(value?.length ? value?.split("\n") : []);
+        setBullets(value || []);
     }, [value])
 
 
-    // Each bullet should be an individual text input. The values of the overall bullet input will be a \n separated strings combined from the different inputs.
+    // Each bullet should be an individual text input. 
 
-    function bulletUpdate(){
+    function bulletUpdate(idx){
         const inputElements = document.getElementsByClassName(classId);
-        setValue({ target: {value: Array.from(inputElements).map(bullet => bullet.dataset.value).join("\n"), name }});
+        setValue({ target: {value: Array.from(inputElements).map(bullet => JSON.parse(bullet.dataset.value)), name }});
     }
 
     function newBullet(){
         const inputElements = document.getElementsByClassName(classId);
-        setValue({ target: {value: Array.from(inputElements).map(bullet => bullet.dataset.value).concat([" "]).join("\n"), name, append: true }});
+        setValue({ target: {value: Array.from(inputElements).map(bullet => JSON.parse(bullet.dataset.value)).concat([{text:"", rating: null}]), name }});
     }
 
     function deleteBullet(bulletIdx){
         const inputElements = document.getElementsByClassName(classId);
-        const array = Array.from(inputElements).map(bullet => bullet.dataset.value);
+        const array = Array.from(inputElements).map(bullet => JSON.parse(bullet.dataset.value));
         array.splice(bulletIdx, 1);
-        setValue({ target: {value: array.join("\n"), name, removal: bulletIdx+1 }});
+        setValue({ target: {value: array, name}});
     }
 
     function move(bulletIdx, dir){
         const inputElements = document.getElementsByClassName(classId);
-        const array = Array.from(inputElements).map(bullet => bullet.dataset.value);
+        const array = Array.from(inputElements).map(bullet => JSON.parse(bullet.dataset.value));
         let [up, center, down] = [array[bulletIdx-1], array[bulletIdx], array[bulletIdx+1]];
 
         if(dir === "up" && bulletIdx >= 1){
@@ -42,8 +42,7 @@ export default function BulletPointInput({idx, name, type, label, value, setValu
             array[bulletIdx+1] = center;
             array[bulletIdx] = down;
         }
-        console.log("moving");
-        setValue({ target: {value: array.join("\n"), name, move: [bulletIdx, dir]}});
+        setValue({ target: {value: array, name}});
     }
 
     return(

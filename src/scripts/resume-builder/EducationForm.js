@@ -17,7 +17,7 @@ function EducationForm({resume: [resume, setResume]}){
           city: '',
           location: '',
           to: '',
-          description: '',
+          bullets: [],
           current: false
         }])
       }
