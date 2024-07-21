@@ -99,6 +99,4 @@ gem 'docx', '~> 0.8.0'
 
 gem 'google-cloud-firestore'
 
-# gem 'spelly'
-
 
