@@ -8,7 +8,7 @@ app/javascript/*.LICENSE.txt
 
 # Ignore bundler config.
 /.bundle
-
+defunct/
 # Ignore secret environment vars
 .env
 # Ignore the default SQLite database.
