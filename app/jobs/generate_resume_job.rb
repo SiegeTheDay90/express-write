@@ -146,13 +146,13 @@ class GenerateResumeJob < ApplicationJob
     rescue JSON::ParserError
       BugReport.create!(
         body: "Invalid JSON: #{response['choices'][0]['message']['content']}",
-        user_agent: "GenerateResumeJob"
+        user_agent: "GenerateResumeJob#text_to_resume"
       )
       return "-@-ErrorString-@-Invalid JSON: #{response['choices'][0]['message']['content']}"
     rescue StandardError => e
       BugReport.create!(
         body: "ERROR: #{e.to_s}}",
-        user_agent: "GenerateResumeJob"
+        user_agent: "GenerateResumeJob#text_to_resume"
       )
       return "-@-ErrorString-@-"+e.to_s
     end

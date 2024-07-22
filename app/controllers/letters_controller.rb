@@ -8,8 +8,12 @@ class LettersController < ApplicationController
     if params['listing_type'] == 'url'
       begin
         http_response = HTTP.headers('User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36').get(params['input'])
-      rescue StandardError
-        errors = ['Error while trying to fetch Listing. Consider copy/pasting the listing as plain text.']
+      rescue StandardError => e
+        BugReport.create!(
+          body: "Error: #{e.to_s}",
+          user_agent: "LettersController#express"
+        )
+        errors = ["Error: #{e.to_s}\nConsider copy/pasting the listing as plain text."]
         req.update!(ok: false, complete: true, messages: errors)
         render json: { ok: false, errors:, id: req.id } and return
       end
