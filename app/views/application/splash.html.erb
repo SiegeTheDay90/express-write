@@ -2,65 +2,27 @@
 <%= javascript_import_module_tag 'gsap' %>
 <script>
 
-    function updateForm(){
-        const form = document.getElementById("express-form");
-        const uploadType = form.dataset.upload;
-        const format = form.dataset.format;
-        const input = document.getElementById("resume-input");
-
-        switch(format){
-            case "PDF":
-                input.innerHTML = `<div id="upload-type" class="w-100 d-flex py-1 mb-1" onChange="uploadChange(event)">
-                                        From:&nbsp; 
-                                        <label>File <input type="radio" name="form-type" value="File" ${uploadType === "File" ? "checked" : ""}></label>
-                                        <label class="ms-2">Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
-                                    </div>`
-                                    
-                if(uploadType === "File"){
-                    input.innerHTML += `<input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>`
-                } else {
-                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3" required>`
-                }
-            break;
-
-            case "DOCX":
-                input.innerHTML = `<div id="upload-type" class="w-100 d-flex py-1 mb-1" onChange="uploadChange(event)">
-                                        From:&nbsp; 
-                                        <label>File <input type="radio" name="form-type" value="File" ${uploadType === "File" ? "checked" : ""}></label>
-                                        <label class="ms-2">Link <input type="radio" name="form-type" value="Link" ${uploadType !== "File" ? "checked" : ""}></label>
-                                    </div>`
-                                    
-                if(uploadType === "File"){
-                    input.innerHTML += `<input type="file" name="file" id="file" accept=".doc, .docx" class="mb-3" required>`
-                } else {
-                    input.innerHTML += `<input placeholder="Link" name="link" id="link-to-file" class="form-control mb-3" required>`
-                }
-            break;
-
-            case "TEXT":
-                input.innerHTML = `<div class="mb-3 form-floating w-100">
-                    <input name="text" id="link-to-file" class="pt-5 pb-3 form-control w-100" required>
-                    <label class="fs-5 fw-bolder" for="link-to-file">Paste Here</label>
-                </div>`
-            break;
-            default:
-                console.error("Could not update form");
-        }
-
-    }
-
     function uploadChange(e){
         const value = e.target.value;
-        const form = e.currentTarget.parentElement.parentElement;
-        form.dataset.upload = value;
-        updateForm();
-    }
+        const type = e.currentTarget.dataset.type;
+        const input = document.getElementById(type+'-input');
 
-    function formatChange(e){
-        const value = e.target.value;
-        const form = e.target.parentElement.parentElement;
-        form.dataset.format = value;
-        updateForm();
+        switch(value){
+            case "File":
+                input.type = "file";
+                input.accept = ".pdf, .doc, .docx, .txt"
+                break;
+
+            case "Link":
+                input.type = "text";
+                input.placeholder = "Paste Here";
+                break;
+
+            case "Plain":
+                input.type = "text";
+                input.placeholder = "Paste Here";
+                break;
+        }
     }
 
     function promptChange(e){
@@ -121,8 +83,8 @@
     } 
 
     function listingInputChange(e=event){
-        if(localStorage.getItem('debounce')){
-            clearTimeout(localStorage.getItem('debounce'));
+        if(localStorage.getItem('ew-debounce')){
+            clearTimeout(localStorage.getItem('ew-debounce'));
         }
         const type = Array.from(document.getElementsByClassName("listing-type")).filter(radio => radio.checked)[0].value;
         const input = document.getElementById("link-to-listing");
@@ -140,7 +102,7 @@
                     checkValidSite(input, submit);
                 }, 700);
             
-                localStorage.setItem('debounce', debounce);
+                localStorage.setItem('ew-debounce', debounce);
         
             } else {
                 if(e.target.value.trim()){
@@ -150,6 +112,16 @@
                 }
             }
         }
+    }
+
+    function handleTone(e=event){
+        document.getElementById('tone-upload-type').classList.toggle('hidden');
+        document.getElementById('tone-upload-type').classList.toggle('d-flex');
+        document.getElementById('tone-input').classList.toggle('hidden');
+        document.getElementById('tone-input').required = !document.getElementById('tone-input').required;
+        document.getElementById('tone-select').classList.toggle('hidden');
+        document.querySelector('[for=tone-select]').classList.toggle('hidden');
+
     }
 
 </script>
@@ -180,40 +152,53 @@
             <div class="gap-2 d-flex flex-column align-items-center w-100">
                 <form id="express-form" data-action="express#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
                     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                    <h6 class="my-1">Upload your Resume</h6>
-                    <label for="resume-format">Format:
-                    <select class="mb-1" name="resume-format" id="resume-format" onChange="formatChange(event)">
-                        <option value="PDF" selected>PDF</option>
-                        <option value="DOCX">DOCX</option>
-                        <option value="TEXT">Plain Text</option>
-                    </select></label>
                     
-
-                    <div id="resume-input" class="w-100 mb-2">
-                        <div id="upload-type" class="d-flex py-1 mb-1" onChange="uploadChange(event)">
+                    
+                    <h6 class="my-1">Upload your Resume</h6>
+                    <div id="resume-section" class="form-section w-100 mb-2 text-start">
+                        <div id="resume-upload-type" class="d-flex py-1 mb-1" onChange="uploadChange(event)" data-type="resume">
                             From:&nbsp;
-                            <label>File <input type="radio" name="form-type" value="File" checked></label>
-                            <label class="ms-2">Link <input type="radio" name="form-type" value="Link"></label>
+                            <label>File <input type="radio" name="resume-upload-type" value="File" checked></label>
+                            <%# <label class="ms-2">Link <input type="radio" name="resume-upload-type" value="Link"></label> %>
+                            <label class="ms-2">Plain Text <input type="radio" name="resume-upload-type" value="Plain"></label>
                         </div>
-                        <input type="file" name="file" id="file" accept=".pdf" class="mb-3" required>
+                        <input type="file" name="file" id="resume-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control" required>
                     </div>
+
                     <h6 class="my-1 position-relative">Share a Job Listing&nbsp;<span class="tool-tip"><i class="fa-regular fa-circle-question tool-tip-icon"></i><span class="tool-tip-text"> If your URL isn't accepted. Copy the listing as plain text!</span></span></h6>
-                    <div id="listing-input" class=" d-flex flex-column align-items-start w-100 mb-2">
+                    <div id="listing-section" class="form-section d-flex flex-column align-items-start w-100 mb-2">
                         <div>From:&nbsp;
-                            <label>URL <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)" class="listing-type"></label>
+                            <label>Link <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)" class="listing-type"></label>
                             <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text" onChange="listingInputChange(event)" class="listing-type"></label>
                         </div>
                         <input name="input" placeholder="Paste Here" id="link-to-listing" class="form-control" onInput="listingInputChange(event)">
                     </div>
-                    <div id="tone-input" class="d-flex flex-column align-items-start w-100 mb-2">
-                            <label for="tone-select">Tone: </label>
-                            <select class="mb-1" name="tone" id="tone-select">
-                                <option value="passionate" selected>Passion</option>
-                                <option value="humorous">Humor</option>
-                                <option value="admiration">Admiration</option>
-                                <option value="confident">Confidence</option>
-                            </select>                       
+
+                    <h6 class="my-1">Choose Your Tone</h6>
+                    <div id="tone-section" class="form-section w-100 mb-2 text-start">
+     
+                        <label for="tone-select">Predefined Tone: </label> <%# Predefined Tone List Input%>
+                        
+                        <select class="mb-1" name="tone-select" id="tone-select" required>
+                            <option value="passionate">Passionate</option>
+                            <option value="humorous">Humorous</option>
+                            <option value="admiration">Admiration</option>
+                            <option value="confident">Confidence</option>
+                        </select>
+                        
+                        
+                        <div id="tone-upload-type" class="py-1 mb-1 hidden" onChange="uploadChange(event)" data-type="tone">
+                            From:&nbsp;
+                            <label>File <input type="radio" name="tone-upload-type" value="File" checked></label>
+                            <%# <label class="ms-2">Link <input type="radio" name="tone-upload-type" value="Link"></label> %>
+                            <label class="ms-2">Plain Text <input type="radio" name="tone-upload-type" value="Plain"></label>
+                        </div>                       
+                        
+                        <input type="file" name="tone-file" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">
+                        <label><input type="checkbox" onChange="handleTone(event)"/> Use the tone from my own letter</label>
+                    
                     </div>
+
                     <details class="w-100 text-start">
                         <summary class="mb-2">
                             <h6 class="my-1 d-inline">Additional Prompts</h6>
@@ -271,11 +256,11 @@
 </div>
 
 <div id="resume-splash" style="background-color: #eef" class="px-4 py-5 mb-5 d-flex flex-column align-items-center">
-    <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Resume Builder <span class="fs-5 text-info">Beta</span></h2>
+    <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Resume Evaluator <span class="fs-5 text-info">Beta</span></h2>
     <small>Instant Feedback!</small><br/>
 
     <div class="d-flex justify-content-center mt-2 w-100">
-        <div class="col-lg-3 col-sm-1 d-flex flex-column align-items-start ps-5">
+        <div class="col-lg-3 d-flex flex-column align-items-start ps-5">
             <h3>Planned Features:</h3>
             <ul id="express-write-instructions" class="d-flex flex-column align-items-start ps-0">
                 <li class="account-instruction express-instruction"> Upload your Resume</li>
@@ -284,13 +269,13 @@
                 <li class="account-instruction express-instruction"> Download as Word Document</li>
             </ul>
             <div class="gap-2 d-sm-flex justify-content-sm-center">
-                <%= link_to "Check it Out", "/resumes/new", class: "btn btn-primary btn-lg px-4" %>
+                <%= link_to "Check it Out", "/resume-tool", class: "btn btn-primary btn-lg px-4" %>
             </div>
         </div>
         <div class="col-lg-4 col-md-4">
             <img src="https://cl-helper-development.s3.amazonaws.com/resume-builder-hero.png" style="border-radius: 8px" width="100%">
         </div>
-        <div class="col-lg-3 col-sm-12">
+        <div class="col-lg-3 col-sm-3">
         </div>
     </div>
 </div>
