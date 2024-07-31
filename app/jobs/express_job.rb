@@ -5,7 +5,7 @@ class ExpressJob < ApplicationJob
   BLACKLIST = Set.new(%w[header footer a code template text form link script img
                          iframe icon comment button input head meta style])
 
-  def perform(request, bio_payload, listing_payload, listing_type = 'url', user_prompt = '', tone=:passion)
+  def perform(request, bio_payload, listing_payload, listing_type = 'url', user_prompt = '', tone=:passion, custom_tone?=nil)
 
     user_prompt = 'Write a cover letter for the job listing that uses the resume as support.' if user_prompt.empty?
 
@@ -31,31 +31,36 @@ class ExpressJob < ApplicationJob
 
     # generate letter
 
-    openers = {
-      vanilla: "",
-      passionate: "\"If truly loving data is wrong, I don’t want to be right. It seems like the rest of the folks at [Analytics Company] feel the same way—and that’s just one of the reasons why I think I’d be the perfect next hire for your sales team.\",
-      \"I’ve been giving my friends and family free style advice since I was 10, and recently decided it’s time I get paid for it. That’s why I couldn’t believe it when I found an open personal stylist position at [Company].\",
-      \"I am constantly checking my LinkedIn, Facebook, Twitter, and Instagram feeds—and not because of FOMO. Because I’m someone who wholeheartedly believes in the power of sharing ideas in online communal spaces, and I’m positive that I can help spark meaningful conversations as your next social media assistant.\"",
+    if custom_tone?
+      # custom
+      content_prompt = user_prompt.to_s + " Match my writing style: #{tone}"
+    else
+      openers = {
+        vanilla: "",
+        passionate: "\"If truly loving data is wrong, I don’t want to be right. It seems like the rest of the folks at [Analytics Company] feel the same way—and that’s just one of the reasons why I think I’d be the perfect next hire for your sales team.\",
+        \"I’ve been giving my friends and family free style advice since I was 10, and recently decided it’s time I get paid for it. That’s why I couldn’t believe it when I found an open personal stylist position at [Company].\",
+        \"I am constantly checking my LinkedIn, Facebook, Twitter, and Instagram feeds—and not because of FOMO. Because I’m someone who wholeheartedly believes in the power of sharing ideas in online communal spaces, and I’m positive that I can help spark meaningful conversations as your next social media assistant.\"",
 
-      admiration: "\"I pretty much spent my childhood in the cheap seats at Cubs games, snacking on popcorn and cheering on the team with my grandfather. It’s that memory that’s shaped my career—from helping to establish the sports marketing major at my university to leading a college baseball team to an undefeated season as assistant coach—and what led me to apply for this position at the Chicago Cubs.\",
-      \"When I was seven, I wanted to be the GEICO gecko when I grew up. I eventually realized that wasn’t an option, but you can imagine my excitement when I came across your events manager position, which would have me working side by side with my favorite company mascot.\",
-      \"When I attended SXSW for the first time last month, I didn’t want to leave. So I decided I shouldn’t—and immediately went to check out job openings at the company.\",
-      \"If I could make the NYC apartment rental process better for just one person, I would feel like the horrors of my recent search would all be worth it. So a customer service role at [Apartment Search Company], where I could do it every day? I can’t think of anything more fulfilling.\",
-      \"[Vacation Rental Company] is synonymous with luxury and escape, known for spaces that inspire. I’ve felt this firsthand every time I’ve stayed at one of your properties—whether I was throwing a bachelorette party or working from home in a new locale—and I would love the chance to contribute to this reputation as your destination manager.\"",
+        admiration: "\"I pretty much spent my childhood in the cheap seats at Cubs games, snacking on popcorn and cheering on the team with my grandfather. It’s that memory that’s shaped my career—from helping to establish the sports marketing major at my university to leading a college baseball team to an undefeated season as assistant coach—and what led me to apply for this position at the Chicago Cubs.\",
+        \"When I was seven, I wanted to be the GEICO gecko when I grew up. I eventually realized that wasn’t an option, but you can imagine my excitement when I came across your events manager position, which would have me working side by side with my favorite company mascot.\",
+        \"When I attended SXSW for the first time last month, I didn’t want to leave. So I decided I shouldn’t—and immediately went to check out job openings at the company.\",
+        \"If I could make the NYC apartment rental process better for just one person, I would feel like the horrors of my recent search would all be worth it. So a customer service role at [Apartment Search Company], where I could do it every day? I can’t think of anything more fulfilling.\",
+        \"[Vacation Rental Company] is synonymous with luxury and escape, known for spaces that inspire. I’ve felt this firsthand every time I’ve stayed at one of your properties—whether I was throwing a bachelorette party or working from home in a new locale—and I would love the chance to contribute to this reputation as your destination manager.\"",
 
-      confident: "\"My last boss once told me that my phone manner could probably defuse an international hostage situation. I’ve always had a knack for communicating with people—the easygoing and the difficult alike—and I’d love to bring that skill to your open office manager position.\",
-      \"Among my colleagues, I’m known as the one who can pick up the pieces, no matter what amount of you-know-what hits the fan. Which is why I think there’s no one better to fill this customer service leader position.\",
-      \"Last December, I ousted our company’s top salesperson from his spot—and he hasn’t seen it since. Which means, I’m ready for my next big challenge, and the sales manager role at your company is exactly what I’m looking for.\",
-      \"After spending three years managing the internal communications for a 2,000-person company, I could plan a quarterly town hall or draft an interoffice memo in my sleep. What do I want to do next? Put that experience to work as a consultant for executives looking to level up their communications strategy.\",
-      \"You might be wondering what a 15-year veteran of the accounting world is doing applying to an operations role at a food startup. While I agree the shift is a little strange, I know you’re looking for someone who’s equal parts foodie and financial expert, and I think that means I’m your person.\",
-      \"Over the last 10 years, I’ve built my career on one simple principle: Work smarter. I’m the person who looks for inefficient procedures, finds ways to streamline them, and consistently strives to boost the productivity of everyone around me. It’s what’s earned me three promotions in the supply chain department at my current company, and it’s what I know I can do as the new operations analyst for [Company].\"",
+        confident: "\"My last boss once told me that my phone manner could probably defuse an international hostage situation. I’ve always had a knack for communicating with people—the easygoing and the difficult alike—and I’d love to bring that skill to your open office manager position.\",
+        \"Among my colleagues, I’m known as the one who can pick up the pieces, no matter what amount of you-know-what hits the fan. Which is why I think there’s no one better to fill this customer service leader position.\",
+        \"Last December, I ousted our company’s top salesperson from his spot—and he hasn’t seen it since. Which means, I’m ready for my next big challenge, and the sales manager role at your company is exactly what I’m looking for.\",
+        \"After spending three years managing the internal communications for a 2,000-person company, I could plan a quarterly town hall or draft an interoffice memo in my sleep. What do I want to do next? Put that experience to work as a consultant for executives looking to level up their communications strategy.\",
+        \"You might be wondering what a 15-year veteran of the accounting world is doing applying to an operations role at a food startup. While I agree the shift is a little strange, I know you’re looking for someone who’s equal parts foodie and financial expert, and I think that means I’m your person.\",
+        \"Over the last 10 years, I’ve built my career on one simple principle: Work smarter. I’m the person who looks for inefficient procedures, finds ways to streamline them, and consistently strives to boost the productivity of everyone around me. It’s what’s earned me three promotions in the supply chain department at my current company, and it’s what I know I can do as the new operations analyst for [Company].\"",
 
-      humorous: "\"Have you ever had your mom call five times a day asking for a status update on how your job search is going, and then sound incredulous that you haven’t made more progress since the last phone call? That’s my life right now. But I’m hoping that soon my life will revolve around being your full-time social media manager. The good news is, I bring more to the table than just an overbearing mom. Let me tell you more.\",
-      \"I considered submitting my latest credit card statement as proof of just how much I love online shopping, but I thought a safer approach might be writing this cover letter and describing all the reasons I’m the one who can take [E-Commerce Company]’s business to the next level.\",
-      \"I never thought that accidentally dropping my iPhone out of a second story window would change my life (it’s a funny story—ask me about it). But thanks to my misfortune, I discovered [Phone Repair Company]—and found my dream job as an expansion associate.\""
+        humorous: "\"Have you ever had your mom call five times a day asking for a status update on how your job search is going, and then sound incredulous that you haven’t made more progress since the last phone call? That’s my life right now. But I’m hoping that soon my life will revolve around being your full-time social media manager. The good news is, I bring more to the table than just an overbearing mom. Let me tell you more.\",
+        \"I considered submitting my latest credit card statement as proof of just how much I love online shopping, but I thought a safer approach might be writing this cover letter and describing all the reasons I’m the one who can take [E-Commerce Company]’s business to the next level.\",
+        \"I never thought that accidentally dropping my iPhone out of a second story window would change my life (it’s a funny story—ask me about it). But thanks to my misfortune, I discovered [Phone Repair Company]—and found my dream job as an expansion associate.\""
 
-    }[tone.to_sym]
-
+      }[tone.to_sym]
+      content_prompt = user_prompt.to_s + "I want the tone to be #{tone}. "+ "Examples of strong openers include: #{openers}"
+    end
     OpenAI.configure do |config|
       config.access_token = ENV['OPENAI']
     end
@@ -65,7 +70,7 @@ class ExpressJob < ApplicationJob
     resume['first_name'] = 'ExpressWrite'
     resume['last_name'] = 'User'
       
-    system_prompt = "Write cover 2-3 paragraph cover letter as job candidate. Make sure to include a greeting and closing signature. Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
+    system_prompt = "Write cover cover letter as job candidate. It should be at least 3 paragraphs. Make sure to include a greeting and closing signature. Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
     Resume: #{resume}}.
     "
     client = OpenAI::Client.new
@@ -74,7 +79,7 @@ class ExpressJob < ApplicationJob
         model: 'gpt-3.5-turbo',
         messages: [
           { role: 'system', content: system_prompt },
-          { role: 'user', content: user_prompt.to_s + "I want the tone to be #{tone}. "+ "Examples of strong openers include: #{openers}" }
+          { role: 'user', content: content_prompt }
         ],
         temperature: 1.3
       }
