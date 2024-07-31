@@ -5,7 +5,7 @@ class ExpressJob < ApplicationJob
   BLACKLIST = Set.new(%w[header footer a code template text form link script img
                          iframe icon comment button input head meta style])
 
-  def perform(request, bio_payload, listing_payload, listing_type = 'url', user_prompt = '', tone=:passion, custom_tone?=nil)
+  def perform(request, bio_payload, listing_payload, listing_type = 'url', user_prompt = '', tone=:passion, custom_tone)
 
     user_prompt = 'Write a cover letter for the job listing that uses the resume as support.' if user_prompt.empty?
 
@@ -31,9 +31,10 @@ class ExpressJob < ApplicationJob
 
     # generate letter
 
-    if custom_tone?
+    debugger
+    if custom_tone
       # custom
-      content_prompt = user_prompt.to_s + " Match my writing style: #{tone}"
+      content_prompt = "Write a letter using this style: \n #{tone}"
     else
       openers = {
         vanilla: "",
@@ -76,26 +77,26 @@ class ExpressJob < ApplicationJob
     client = OpenAI::Client.new
     response = client.chat(
       parameters: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: system_prompt },
           { role: 'user', content: content_prompt }
         ],
-        temperature: 1.3
+        temperature: 1.2
       }
     )
 
     
-    response = client.chat(
-      parameters: {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: 'Rewrite the input at a 12th grade level' },
-          { role: 'user', content: response['choices'][0]['message']['content'] }
-        ],
-        temperature: 1.3
-      }
-    ) unless !response['choices'][0]['message']['content']
+    # response = client.chat(
+    #   parameters: {
+    #     model: 'gpt-3.5-turbo',
+    #     messages: [
+    #       { role: 'system', content: 'Rewrite the input at a 12th grade level' },
+    #       { role: 'user', content: response['choices'][0]['message']['content'] }
+    #     ],
+    #     temperature: 1.3
+    #   }
+    # ) unless !response['choices'][0]['message']['content']
       
     begin
       @message = response['choices'][0]['message']['content']

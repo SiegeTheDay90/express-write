@@ -38,15 +38,13 @@ class LettersController < ApplicationController
     # Resume to Text Payload 
     if params["resume_upload_type"] == "file"
       begin
-        @resume = params['resume']
-        
+        @resume = params['resume']        
         if @resume.content_type == "application/pdf"
           # PDF
-          debugger
-          @resume = helpers.pdf_to_text(@resume.read)
+          @resume = helpers.pdf_to_text(@resume.to_io)
         else
           # DOC(x)
-          @resume = helpers.docx_to_text(@resume.read)
+          @resume = helpers.docx_to_text(@resume.to_io)
         end
       rescue StandardError => e
         errors = ["Error: #{e.to_s}"]
@@ -73,21 +71,22 @@ class LettersController < ApplicationController
       @custom_tone = true
       begin
         if params["tone"].content_type == "application/pdf"
-          helpers.pdf_to_text(params["tone"].read)
+          tone = helpers.pdf_to_text(params["tone"].to_io)
         else
-          helpers.docx_to_text(params["tone"].read)
+          tone = helpers.docx_to_text(params["tone"].to_io)
         end
       rescue StandardError => e
         errors = ["Error: #{e.to_s}"]
         BugReport.create!(
           body: e.to_s,
           user_agent: "Letters#express:82"
-        )        
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
+          )        
+          req.update!(ok: false, complete: true, messages: errors)
+          render json: { ok: false, errors:, id: req.id } and return
+        end
       end
-    end
-
+      
+    debugger
     ExpressJob.perform_later(req, @resume, @listing_payload, params['listing_type'], user_prompt, tone, @custom_tone)
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end

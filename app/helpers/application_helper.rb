@@ -4,7 +4,6 @@ module ApplicationHelper
     require 'docx'
 
     def pdf_to_text(pdf)
-      debugger
       PDF::Reader.open(pdf) do |reader|
         logger.info "Converting : #{pdf}"
         pageno = 0
