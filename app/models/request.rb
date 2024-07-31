@@ -21,11 +21,11 @@ class Request < ApplicationRecord
     primary_key: :session_id,
     optional: true
 
-  def self.average_uptime(range = (Date.today-7.days..Date.today))
+  def self.average_uptime(range = (Date.today-7.days..DateTime.now))
     raise TypeError unless range.class == Range
 
     successful_requests = self.where(ok: true, created_at: range) 
-    avg = successful_requests.length > 0 ? successful_requests.inject(0) { |acc, request| request.uptime }/successful_requests.length : "No Requests"
+    avg = successful_requests.length > 0 ? successful_requests.inject(0) { |acc, request| acc + request.uptime }/successful_requests.length : "No Requests"
   end
 
   def complete!(status, resource_id, messages = [''])
