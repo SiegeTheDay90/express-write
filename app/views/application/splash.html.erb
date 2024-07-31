@@ -8,17 +8,17 @@
         const input = document.getElementById(type+'-input');
 
         switch(value){
-            case "File":
+            case "file":
                 input.type = "file";
                 input.accept = ".pdf, .doc, .docx, .txt"
                 break;
 
-            case "Link":
+            case "link":
                 input.type = "text";
                 input.placeholder = "Paste Here";
                 break;
 
-            case "Plain":
+            case "text":
                 input.type = "text";
                 input.placeholder = "Paste Here";
                 break;
@@ -150,7 +150,7 @@
         </div>
         <div class="col-lg-4 px-5">
             <div class="gap-2 d-flex flex-column align-items-center w-100">
-                <form id="express-form" data-action="express#generate" data-upload="File" data-format="PDF" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
+                <form id="express-form" data-action="express#generate" method="POST" action=<%= express_letter_url %> class="mb-3 ajaxForm d-flex flex-column align-items-start col-12">
                     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
                     
                     
@@ -158,9 +158,9 @@
                     <div id="resume-section" class="form-section w-100 mb-2 text-start">
                         <div id="resume-upload-type" class="d-flex py-1 mb-1" onChange="uploadChange(event)" data-type="resume">
                             From:&nbsp;
-                            <label>File <input type="radio" name="resume-upload-type" value="File" checked></label>
-                            <%# <label class="ms-2">Link <input type="radio" name="resume-upload-type" value="Link"></label> %>
-                            <label class="ms-2">Plain Text <input type="radio" name="resume-upload-type" value="Plain"></label>
+                            <label>File <input type="radio" name="resume-upload-type" value="file" checked></label>
+                            <%# <label class="ms-2">Link <input type="radio" name="resume-upload-type" value="link"></label> %>
+                            <label class="ms-2">Plain Text <input type="radio" name="resume-upload-type" value="text"></label>
                         </div>
                         <input type="file" name="resume" id="resume-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control" required>
                     </div>
@@ -189,9 +189,9 @@
                         
                         <div id="tone-upload-type" class="py-1 mb-1 hidden" onChange="uploadChange(event)" data-type="tone">
                             From:&nbsp;
-                            <label>File <input type="radio" name="tone-upload-type" value="File" checked></label>
-                            <%# <label class="ms-2">Link <input type="radio" name="tone-upload-type" value="Link"></label> %>
-                            <label class="ms-2">Plain Text <input type="radio" name="tone-upload-type" value="Plain"></label>
+                            <label>File <input type="radio" name="tone-upload-type" value="file" checked></label>
+                            <%# <label class="ms-2">Link <input type="radio" name="tone-upload-type" value="link"></label> %>
+                            <label class="ms-2">Plain Text <input type="radio" name="tone-upload-type" value="text"></label>
                         </div>                       
                         
                         <input type="file" name="tone" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">

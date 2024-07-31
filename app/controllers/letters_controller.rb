@@ -2,13 +2,13 @@
 
 class LettersController < ApplicationController
   def express
-    debugger
+    
     req = Request.create!(resource_type: 'temp_letter', session_id: @session.session_id)
-    # render json: {ok: false, errors: ["First error", "Second error"], id: req.id} and return
+
     # Listing to Text Payload
     if params['listing_type'] == 'url'
       begin
-        http_response = HTTP.headers('User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36').get(params['input'])
+        http_response = HTTP.headers('User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36').get(params['listing'])
       rescue StandardError => e
         BugReport.create!(
           body: "Error: #{e.to_s}",
@@ -31,57 +31,64 @@ class LettersController < ApplicationController
         @listing_payload = http_response.body.to_s
       end
     else
-      @listing_payload = params['input']
+      @listing_payload = params['listing']
     end
 
-    # Resume to Text Payload
-
-    # Is this a PDF or DOCX file?
-    if %w[PDF DOCX].include?(params['resume_format'])
-      # Are we given a link to the file?
-      if params['link'] && !params['link']&.empty?
-        url = ''
-        # Is it a Google Docs sharing link? Convert to direct download link.
-        if params['link'].split('/').include?('docs.google.com') || params['link'].split('/').include?('drive.google.com')
-          id = params['link'].split('/')[-2]
-          url = "https://drive.google.com/uc?export=download&id=#{id}"
+    # THIS NEEDS A REWRITE
+    # Resume to Text Payload 
+    if params["resume_upload_type"] == "file"
+      begin
+        @resume = params['resume']
+        
+        if @resume.content_type == "application/pdf"
+          # PDF
+          debugger
+          @resume = helpers.pdf_to_text(@resume.read)
         else
-          url = params['link']
+          # DOC(x)
+          @resume = helpers.docx_to_text(@resume.read)
         end
-
-        # Try to open the link
-        begin
-          @bio_payload = URI.open(url)
-        rescue StandardError => e
-          errors = [e.to_s]
-          req.update!(ok: false, complete: true, messages: errors)
-          render json: { ok: false, errors:, id: req.id } and return
-        end
-
-      else # The file is attached directly to the request
-        @bio_payload = request.body
+      rescue StandardError => e
+        errors = ["Error: #{e.to_s}"]
+        BugReport.create!(
+          body: e.to_s,
+          user_agent: "Letters#express:54"
+        )        
+        req.update!(ok: false, complete: true, messages: errors)
+        render json: { ok: false, errors:, id: req.id } and return
       end
     else # Just plain text
-      @bio_payload = params['text']
+      @resume = params['text']
     end
 
-    # Covert to text if it is a file
-    begin
-      case params['resume_format']
-      when 'PDF'
-        @bio_payload = helpers.pdf_to_text(@bio_payload)
-      when 'DOCX'
-        @bio_payload = helpers.docx_to_text(@bio_payload)
-      end
-    rescue StandardError => e
-      errors = ["Error: #{e.to_s}"]
-      req.update!(ok: false, complete: true, messages: errors)
-      render json: { ok: false, errors:, id: req.id } and return
-    end
+    
+    
+
 
     user_prompt = params['prompt']
-    tone = params['tone']
-    ExpressJob.perform_later(req, @bio_payload, @listing_payload, params['listing_type'], user_prompt, tone)
+    if params["tone_select"]
+      # Predefined tone
+      tone = params['tone_select']
+    else
+      @custom_tone = true
+      begin
+        if params["tone"].content_type == "application/pdf"
+          helpers.pdf_to_text(params["tone"].read)
+        else
+          helpers.docx_to_text(params["tone"].read)
+        end
+      rescue StandardError => e
+        errors = ["Error: #{e.to_s}"]
+        BugReport.create!(
+          body: e.to_s,
+          user_agent: "Letters#express:82"
+        )        
+        req.update!(ok: false, complete: true, messages: errors)
+        render json: { ok: false, errors:, id: req.id } and return
+      end
+    end
+
+    ExpressJob.perform_later(req, @resume, @listing_payload, params['listing_type'], user_prompt, tone, @custom_tone)
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end
 
