@@ -162,7 +162,7 @@
                             <%# <label class="ms-2">Link <input type="radio" name="resume-upload-type" value="Link"></label> %>
                             <label class="ms-2">Plain Text <input type="radio" name="resume-upload-type" value="Plain"></label>
                         </div>
-                        <input type="file" name="file" id="resume-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control" required>
+                        <input type="file" name="resume" id="resume-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control" required>
                     </div>
 
                     <h6 class="my-1 position-relative">Share a Job Listing&nbsp;<span class="tool-tip"><i class="fa-regular fa-circle-question tool-tip-icon"></i><span class="tool-tip-text"> If your URL isn't accepted. Copy the listing as plain text!</span></span></h6>
@@ -171,7 +171,7 @@
                             <label>Link <input type="radio" name="listing-type" value="url" checked onChange="listingInputChange(event)" class="listing-type"></label>
                             <label class="ms-2">Plain Text <input type="radio" name="listing-type" value="text" onChange="listingInputChange(event)" class="listing-type"></label>
                         </div>
-                        <input name="input" placeholder="Paste Here" id="link-to-listing" class="form-control" onInput="listingInputChange(event)">
+                        <input name="listing" placeholder="Paste Here" id="link-to-listing" class="form-control" onInput="listingInputChange(event)">
                     </div>
 
                     <h6 class="my-1">Choose Your Tone</h6>
@@ -194,7 +194,7 @@
                             <label class="ms-2">Plain Text <input type="radio" name="tone-upload-type" value="Plain"></label>
                         </div>                       
                         
-                        <input type="file" name="tone-file" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">
+                        <input type="file" name="tone" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">
                         <label><input type="checkbox" onChange="handleTone(event)"/> Use the tone from my own letter</label>
                     
                     </div>

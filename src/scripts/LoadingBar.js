@@ -242,31 +242,31 @@ export const ajaxSubmit = function(e){
   e.preventDefault();
   const form = e.target;
   const method = form.querySelector("input[name=_method]") ? form.querySelector("input[name=_method]").value : form.method || "GET";
-  const options = { method, body: {}, headers: {} };
-  options.headers["Content-Type"] = "application/json";
+  const options = { method, headers: {} };
+  // options.headers["Content-Type"] = "application/json";
   
   const inputs = form.querySelectorAll("input, textarea, select");
   let queryParams = new URLSearchParams();
   inputs.forEach((input) => {
-    if(!input.name) return;
+    if(!input.name || input.classList.contains("hidden")) return;
     switch(input.type){
       case "radio":
         if(input.checked) queryParams.append(input.name, input.value);
         break;
 
       case "file":
-        if(options.body["link"]) break;
-        // options.body = new FormData();
-        options.body = input.files[0];
-        // options.body.append('file', input.files[0]);
-        const type = document.getElementById("resume-format").value;
-        if(type === "PDF"){
-          options.headers["Content-Type"] = 'application/pdf';
-          queryParams.append("resume-format", "PDF");
-        } else if(type === "DOCX"){
-          options.headers["Content-Type"] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-          queryParams.append("resume-format", "DOCX");
-        }
+        // if(options.body["link"]) break;
+        options.body ||= new FormData();
+        // options.body = input.files[0];
+        options.body.append(input.name, input.files[0]);
+        // const type = document.getElementById("resume-format").value;
+        // if(type === "PDF"){
+          // options.headers["Content-Type"] = 'application/pdf';
+          // queryParams.append("resume-format", "PDF");
+        // } else if(type === "DOCX"){
+          // options.headers["Content-Type"] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+          // queryParams.append("resume-format", "DOCX");
+        // }
         break;
 
       default:
@@ -280,7 +280,7 @@ export const ajaxSubmit = function(e){
     }
   });
 
-  if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
+  // if(options.headers["Content-Type"] === "application/json") options.body = JSON.stringify(options.body);
   
   new LoadingBar(
     form, //Form Element to be relplaced
