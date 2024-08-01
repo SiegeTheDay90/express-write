@@ -147,7 +147,7 @@ class ApplicationController < ActionController::Base
   end
 
   def days_since_last_error
-    (Date.today - Request.select(:created_at).where.not(ok: true).order(created_at: :desc).limit(1)[0].created_at.to_date).to_i
+    (Date.today - (Request.select(:created_at).where.not(ok: true)&.order(created_at: :desc).limit(1)[0]&.created_at&.to_date || Date.today)).to_i
   end
 
   def requests_this_week

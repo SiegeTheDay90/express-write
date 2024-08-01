@@ -2,16 +2,18 @@
   <div class="d-flex justify-content-between col-lg-8 col-sm-10">
     <div>
       <span class="fw-bold">📝 Letters Generated:</span> <%= TempLetter.count %> <br>
+      <span class="fw-bold">⌛ Resumes Evaluated:</span> <%= Request.where(ok: true, resource_type: "resume").count %> <br>
       <span class="fw-bold">🔄 AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
       <span class="fw-bold">⌛ Avg Request Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg.round(3)} seconds" : avg %> <br>
       <% if (a = days_since_last_error) > 4 %>
+        <br>
         <span class="fw-bold">⚠️ Days since a failed request:</span> <%= a %> 
       <% end %>
     </div>
 
     <div>
       Ruby on Rails 7<br>
-      React 18 (Resume Builder)<br>
+      React 18 (Resume Tool)<br>
       Bootstrap<br>
       Google Firebase<br>
     </div>

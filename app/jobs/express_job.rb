@@ -31,7 +31,6 @@ class ExpressJob < ApplicationJob
 
     # generate letter
 
-    debugger
     if custom_tone
       # custom
       content_prompt = "Write a letter using this style: \n #{tone}"

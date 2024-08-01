@@ -86,7 +86,6 @@ class LettersController < ApplicationController
         end
       end
       
-    debugger
     ExpressJob.perform_later(req, @resume, @listing_payload, params['listing_type'], user_prompt, tone, @custom_tone)
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end
