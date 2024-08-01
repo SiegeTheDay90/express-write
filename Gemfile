@@ -99,4 +99,5 @@ gem 'docx', '~> 0.8.0'
 
 gem 'google-cloud-firestore'
 
+gem 'rexml', '>= 3.3.3'
 
