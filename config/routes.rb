@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get '/url-check', to: 'application#valid_url?', as: 'valid_url'
 
   # Testing Routes
+  get '/ads', to: 'application#ads'
   unless Rails.env.production?
     get '/err-test', to: 'application#err_test' # raises uncaught error "Test Error: Date.today"
     get '/test', to: 'application#test' # Test route generates letter using GPT-4 or other test model
