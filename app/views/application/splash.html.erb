@@ -28,7 +28,12 @@
     function promptChange(e){
         const length = e.target.value.length;
         const counter = e.target.parentElement.querySelector("textarea + .char-counter");
-        counter.innerText = `${length}/250`;
+        if(e.target.value.length > 250){
+            e.target.value = e.target.value.slice(0,250);
+            e.preventDefault();
+        } else {
+            counter.innerText = `${length}/250`;
+        }
     }
 
     async function isValidURL(url) {
@@ -180,6 +185,7 @@
                         <label for="tone-select">Predefined Tone: </label> <%# Predefined Tone List Input%>
                         
                         <select class="mb-1" name="tone-select" id="tone-select" required>
+                            <option value="basic">Basic</option>
                             <option value="passionate">Passionate</option>
                             <option value="humorous">Humorous</option>
                             <option value="admiration">Admiration</option>
@@ -204,41 +210,10 @@
                             <h6 class="my-1 d-inline">Additional Prompts</h6>
                         </summary>
 
-                        
-                        <div id="prompt-input" class=" d-flex flex-column align-items-start w-100 mb-3 position-relative">
-                            <% prompt_verb = [
-                                                    "coaching", "mentoring", "cooking", "gymnastics", "the Olympics",
-                                                    "my last position", "teaching", "researching", "marketing", "programming",
-                                                    "writing", "designing", "consulting", "engineering", "analyzing",
-                                                    "managing", "developing", "training", "planning", "solving",
-                                                    "leading", "organizing", "editing", "singing", "performing"
-                                                ].sample %>
-                            <% prompt_job = [
-                                                "basketcall coach", "animator", "marketing associate", "partner",
-                                                "brand ambassador", "ghost writer", "software developer", "graphic designer",
-                                                "financial analyst", "project manager", "customer service representative",
-                                                "data scientist", "human resources manager", "social media coordinator",
-                                                "sales representative", "event planner", "content creator",
-                                                "accountant", "public relations specialist", "web developer",
-                                                "administrative assistant", "business analyst", "teacher assistant",
-                                                "medical assistant", "photographer"
-                                            ].sample %>
-                            <% prompt_stem = [
-                                                "Emphasize that", "Explain why", "Include how",
-                                            ].sample %>
-                            <% prompt_value = [
-                                    "animal rights", "environmental awareness", "corporate efficiency", "maximizing profit",
-                                    "social responsibility", "sustainability", "innovation", "diversity and inclusion",
-                                    "customer satisfaction", "quality assurance", "ethical business practices", "community engagement",
-                                    "team collaboration", "continuous improvement", "work-life balance", "transparency",
-                                    "integrity", "equality", "health and wellness", "education",
-                                    "caffeine addiction management", "procrastination enhancement", "couch potato empowerment"
-                                ].sample %>
-
-                            <textarea name="prompt"  maxlength="250"
+                        <textarea name="prompt"  maxlength="250"
                             id="express-prompt" class="position-relative form-control" rows="4" onInput="promptChange(event)"
-                            placeholder="<%= "#{prompt_stem} my experience in #{prompt_verb} makes me an effective #{prompt_job}.\nThis company values #{prompt_value} and so do I." %>" 
-                            ></textarea><div class="position-absolute char-counter w-100 text-end">0/250</div>
+                            placeholder="Enter your own prompt..." 
+                            ></textarea><div class="char-counter w-100 text-end">0/250</div>
                         </div>
                     </details>
 

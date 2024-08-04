@@ -34,6 +34,8 @@ class ExpressJob < ApplicationJob
     if custom_tone
       # custom
       content_prompt = "Write a letter using this style: \n #{tone}"
+    elsif tone == "basic"
+      content_prompt = "Write a professional cover letter. Additionally: #{user_prompt.to_s}"
     else
       openers = {
         vanilla: "",
@@ -59,7 +61,7 @@ class ExpressJob < ApplicationJob
         \"I never thought that accidentally dropping my iPhone out of a second story window would change my life (it’s a funny story—ask me about it). But thanks to my misfortune, I discovered [Phone Repair Company]—and found my dream job as an expansion associate.\""
 
       }[tone.to_sym]
-      content_prompt = user_prompt.to_s + "I want the tone to be #{tone}. "+ "Examples of strong openers include: #{openers}"
+      content_prompt = "I want the tone to be #{tone}. "+ "Examples of strong openers include: #{openers}" + " Additionally: #{user_prompt.to_s}"
     end
     OpenAI.configure do |config|
       config.access_token = ENV['OPENAI']

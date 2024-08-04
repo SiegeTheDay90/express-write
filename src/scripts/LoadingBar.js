@@ -213,12 +213,14 @@ class LoadingBar {
           this.nextPath = "/";
       }
 
-      setTimeout(() => {
-        this.status.innerHTML = `<a href="${window.location.origin + this.nextPath}">Your Letter</a>`;
-        this.loadingImage.remove();
-      }, 5000);
-      setInterval(() => {
-        this.status.innerText = `Complete! Link ready in ${--count}`+'.'.repeat(count);
+      const timer = setInterval(() => {
+        if(count > 1){
+          this.status.innerText = `Complete! Link ready in ${--count}`+'.'.repeat(count);
+        } else {
+          this.status.innerHTML = `<a href="${window.location.origin + this.nextPath}">Your Letter</a>`;
+          this.loadingImage.remove();
+          clearInterval(timer);
+        }
       }, 990);
 
   }
