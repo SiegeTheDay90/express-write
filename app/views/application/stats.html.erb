@@ -6,7 +6,6 @@
       <span class="fw-bold">🔄 AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
       <span class="fw-bold">⌛ Avg Request Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg.round(3)} seconds" : avg %> <br>
       <% if (a = days_since_last_error) > 4 %>
-        <br>
         <span class="fw-bold">⚠️ Days since a failed request:</span> <%= a %> 
       <% end %>
     </div>
