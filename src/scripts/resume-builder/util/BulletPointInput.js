@@ -2,13 +2,13 @@ import React, { useRef, useState, useEffect } from "react";
 import "./BulletPointInput.scss"
 import BulletPointInputItem from "./BulletPointInputItem";
 
-export default function BulletPointInput({idx, name, type, label, value, setValue}){
-    const  [bullets, setBullets] = useState(value || []);
+export default function BulletPointInput({idx, name, type, label, bullets: bulletsArg, setValue}){
+    const  [bullets, setBullets] = useState(bulletsArg || []);
     const classId = type+"_bullet_input_"+idx;
 
     useEffect(() => {
-        setBullets(value || []);
-    }, [value])
+        setBullets(bulletsArg || []);
+    }, [bulletsArg])
 
 
     // Each bullet should be an individual text input. 
@@ -50,7 +50,6 @@ export default function BulletPointInput({idx, name, type, label, value, setValu
         <h3>{label}</h3>
             {bullets.map((bullet, bulletIdx) => <>
                 <BulletPointInputItem idx={idx} bulletIdx={bulletIdx} name={name} type={type} value={bullet} onDelete={deleteBullet} onChange={bulletUpdate} move={move} />
-                <br/>
             </>)}
             <div className="p-2 bpi-li" onClick={newBullet}>New Bullet <i className="fa-solid fa-plus"></i></div>
 

@@ -120,8 +120,8 @@ function WorkExperienceFormItem( { item: formData, resume: [resume, setResume], 
     </div>
 
     <div className="row mb-3">
-      <div className="col-sm-10">
-          <BulletPointInput idx={idx} type={"experience"} name={"bullets"} label={"Bullet Points"} value={formData.bullets} setValue={handleChange}/>
+      <div className="w-100">
+          <BulletPointInput idx={idx} type={"experience"} name={"bullets"} label={"Bullet Points"} bullets={formData.bullets} setValue={handleChange}/>
       </div>
     </div>
     <div className="row mb-3">
