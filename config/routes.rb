@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   # Resumes
   get '/resume-tool', to: 'resumes#new'
-  # resources :resumes, only: [:new, :create]
+  post '/resumes', to: 'resumes#create'
 
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
