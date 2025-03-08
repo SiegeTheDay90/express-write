@@ -29,7 +29,7 @@ class GenerateResumeJob < ApplicationJob
       
       response = client.chat(
         parameters: {
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-4o',
           messages: [
             { 
               role: 'system', 
@@ -79,7 +79,7 @@ class GenerateResumeJob < ApplicationJob
 
     response = client.chat(
       parameters: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         messages: [
           { role: 'system',
             content: "Covert input to JSON with values that summarize this document. Use exactly this shape, keys, and data types: {

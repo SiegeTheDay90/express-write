@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
 
     response = client.chat(
       parameters: {
-        model: 'gpt-4',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: 'You are a helpful letter-writing assistant.' },
           { role: 'user', content: 'Write a cover letter for a Support Engineer role at GitHub.' }

@@ -10,7 +10,7 @@ class OpenAiJob < ApplicationJob
     client = OpenAI::Client.new
     response = client.chat(
       parameters: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: 'Write cover 2-3 paragraph cover letter as job candidate.' },
           { role: 'user',

@@ -72,7 +72,7 @@ class ExpressJob < ApplicationJob
     resume['first_name'] = 'ExpressWrite'
     resume['last_name'] = 'User'
       
-    system_prompt = "Write cover cover letter as job candidate. It should be at least 3 paragraphs. Make sure to include a greeting and closing signature. Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
+    system_prompt = "Write cover cover letter as job candidate. It should be at least 3 paragraphs. Ensure the letter starts with \"Dear Hiring Manager\" and signs off as \"ExpressWrite User\". Do not include address, phone number, or email. Do not use the word 'thrilled'. Include details about education and work experience from the resume. Don't use the education or any phrase like \"5+ years of experience\" that is mentioned in the Job-Listing. {Job-Listing: #{JSON.parse(@listing.to_json(except: :id).gsub("\r", ''))}\n
     Resume: #{resume}}.
     "
     client = OpenAI::Client.new
@@ -124,7 +124,7 @@ class ExpressJob < ApplicationJob
       
       response = client.chat(
         parameters: {
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-4o',
           messages: [
             { role: 'system',
             content: 'Return JSON with values that summarize this document. Use exactly these keys: {"aboutme": "string", "skills": str[], "education": str[], "projects": str[], "experience": str[]}. Your response must be only valid JSON with a flat shape. "aboutme" should be at least 2 sentences long. If "skills" would be empty, use generic professional skills such as Time Management, Communication, Teamwork, Problem Solving' },
@@ -152,7 +152,7 @@ class ExpressJob < ApplicationJob
 
     response = client.chat(
       parameters: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         messages: [
           { role: 'system',
             content: 'Summarize. Respond with only valid JSON with exact keys: {"company": "string", "job_title": "string", "job_description": "string", "requirements": str[], "benefits": str[]}. Ensure there is no trailing comma after the last value.' },
