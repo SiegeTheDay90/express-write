@@ -101,3 +101,4 @@ gem 'google-cloud-firestore'
 
 gem 'rexml', '>= 3.3.3'
 
+gem 'concurrent-ruby', '1.3.4'
