@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
     @weekly_labels ||= []
     @weekly_values ||= []
     weekly = weekly.each do |cweek, data|
-      date = Date.new(2024) + (cweek-1).week
+      date = Date.new(2025) + (cweek-1).week
 
       @weekly_labels << date.to_s
       @weekly_values << data.inject(0){|acc, datum| acc + datum[1]}
