@@ -46,3 +46,4 @@ defunct/
 app/javascript/application.js.LICENSE.txt
 
 keyfile.json
+.DS_Store

@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
   helper_method :days_since_last_error, :requests_this_week
 
   def csrf
-    headers['X-CSRF-Token'] = masked_authenticity_token(session)
-    render json: {token: masked_authenticity_token(session)}
+    headers['X-CSRF-Token'] = masked_authenticity_token
+    render json: {token: masked_authenticity_token}
   end
 
   def stats
@@ -111,7 +111,7 @@ class ApplicationController < ActionController::Base
   end
 
   def attach_authenticity_token
-    headers['X-CSRF-Token'] = masked_authenticity_token(session)
+    headers['X-CSRF-Token'] = masked_authenticity_token
   end
 
   def handle_csrf_exception

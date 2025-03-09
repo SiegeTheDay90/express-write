@@ -3,12 +3,12 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.1'
+ruby '3.4.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.0.6'
-gem 'activestorage', '~> 7.0.8'
-gem 'actionpack', '~> 7.0.8.4'
+gem 'rails', '~> 7.1.0'
+gem 'activestorage', '~> 7.1.0'
+gem 'actionpack', '~> 7.1.0'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -102,3 +102,7 @@ gem 'google-cloud-firestore'
 gem 'rexml', '>= 3.3.3'
 
 gem 'concurrent-ruby', '1.3.4'
+
+# gem 'mutex_m'
+# gem 'reline'
+# gem 'irb'
