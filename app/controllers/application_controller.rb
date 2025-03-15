@@ -14,7 +14,6 @@ class ApplicationController < ActionController::Base
   end
 
   def stats
-    raise StandardError.new("Will this show up?")
     project_id = "hitcounter-c6795"
     firestore = Google::Cloud::Firestore.new project_id: project_id, keyfile: Rails.env.production? ? {
       "type" => "service_account",
