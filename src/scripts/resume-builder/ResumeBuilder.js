@@ -198,8 +198,7 @@ function ResumeBuilder() {
                             ])
                         )
                     })
-
-                    console.log("Suggestion: ", bullet.rating.suggestion)
+                    console.log("Suggestion: ", bullet.rating.suggestion);
                 }
             })
         })

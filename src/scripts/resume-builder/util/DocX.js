@@ -56,10 +56,10 @@ export default function generateDocx(resume) {
     
     function educationItem(item){
         const to = item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : 'Present';
-        const bullets = item.description?.split("\n").map((bullet)=>(
+        const bullets = item.bullets.map((bullet)=>(
             new Docx.Paragraph({
                 bullet: {level: 0},
-                text: bullet
+                text: bullet.text
             })
         ))
         return [
@@ -86,10 +86,10 @@ export default function generateDocx(resume) {
     function workItem(item){
         const from = item.from ? `${shortDate(new Date(item.from).toLocaleDateString('en-US'))} - ` : '';
         const to = item.to ? shortDate(new Date(item.to).toLocaleDateString('en-US')) : 'Present';
-        const bullets = item.description?.split("\n").map((bullet)=>(
+        const bullets = item.bullets.map((bullet)=>(
             new Docx.Paragraph({
                 bullet: {level: 0},
-                text: bullet
+                text: bullet.text
             })
         ))
         return [
