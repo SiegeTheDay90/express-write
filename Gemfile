@@ -103,6 +103,10 @@ gem 'rexml', '>= 3.3.3'
 
 gem 'concurrent-ruby', '1.3.4'
 
+gem 'rack', '~> 2.2.13'
+gem 'json', '>= 2.10.2'
+
+
 # gem 'mutex_m'
 # gem 'reline'
 # gem 'irb'
