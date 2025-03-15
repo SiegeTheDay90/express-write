@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def stats
+    raise StandardError.new("Will this show up?")
     project_id = "hitcounter-c6795"
     firestore = Google::Cloud::Firestore.new project_id: project_id, keyfile: Rails.env.production? ? {
       "type" => "service_account",
@@ -120,7 +121,8 @@ class ApplicationController < ActionController::Base
 
   def unhandled_error(error)
     @stack = Rails::BacktraceCleaner.new.clean(error.backtrace)
-    logger.error "\n#{@message}:\n\t#{@stack.join("\n\t")}\n"
+    @message = "#{error.class}: #{error.message}"
+    logger.error "\n#{@message}\n\t#{@stack.join("\n\t")}\n"
 
     respond_to do |format|
       format.html do
@@ -129,7 +131,6 @@ class ApplicationController < ActionController::Base
       end
 
       format.json do
-        @message = "#{error.class} - #{error.message}"
         render json: { error: @message }
       end
     end
