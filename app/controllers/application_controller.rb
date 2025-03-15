@@ -158,7 +158,7 @@ class ApplicationController < ActionController::Base
     @session = Session.find_by(session_id: session["session_id"])
     if @session
       @session.update!(hits: @session.hits+1)
-    else
+    elsif session.loaded?
       # create session
       @session = Session.create!(
         session_id: session["session_id"],
