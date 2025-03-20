@@ -32,16 +32,16 @@
     <div>
       <h6>Chart Type</h6>
       <label>Weekly
-        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="weeklyHitChart" onChange="chartTypeChange(event)" checked />
+        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="weeklyHitChart" onChange="chartTypeChange(event)" />
       </label>
       <label>Daily
-        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="dailyHitChart" onChange="chartTypeChange(event)" />
+        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="dailyHitChart" onChange="chartTypeChange(event)" checked />
       </label>
     </div>
   </div>
   <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
-    <canvas id="dailyHitChart" class="hitChart d-none"></canvas>
-    <canvas id="weeklyHitChart" class="hitChart"></canvas>
+    <canvas id="dailyHitChart" class="hitChart"></canvas>
+    <canvas id="weeklyHitChart" class="hitChart d-none"></canvas>
   </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
