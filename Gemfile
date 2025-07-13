@@ -103,8 +103,10 @@ gem 'rexml', '>= 3.3.3'
 
 gem 'concurrent-ruby', '1.3.4'
 
-gem 'rack', '~> 2.2.13'
+gem 'rack', '~> 2.2.14'
 gem 'json', '>= 2.10.2'
+gem 'nokogiri', '>= 1.18.8'
+gem "net-imap", ">= 0.5.7"
 
 
 # gem 'mutex_m'
