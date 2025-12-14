@@ -28,6 +28,7 @@ class LettersController < ApplicationController
         req.update!(ok: false, complete: true, messages: errors)
         render json: { ok: false, errors:, id: req.id } and return
       else
+        debugger
         @listing_payload = http_response.body.to_s
       end
     else
@@ -83,9 +84,8 @@ class LettersController < ApplicationController
           )        
           req.update!(ok: false, complete: true, messages: errors)
           render json: { ok: false, errors:, id: req.id } and return
-        end
       end
-      
+    end
     ExpressJob.perform_later(req, @resume, @listing_payload, params['listing_type'], user_prompt, tone, @custom_tone)
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end

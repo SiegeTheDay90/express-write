@@ -2,11 +2,13 @@
 
 class ExpressJob < ApplicationJob
   queue_as :default
+  retry_on Faraday::TooManyRequestsError,
+           wait: :exponentially_longer,
+           attempts: 8
   BLACKLIST = Set.new(%w[header footer a code template text form link script img
                          iframe icon comment button input head meta style])
 
   def perform(request, bio_payload, listing_payload, listing_type = 'url', user_prompt = '', tone=:passion, custom_tone)
-
     user_prompt = 'Write a cover letter for the job listing that uses the resume as support.' if user_prompt.empty?
 
     # generate user bio
@@ -98,7 +100,6 @@ class ExpressJob < ApplicationJob
     #     temperature: 1.3
     #   }
     # ) unless !response['choices'][0]['message']['content']
-      
     begin
       @message = response['choices'][0]['message']['content']
       @letter = TempLetter.new(profile: @profile.to_json, listing: @listing.to_json, body: @message)
@@ -113,15 +114,14 @@ class ExpressJob < ApplicationJob
     rescue StandardError
         @message = response.to_json
         request.complete!(false, nil, @message)
-      end
     end
+  end
     
     def text_to_user_bio(text)
       OpenAI.configure do |config|
         config.access_token = ENV['OPENAI']
       end
       client = OpenAI::Client.new
-      
       response = client.chat(
         parameters: {
           model: 'gpt-4o',
@@ -133,15 +133,15 @@ class ExpressJob < ApplicationJob
         response_format: { type: 'json_object' },
         temperature: 1.4
         # max_tokens: 10000
-      }
-    )
+        }
+      )
 
-    begin
-      response['choices'][0]['message']['content']
-    rescue StandardError
-      false
+      begin
+        response['choices'][0]['message']['content']
+      rescue StandardError
+        false
+      end
     end
-  end
 
   # Turns text into a job-listing hash
   def text_to_listing(text)

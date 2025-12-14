@@ -20,7 +20,7 @@ export default function BulletPointInput({idx, name, type, label, bullets: bulle
 
     function newBullet(){
         const inputElements = document.getElementsByClassName(classId);
-        setValue({ target: {value: Array.from(inputElements).map(bullet => JSON.parse(bullet.dataset.value)).concat([{text:"", rating: null}]), name }});
+        setValue({ target: {value: Array.from(inputElements).map(bullet => JSON.parse(bullet.dataset.value)).concat([{text:"", rating: {errors: [], meta:{}, id: null}}]), name }});
     }
 
     function deleteBullet(bulletIdx){
