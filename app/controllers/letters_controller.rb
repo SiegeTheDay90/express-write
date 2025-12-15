@@ -27,8 +27,11 @@ class LettersController < ApplicationController
         errors = ['The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text.']
         req.update!(ok: false, complete: true, messages: errors)
         render json: { ok: false, errors:, id: req.id } and return
+      elsif http_response.status != 200
+        errors = ['There was an unexpected error retrieving the listing. Please try again later. Consider copy/pasting the listing as plain text.']
+        req.update!(ok: false, complete: true, messages: errors)
+        render json: { ok: false, errors:, id: req.id } and return
       else
-        debugger
         @listing_payload = http_response.body.to_s
       end
     else
