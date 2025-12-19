@@ -5,6 +5,10 @@ class BugReportsController < ApplicationController
     @bug_report = BugReport.new
   end
 
+  def index
+    render :show
+  end
+
   def create
     @bug_report = BugReport.new(bug_report_params)
     @bug_report.user_agent = params["agent"] || "n/a"

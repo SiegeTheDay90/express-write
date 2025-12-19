@@ -1,0 +1,31 @@
+<h1>Recent Bug Reports</h1>
+
+<% recent = @bug_reports || BugReport.order(created_at: :desc).limit(5) %>
+
+<% if recent.empty? %>
+    <p>No bug reports yet.</p>
+<% else %>
+    <table class="bug-reports">
+        <thead>
+            <tr>
+                <th>Created At</th>
+                <th>Message</th>
+                <th>User-Agent</th>
+                <th>Email</th>
+                <th>Requires Response</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% recent.each do |bug| %>
+                <tr class="border border-gray-300 mb-4 p-4">
+                    <td class="w-25"><%= bug.created_at %></td>
+                    <td class="w-25"><%= bug.body %></td>
+                    <td class="w-20"><%= bug.user_agent %></td>
+                    <td class="w-15"><%= bug.email || "N/A" %></td>
+                    <td class="w-15"><%= bug.requires_response ? "Yes" : "No" %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+<% end %>

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   # Temp Letter
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
+  get '/letters', to: 'letters#index', as: 'letters'
+  get '/letters/:id', to: 'letters#show', as: 'letter'
 
   # Resumes
   get '/resume-tool', to: 'resumes#new'
@@ -23,6 +25,7 @@ Rails.application.routes.draw do
   # Bug Report
   get  '/bug-report', to: 'bug_reports#new', as: 'bug_report'
   post '/bug-report', to: 'bug_reports#create'
+  get  '/bug-reports', to: 'bug_reports#index', as: 'bug_reports'
 
   # Generators
   get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
