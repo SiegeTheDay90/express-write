@@ -12,8 +12,8 @@ Rails.application.routes.draw do
 
   # Temp Letter
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
-  get '/letters', to: 'letters#index', as: 'letters'
-  get '/letters/:id', to: 'letters#show', as: 'letter'
+  # get '/letters', to: 'letters#index', as: 'letters'
+  # get '/letters/:id', to: 'letters#show', as: 'letter'
 
   # Resumes
   get '/resume-tool', to: 'resumes#new'
