@@ -93,9 +93,20 @@ class LettersController < ApplicationController
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end
 
+  def show
+    @letter = TempLetter.find_by(secure_id: params['id'])
+  end
+
+  def index
+    render :show
+  end
   def temp
     @letter = TempLetter.find_by(secure_id: params['id'])
   end
+  # def index
+  #   # @letters = TempLetter.all
+  #   render :show
+  # end
 
   # def helpful
   #     @letter = Letter.find_by(id: params[:id])
