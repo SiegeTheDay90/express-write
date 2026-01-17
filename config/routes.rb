@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   # Stats Page
   get '/stats', to: 'application#stats', as: 'stats'
 
+  # Sites Page
+  get '/sites', to: 'application#sites', as: 'sites'
+
   # Temp Letter
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
   get '/letters', to: 'letters#index', as: 'letters'

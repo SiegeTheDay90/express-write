@@ -104,6 +104,7 @@ class ApplicationController < ActionController::Base
     raise "Test Error: #{Date.today}"
   end
 
+
   private
 
   def snake_case_params
