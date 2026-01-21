@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_09_192226) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_20_002331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -137,6 +137,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_09_192226) do
     t.datetime "updated_at", null: false
     t.index ["ip_address"], name: "index_sessions_on_ip_address"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+  end
+
+  create_table "sites", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url", null: false
+    t.text "description", default: ""
+    t.string "category", default: "General", null: false
+    t.integer "likes", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.integer "position", default: 0, null: false
+    t.integer "clicks", default: 0, null: false
+    t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_sites_on_active"
+    t.index ["category", "position"], name: "index_sites_on_category_and_position"
+    t.index ["category"], name: "index_sites_on_category"
+    t.index ["url"], name: "index_sites_on_url", unique: true
   end
 
   create_table "temp_letters", force: :cascade do |t|
