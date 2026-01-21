@@ -1,3 +1,17 @@
+<%
+    descriptors = {
+        "Education" => "Great for teachers, education professionals, and mission-driven work.",
+        "Tech" => "Best for engineering, IT, data, and startup roles.",
+        "Remote" => "Focused on remote, hybrid, freelance, or flexible work.",
+        "Culinary" => "For restaurants, food service, hospitality, and culinary careers.",
+        "Creative" => "Tailored for artists, designers, and creative minds.",
+        "Government" => "For federal, state, and local government roles.",
+        "Entry-Level" => "Best for students, recent grads, and career switchers.",
+        "Trades" => "Focused on skilled trades, construction, and vocational careers.",
+        "General" => "Large aggregators with a wide range of industries and job types."
+    }
+%>
+
 <% @sites = Site.all %>
 <% @categories = Site.pluck(:category).uniq %>
 
@@ -6,13 +20,17 @@
         position: sticky;
         top: 100px;
     }
+    .categories {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
     .categories-nav .nav-link {
         white-space: nowrap;
         color: #5656c4;
         text-decoration: none;
     }
     .category h2 {
-    scroll-margin-top: 170px; /* header height + spacing */
+        scroll-margin-top: 180px; /* header height + spacing */
     }
     .categories-nav .nav-link:hover {
         text-decoration: underline;
@@ -20,12 +38,18 @@
     .website-card h4 {
         margin-bottom: 0.5rem;
     }
+    .website-card a {
+        color: #5656c4;
+    }
+    .website-card a:visited {
+        color: #8656c4ff;
+    }
 </style>
 <nav class="categories-nav bg-white border-bottom p-3">
     <div class="container-fluid">
         <div class="nav-scroll d-flex justify-content-center gap-2 overflow-x-auto">
             <% @categories.each do |category| %>
-                <a href="#<%= category.downcase.gsub(/\s+/, '-') %>-jobs" class="nav-link"><%= category %></a> | 
+                <a href="#<%= category.downcase.gsub(/\s+/, '-') %>-jobs" class="nav-link"><%= category %></a> <%= @categories.last == category ? "" : "|" %>
             <% end %>
         </div>
     </div>
@@ -35,7 +59,7 @@
     <% @categories.each do |category| %>
         <div class="category border border-primary rounded-3 m-4 p-3">
             <h2 id="<%= category.downcase.gsub(/\s+/, '-') %>-jobs"><%= category %></h2>
-            <p>Great for teachers, education professionals, and mission-driven work.</p>
+            <p><%= descriptors[category] %></p>
             <div class="websites-list">
                 <% @sites.select { |site| site.category == category }.each do |site| %>
                     <div class="website-card">
