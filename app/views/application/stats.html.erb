@@ -23,28 +23,63 @@
     <script>
       function chartTypeChange(e){
         const chartClass = e.target.dataset.category;
-        const visibleChart = document.querySelector(`.${chartClass}:not(.d-none)`);
+        const visibleChart = document.querySelector(`[data-category="${chartClass}-canvas"]:not(.d-none)`);
         const targetChart = document.getElementById(e.target.value);
         targetChart.classList.remove('d-none');
         visibleChart.classList.add('d-none');
       }
     </script>
     <div>
-      <h6>Chart Type</h6>
+      <h6>Splash Page</h6>
       <label>Weekly
-        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="weeklyHitChart" onChange="chartTypeChange(event)" />
+        <input class="me-3" type="radio" name="chartType" data-category="splash-hitChart" value="weeklyHitChart" onChange="chartTypeChange(event)" />
       </label>
       <label>Daily
-        <input class="me-3" type="radio" name="chartType" data-category="hitChart" value="dailyHitChart" onChange="chartTypeChange(event)" checked />
+        <input class="me-3" type="radio" name="chartType" data-category="splash-hitChart" value="dailyHitChart" onChange="chartTypeChange(event)" checked />
       </label>
     </div>
   </div>
   <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
-    <canvas id="dailyHitChart" class="hitChart"></canvas>
-    <canvas id="weeklyHitChart" class="hitChart d-none"></canvas>
+    <canvas id="dailyHitChart" data-category="splash-hitChart-canvas" class="hitChart"></canvas>
+    <canvas id="weeklyHitChart" data-category="splash-hitChart-canvas" class="hitChart d-none"></canvas>
   </div>
+  <div>
+    <div>
+      <h6>Job Boards</h6>
+      <label>Weekly
+        <input class="me-3" type="radio" name="jobBoard-chartType" data-category="jobBoard-hitChart" value="jobBoard-weeklyHitChart" onChange="chartTypeChange(event)" />
+      </label>
+      <label>Daily
+        <input class="me-3" type="radio" name="jobBoard-chartType" data-category="jobBoard-hitChart" value="jobBoard-dailyHitChart" onChange="chartTypeChange(event)" checked />
+      </label>
+    </div>
+  </div>
+  <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
+    <canvas id="jobBoard-dailyHitChart" data-category="jobBoard-hitChart-canvas" class="hitChart"></canvas>
+    <canvas id="jobBoard-weeklyHitChart" data-category="jobBoard-hitChart-canvas" class="hitChart d-none"></canvas>
+  </div>
+
+  <div>
+    <div>
+      <h6>Resume Builder</h6>
+      <label>Weekly
+        <input class="me-3" type="radio" name="resumeBuilder-chartType" data-category="resumeBuilder-hitChart" value="resumeBuilder-weeklyHitChart" onChange="chartTypeChange(event)" />
+      </label>
+      <label>Daily
+        <input class="me-3" type="radio" name="resumeBuilder-chartType" data-category="resumeBuilder-hitChart" value="resumeBuilder-dailyHitChart" onChange="chartTypeChange(event)" checked />
+      </label>
+    </div>
+  </div>
+  <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
+    <canvas id="resumeBuilder-dailyHitChart" data-category="resumeBuilder-hitChart-canvas" class="hitChart"></canvas>
+    <canvas id="resumeBuilder-weeklyHitChart" data-category="resumeBuilder-hitChart-canvas" class="hitChart d-none"></canvas>
+  </div>
+
+
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 <script defer>
   const ctx = document.getElementById('dailyHitChart');
@@ -79,6 +114,84 @@
       datasets: [{
         label: 'Weekly Page Loads',
         data: <%= @weekly_values %>,
+        borderWidth: 3
+      }]
+    },
+  });
+</script>
+
+<script defer>
+  const ctx3 = document.getElementById('jobBoard-dailyHitChart');
+  const ctx4 = document.getElementById('jobBoard-weeklyHitChart');
+
+  new Chart(ctx3, {
+    type: 'bar',
+    data: {
+      labels: [
+        <% @job_board_labels.each do |label| %>
+            "<%= label %>",
+        <% end %>
+      ]
+      ,
+      datasets: [{
+        label: 'Job Board Daily Page Loads',
+        data: <%= @job_board_values %>,
+        borderWidth: 3
+      }]
+    },
+  });
+
+  new Chart(ctx4, {
+    type: 'line',
+    data: {
+      labels: [
+        <% @job_board_weekly_labels.each do |label| %>
+            "<%= label %>",
+        <% end %>
+      ]
+      ,
+      datasets: [{
+        label: 'Job Board Weekly Page Loads',
+        data: <%= @job_board_weekly_values %>,
+        borderWidth: 3
+      }]
+    },
+  });
+</script>
+
+<script defer>
+  const ctx5 = document.getElementById('resumeBuilder-dailyHitChart');
+  const ctx6 = document.getElementById('resumeBuilder-weeklyHitChart');
+
+  new Chart(ctx5, {
+    type: 'bar',
+    data: {
+      labels: [
+        <% @resume_builder_labels.each do |label| %>
+            "<%= label %>",
+        <% end %>
+      ]
+      ,
+      datasets: [{
+        label: 'Resume Builder Daily Page Loads',
+        data: <%= @resume_builder_values %>,
+        borderWidth: 3
+      }]
+    },
+  });
+
+  new Chart(ctx6, {
+    type: 'line',
+    data: {
+      labels: [
+        <% @resume_builder_weekly_labels.each do |label| %>
+            "<%= label %>",
+        <% end %>
+      ]
+      ,
+      datasets: [{
+        label: 'Resume Builder Weekly Page Loads',
+        data: <%= @resume_builder_weekly_values %>,
         borderWidth: 3
       }]
     },

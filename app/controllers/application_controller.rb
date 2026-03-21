@@ -51,6 +51,54 @@ class ApplicationController < ActionController::Base
       @labels << entry[0].to_s # Date String "1-1-2024"
       @values << entry[1].to_i # Number
     end
+
+    doc = firestore.doc "Hits/expresswrite-job-board"
+    data = doc.get.fields.to_a
+              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
+    weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
+    
+    @job_board_weekly_labels ||= []
+    @job_board_weekly_values ||= []
+    weekly = weekly.each do |cweek, data|
+      date = Date.new(2025) + (cweek-1).week
+
+      @job_board_weekly_labels << date.to_s
+      @job_board_weekly_values << data.inject(0){|acc, datum| acc + datum[1]}
+
+    end
+
+    @job_board_labels ||= []
+    @job_board_values ||= []
+    
+    data.each do |entry|
+      @job_board_labels << entry[0].to_s # Date String "1-1-2024"
+      @job_board_values << entry[1].to_i # Number
+    end
+
+    doc = firestore.doc "Hits/resume-builder"
+    data = doc.get.fields.to_a
+              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
+    weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
+    
+    @resume_builder_weekly_labels ||= []
+    @resume_builder_weekly_values ||= []
+    weekly = weekly.each do |cweek, data|
+      date = Date.new(2025) + (cweek-1).week
+
+      @resume_builder_weekly_labels << date.to_s
+      @resume_builder_weekly_values << data.inject(0){|acc, datum| acc + datum[1]}
+
+    end
+
+    @resume_builder_labels ||= []
+    @resume_builder_values ||= []
+    
+    data.each do |entry|
+      @resume_builder_labels << entry[0].to_s # Date String "1-1-2024"
+      @resume_builder_values << entry[1].to_i # Number
+    end
+
+    
   end
 
   def valid_url?
