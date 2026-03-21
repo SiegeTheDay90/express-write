@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 app/javascript/*.LICENSE.txt
+.ruby-version
 
 # Ignore bundler config.
 /.bundle

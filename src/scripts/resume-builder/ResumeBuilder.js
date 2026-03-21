@@ -12,112 +12,115 @@ import generateDocx from './util/DocX';
 import IssueListItem from './IssueListItem';
 
 function ResumeBuilder() {
-    
-    
-    async function saveResume() {
+      
+    async function saveResume() { // Generate and download DOCX
         const doc = generateDocx(resume);
         const blob = await Packer.toBlob(doc);
-        saveAs(blob, 'resume.docx');
-    }
+        saveAs(blob, 'Resume–ExpressWrite.docx');
+    };
 
-    function showUploadModal(){
+    function showUploadModal(){ // Open upload modal
         const modal = document.getElementById("upload-modal");
         modal.showModal();
-    }
+    };
 
-    function closeUploadModal(){
+    function closeUploadModal(){ // Close upload modal
         document.getElementById("upload-modal").close();
-    }
-    function hasIssues(){
-        return resume.totalIssues > 0;
-    }
-
-    function reset(){
-        if(confirm("Are you sure? Your local save will be lost.")){
-            setResume({
-                personal: {
-                    firstName: '',
-                    lastName: '',
-                    profession: '',
-                    phoneNumber: '',
-                    email: '',
-                    website: ''
-                },
-                work: [{
-                    companyName: '',
-                    jobTitle: '',
-                    city: '',
-                    location: '',
-                    from: '',
-                    to: '',
-                    bullets: [],
-                    current: false
-                  }],
-                education: [{
-                    institutionName: '',
-                    fieldOfStudy: '',
-                    degreeType: '',
-                    city: '',
-                    location: '',
-                    to: '',
-                    bullets: [],
-                    current: false
-                  }],
-                skills: [],
-            })
-        }
-    }
-
-    const [errors, setErrors] = useState(null);
-    const [resume, setResume] = useState({
-        personal: {
-            firstName: '',
-            lastName: '',
-            profession: '',
-            phoneNumber: '',
-            email: '',
-            website: ''
-        },
-        work: [{
-            companyName: '',
-            jobTitle: '',
-            city: '',
-            location: '',
-            from: '',
-            to: '',
-            bullets: [],
-            current: false
-          }],
-        education: [{
-            institutionName: '',
-            fieldOfStudy: '',
-            degreeType: '',
-            city: '',
-            location: '',
-            to: '',
-            bullets: [],
-            current: false
-          }],
-        skills: [],
-    })
-
-    useEffect(() => {
+    };
+    useEffect(() => { // On Mount, load resume from localStorage
         let storedResume = localStorage.getItem("ew-resume");
-    
         if(storedResume) setResume(JSON.parse(storedResume));
-        
-    }, [])
-    
-    useEffect(() => {
+    }, []);
+
+    const [errors, setErrors] = useState([]);
+    const [issues, setIssues] = useState([]);
+    const [resume, setResume] = useState({});
+
+    useEffect(() => { // On resume change, save to localStorage
         localStorage.setItem("ew-resume", JSON.stringify(resume))
-    }, [resume])
+    }, [resume]);
 
-    function focusClick(e){
-        e.currentTarget.parentElement.classList.toggle('focused');
-        e.currentTarget.parentElement.classList.toggle('closed');
-    }
+    useEffect(refreshIssues, [resume]); // On resume change, refresh issues list
 
-    async function prefill(e){
+    
+    // function hasIssues(){
+    //     return resume.totalIssues > 0;
+    // }
+
+    // function reset(){
+    //     if(confirm("Are you sure? Your local save will be lost.")){
+    //         setResume({
+    //             personal: {
+    //                 firstName: '',
+    //                 lastName: '',
+    //                 profession: '',
+    //                 phoneNumber: '',
+    //                 email: '',
+    //                 website: ''
+    //             },
+    //             work: [{
+    //                 companyName: '',
+    //                 jobTitle: '',
+    //                 city: '',
+    //                 location: '',
+    //                 from: '',
+    //                 to: '',
+    //                 bullets: [],
+    //                 current: false
+    //               }],
+    //             education: [{
+    //                 institutionName: '',
+    //                 fieldOfStudy: '',
+    //                 degreeType: '',
+    //                 city: '',
+    //                 location: '',
+    //                 to: '',
+    //                 bullets: [],
+    //                 current: false
+    //               }],
+    //             skills: [],
+    //         })
+    //     }
+    // }
+
+    // function focusClick(e){
+    //     e.currentTarget.parentElement.classList.toggle('focused');
+    //     e.currentTarget.parentElement.classList.toggle('closed');
+    // }
+
+    // function refreshIssues(){ // Refresh issues list based on resume ratings
+    //     setIssues(prev => []);
+    //     resume.work.forEach((workItem, workItemIdx) => {
+    //         workItem.bullets.forEach((bullet, bulletIdx) => {
+    //             if(bullet.rating?.meta?.total > 0 && !bullet.rating?.meta?.dismissed){
+    //                 Object.entries(bullet.rating).forEach(([key, text]) =>{
+    //                     if(key === "meta" || key === "errors" || key === "suggestion") return;
+
+    //                     if(typeof(text) === 'boolean'){
+    //                         text = key.replaceAll('_', ' ')
+    //                     }
+
+    //                     setIssues( prev =>
+    //                         prev.concat([
+    //                             <IssueListItem text={text} bullet={bullet} workItemIdx={workItemIdx} bulletIdx={bulletIdx} type="manual" setResume={setResume} subIdx={key} />
+    //                         ])
+    //                     )
+    //                 })
+
+    //                 bullet.rating.errors.forEach((error, errorIdx) => {
+    //                     setIssues( prev =>
+    //                         prev.concat([
+    //                             <IssueListItem text={error} bullet={bullet} workItemIdx={workItemIdx} bulletIdx={bulletIdx} type="auto" setResume={setResume} subIdx={errorIdx}/>
+    //                         ])
+    //                     )
+    //                 })
+    //                 console.log("Suggestion: ", bullet.rating.suggestion);
+    //             }
+    //         })
+    //     })
+    // }
+
+    async function prefill(e){ // Handle resume upload and prefill
         e.preventDefault();
 
         if(window.confirm("You will lose unsaved work. Are you sure?")){
@@ -170,43 +173,6 @@ function ResumeBuilder() {
 
     }
 
-    const [issues, setIssues] = useState([]);
-
-    function refreshIssues(){
-        setIssues(prev => []);
-        resume.work.forEach((workItem, workItemIdx) => {
-            workItem.bullets.forEach((bullet, bulletIdx) => {
-                if(bullet.rating?.meta?.total > 0 && !bullet.rating?.meta?.dismissed){
-                    Object.entries(bullet.rating).forEach(([key, text]) =>{
-                        if(key === "meta" || key === "errors" || key === "suggestion") return;
-
-                        if(typeof(text) === 'boolean'){
-                            text = key.replaceAll('_', ' ')
-                        }
-
-                        setIssues( prev =>
-                            prev.concat([
-                                <IssueListItem text={text} bullet={bullet} workItemIdx={workItemIdx} bulletIdx={bulletIdx} type="manual" setResume={setResume} subIdx={key} />
-                            ])
-                        )
-                    })
-
-                    bullet.rating.errors.forEach((error, errorIdx) => {
-                        setIssues( prev =>
-                            prev.concat([
-                                <IssueListItem text={error} bullet={bullet} workItemIdx={workItemIdx} bulletIdx={bulletIdx} type="auto" setResume={setResume} subIdx={errorIdx}/>
-                            ])
-                        )
-                    })
-                    console.log("Suggestion: ", bullet.rating.suggestion);
-                }
-            })
-        })
-    }
-    useEffect(refreshIssues, [resume]);
-
-
-    
     return (
         <>
             <dialog id="upload-modal">
@@ -278,8 +244,6 @@ function ResumeBuilder() {
             </div>
         </>
     )
-    
-    
 }
 
 

@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.2'
+ruby "~> 3.4.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.2.0'
@@ -74,7 +74,7 @@ group :test do
   gem 'capybara'
   gem 'rails-controller-testing', '~> 1.0'
   gem 'webdrivers'
-
+  gem "minitest", "< 6"
   # Security Checks  
   gem "bundler-audit", "~> 0.9.1"
   gem "brakeman", "~> 6.1"
