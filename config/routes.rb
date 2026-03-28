@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   get '/letters/:id', to: 'letters#show', as: 'letter'
 
   # Resumes
-  get '/resume-tool', to: 'resumes#new'
-  post '/resumes', to: 'resumes#create'
+  # get '/resume-tool', to: 'resumes#new'
+  # post '/resumes', to: 'resumes#create'
 
   # AJAX Polling
   get '/check/:id', to: 'requests#check', as: 'check'
@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   get  '/bug-reports', to: 'bug_reports#index', as: 'bug_reports'
 
   # Generators
-  get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
+  # get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
   post '/express', to: 'letters#express', as: 'express_letter'
   get '/url-check', to: 'application#valid_url?', as: 'valid_url'
 
