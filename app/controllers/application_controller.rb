@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
 
     doc = firestore.doc "Hits/write-wise-splash"
     data = doc.get.fields.to_a
-              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}.last(30)
+              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}.last(178)
     weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
     
     @weekly_labels ||= []
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     @labels ||= []
     @values ||= []
     
-    data.each do |entry|
+    data.last(30).each do |entry|
       @labels << entry[0].to_s # Date String "1-1-2024"
       @values << entry[1].to_i # Number
     end
@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
       @job_board_values << entry[1].to_i # Number
     end
 
-    letters = TempLetter.all
+    letters = TempLetter.last(100)
     data = letters.group_by{|letter| letter.created_at.to_date.strftime("%m-%d-%Y")}.map{|date, letters| [date, letters.count]}.sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
     weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
     
