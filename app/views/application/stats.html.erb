@@ -13,18 +13,18 @@
     <!-- Stats Overview -->
     <div>
       <span class="fw-bold">📝 Letters Generated:</span> <%= TempLetter.count %> <br>
-      <span class="fw-bold">🔎 Resumes Evaluated:</span> <%= Request.where(ok: true, resource_type: "resume").count %> <br>
-      <span class="fw-bold">🔄 AJAX Requests this week:</span> <%= requests_this_week.count %> <br>
-      <span class="fw-bold">⌛ Avg Request Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg.round(3)} seconds" : avg %> <br>
+      <span class="fw-bold">🔄 Generation requests this week:</span> <%= requests_this_week.count %> <br>
+      <span class="fw-bold">⌛ Avg Generation Time this Week:</span> <%= (avg = Request.average_uptime).is_a?(Numeric) ? "#{avg.round(3)} seconds" : avg %> <br>
       <% if (a = days_since_last_error) > 4 %>
         <span class="fw-bold">⚠️ Days since a failed request:</span> <%= a %> 
       <% end %>
     </div>
     <!-- Tech Stack -->
     <div>
-      Ruby on Rails 7 (Backend)<br>
-      Bootstrap 5 (Styling)<br>
-      Google Firebase (Stat Tracking)<br>
+      Ruby on Rails 7<br>
+      PostgreSQL<br>
+      Google Firebase<br>
+      Bootstrap 5<br>
     </div>
   </div>
   <hr>
