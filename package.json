@@ -15,8 +15,6 @@
     "gsap": "^3.12.5",
     "ip": ">=2.0.1",
     "mini-css-extract-plugin": "^2.7.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3"

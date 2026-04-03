@@ -1,5 +1,16 @@
+<script>
+  function chartTypeChange(e){
+    const chartClass = e.target.dataset.category;
+    const visibleChart = document.querySelector(`[data-category="${chartClass}-canvas"]:not(.d-none)`);
+    const targetChart = document.getElementById(e.target.value);
+    targetChart.classList.remove('d-none');
+    visibleChart.classList.add('d-none');
+  }
+</script>
 <main class="pt-2">
+  <!-- Stats Overview and Tech Stack -->
   <div class="d-flex justify-content-between col-lg-8 col-sm-10">
+    <!-- Stats Overview -->
     <div>
       <span class="fw-bold">📝 Letters Generated:</span> <%= TempLetter.count %> <br>
       <span class="fw-bold">🔎 Resumes Evaluated:</span> <%= Request.where(ok: true, resource_type: "resume").count %> <br>
@@ -9,26 +20,33 @@
         <span class="fw-bold">⚠️ Days since a failed request:</span> <%= a %> 
       <% end %>
     </div>
-
+    <!-- Tech Stack -->
     <div>
       Ruby on Rails 7 (Backend)<br>
-      React 18 (Resume Tool)<br>
       Bootstrap 5 (Styling)<br>
       Google Firebase (Stat Tracking)<br>
     </div>
-
   </div>
   <hr>
-  <div>
-    <script>
-      function chartTypeChange(e){
-        const chartClass = e.target.dataset.category;
-        const visibleChart = document.querySelector(`[data-category="${chartClass}-canvas"]:not(.d-none)`);
-        const targetChart = document.getElementById(e.target.value);
-        targetChart.classList.remove('d-none');
-        visibleChart.classList.add('d-none');
-      }
-    </script>
+  <!-- Letters Generated Graph -->
+  <div class="border border-2 border-primary-subtle rounded p-3 mb-4">
+    <div>
+      <h6>Letters Generated</h6>
+      <label>Weekly
+        <input class="me-3" type="radio" name="lettersGenerated-chartType" data-category="lettersGenerated-hitChart" value="lettersGenerated-weeklyHitChart" onChange="chartTypeChange(event)" />
+      </label>
+      <label>Daily
+        <input class="me-3" type="radio" name="lettersGenerated-chartType" data-category="lettersGenerated-hitChart" value="lettersGenerated-dailyHitChart" onChange="chartTypeChange(event)" checked />
+      </label>
+    </div>
+    <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
+      <canvas id="lettersGenerated-dailyHitChart" data-category="lettersGenerated-hitChart-canvas" class="hitChart"></canvas>
+      <canvas id="lettersGenerated-weeklyHitChart" data-category="lettersGenerated-hitChart-canvas" class="hitChart d-none"></canvas>
+    </div>
+  </div>
+
+  <!-- Splash Page Graph -->
+  <div class="border border-2 border-primary-subtle rounded p-3 mb-4">
     <div>
       <h6>Splash Page</h6>
       <label>Weekly
@@ -38,12 +56,14 @@
         <input class="me-3" type="radio" name="chartType" data-category="splash-hitChart" value="dailyHitChart" onChange="chartTypeChange(event)" checked />
       </label>
     </div>
+    <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
+      <canvas id="dailyHitChart" data-category="splash-hitChart-canvas" class="hitChart"></canvas>
+      <canvas id="weeklyHitChart" data-category="splash-hitChart-canvas" class="hitChart d-none"></canvas>
+    </div>
   </div>
-  <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
-    <canvas id="dailyHitChart" data-category="splash-hitChart-canvas" class="hitChart"></canvas>
-    <canvas id="weeklyHitChart" data-category="splash-hitChart-canvas" class="hitChart d-none"></canvas>
-  </div>
-  <div>
+
+  <!-- Job Board Graph -->
+  <div class="border border-2 border-primary-subtle rounded p-3 mb-4">
     <div>
       <h6>Job Boards</h6>
       <label>Weekly
@@ -53,29 +73,11 @@
         <input class="me-3" type="radio" name="jobBoard-chartType" data-category="jobBoard-hitChart" value="jobBoard-dailyHitChart" onChange="chartTypeChange(event)" checked />
       </label>
     </div>
-  </div>
-  <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
-    <canvas id="jobBoard-dailyHitChart" data-category="jobBoard-hitChart-canvas" class="hitChart"></canvas>
-    <canvas id="jobBoard-weeklyHitChart" data-category="jobBoard-hitChart-canvas" class="hitChart d-none"></canvas>
-  </div>
-
-<!--<div>
-    <div>
-      <h6>Resume Builder</h6>
-      <label>Weekly
-        <input class="me-3" type="radio" name="resumeBuilder-chartType" data-category="resumeBuilder-hitChart" value="resumeBuilder-weeklyHitChart" onChange="chartTypeChange(event)" />
-      </label>
-      <label>Daily
-        <input class="me-3" type="radio" name="resumeBuilder-chartType" data-category="resumeBuilder-hitChart" value="resumeBuilder-dailyHitChart" onChange="chartTypeChange(event)" checked />
-      </label>
+    <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
+      <canvas id="jobBoard-dailyHitChart" data-category="jobBoard-hitChart-canvas" class="hitChart"></canvas>
+      <canvas id="jobBoard-weeklyHitChart" data-category="jobBoard-hitChart-canvas" class="hitChart d-none"></canvas>
     </div>
   </div>
-  <div class="d-lg-flex col-sm-9 col-md-8 col-lg-6">
-    <canvas id="resumeBuilder-dailyHitChart" data-category="resumeBuilder-hitChart-canvas" class="hitChart"></canvas>
-    <canvas id="resumeBuilder-weeklyHitChart" data-category="resumeBuilder-hitChart-canvas" class="hitChart d-none"></canvas>
-  </div>-->
-
-
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -95,7 +97,7 @@
       ]
       ,
       datasets: [{
-        label: 'Splash Page Loads',
+        label: 'Front Page Visits',
         data: <%= @values %>,
         borderWidth: 3
       }]
@@ -112,7 +114,7 @@
       ]
       ,
       datasets: [{
-        label: 'Weekly Page Loads',
+        label: 'Front Page Visits',
         data: <%= @weekly_values %>,
         borderWidth: 3
       }]
@@ -134,7 +136,7 @@
       ]
       ,
       datasets: [{
-        label: 'Job Board Daily Page Loads',
+        label: 'Jobs Page Visits',
         data: <%= @job_board_values %>,
         borderWidth: 3
       }]
@@ -151,7 +153,7 @@
       ]
       ,
       datasets: [{
-        label: 'Job Board Weekly Page Loads',
+        label: 'Jobs Page Visits',
         data: <%= @job_board_weekly_values %>,
         borderWidth: 3
       }]
@@ -159,22 +161,22 @@
   });
 </script>
 
-<!--<script defer>
-  const ctx5 = document.getElementById('resumeBuilder-dailyHitChart');
-  const ctx6 = document.getElementById('resumeBuilder-weeklyHitChart');
+<script defer>
+  const ctx5 = document.getElementById('lettersGenerated-dailyHitChart');
+  const ctx6 = document.getElementById('lettersGenerated-weeklyHitChart');
 
   new Chart(ctx5, {
     type: 'bar',
     data: {
       labels: [
-        <% @resume_builder_labels.each do |label| %>
+        <% @letters_generated_labels.each do |label| %>
             "<%= label %>",
         <% end %>
       ]
       ,
       datasets: [{
-        label: 'Resume Builder Daily Page Loads',
-        data: <%= @resume_builder_values %>,
+        label: 'Letters Generated',
+        data: <%= @letters_generated_values %>,
         borderWidth: 3
       }]
     },
@@ -184,17 +186,17 @@
     type: 'line',
     data: {
       labels: [
-        <% @resume_builder_weekly_labels.each do |label| %>
+        <% @letters_generated_weekly_labels.each do |label| %>
             "<%= label %>",
         <% end %>
       ]
       ,
       datasets: [{
-        label: 'Resume Builder Weekly Page Loads',
-        data: <%= @resume_builder_weekly_values %>,
+        label: 'Letters Generated',
+        data: <%= @letters_generated_weekly_values %>,
         borderWidth: 3
       }]
     },
   });
-</script>-->
+</script>
 

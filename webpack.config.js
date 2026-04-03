@@ -14,7 +14,7 @@ const config = {
     // mode: 'development',
     entry: {
         application: './src/index.js',
-        'resume-builder': './src/resume-builder.js',
+        // 'resume-builder': './src/resume-builder.js',
         gsap: './src/gsap.js',
         letterToDocx: './src/letterToDocx.js'
     },

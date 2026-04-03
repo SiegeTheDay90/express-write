@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
 
     doc = firestore.doc "Hits/write-wise-splash"
     data = doc.get.fields.to_a
-              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
+              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}.last(30)
     weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
     
     @weekly_labels ||= []
@@ -75,27 +75,26 @@ class ApplicationController < ActionController::Base
       @job_board_values << entry[1].to_i # Number
     end
 
-    doc = firestore.doc "Hits/resume-builder"
-    data = doc.get.fields.to_a
-              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
+    letters = TempLetter.all
+    data = letters.group_by{|letter| letter.created_at.to_date.strftime("%m-%d-%Y")}.map{|date, letters| [date, letters.count]}.sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
     weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
     
-    @resume_builder_weekly_labels ||= []
-    @resume_builder_weekly_values ||= []
+    @letters_generated_weekly_labels ||= []
+    @letters_generated_weekly_values ||= []
     weekly = weekly.each do |cweek, data|
       date = Date.new(2025) + (cweek-1).week
 
-      @resume_builder_weekly_labels << date.to_s
-      @resume_builder_weekly_values << data.inject(0){|acc, datum| acc + datum[1]}
+      @letters_generated_weekly_labels << date.to_s
+      @letters_generated_weekly_values << data.inject(0){|acc, datum| acc + datum[1]}
 
     end
 
-    @resume_builder_labels ||= []
-    @resume_builder_values ||= []
+    @letters_generated_labels ||= []
+    @letters_generated_values ||= []
     
     data.each do |entry|
-      @resume_builder_labels << entry[0].to_s # Date String "1-1-2024"
-      @resume_builder_values << entry[1].to_i # Number
+      @letters_generated_labels << entry[0].to_s # Date String "1-1-2024"
+      @letters_generated_values << entry[1].to_i # Number
     end
 
     
