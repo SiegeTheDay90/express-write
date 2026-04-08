@@ -64,7 +64,7 @@
             <div class="websites-list">
                 <% @sites.select { |site| site.category == category }.each do |site| %>
                     <div class="website-card">
-                        <h4><a href="<%= site.url %>" target="_blank"><%= site.name %></a></h4>
+                        <h4><a href="<%= site.url %>" target="_blank" rel="noopener noreferrer"><%= site.name %></a></h4>
                         <p><%= site.description %></p>
                     </div>
                 <% end %>

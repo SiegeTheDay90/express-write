@@ -79,27 +79,37 @@ class LoadingBar {
       <div id="modal">
         <div id="modalContent">
           <div id="modalText">
-            <p>While you wait, consider following 
-              <a href="https://www.linkedin.com/company/express-write/" target="_blank">ExpressWrite</a>!<br/> It takes a few seconds and means the world to me!
-            </p>
+            (Links open a new tab.)
+            <div>
+              <h5 class="mb-0">Job searching?</h5>
+              <a href="/sites" target="_blank">Check out these jobs boards.</a>
+            </div>
+            <div class="mt-3">
+              <h5 class="mb-0">Got ideas?</h5>
+              <a href="/bug-report" target="_blank">Suggestions & Feedback</a>
+            </div>
+            <div class="mt-3">
+              <h5 class="mb-0">Visit the developer:</h5>
+              <a href="https://www.linkedin.com/in/clarence-smith-nyc/" target="_blank" rel="noopener noreferrer">Clarence Smith on LinkedIn</a>
+            </div>
           </div>
           <div id="modalLinks">
             <h5>Support ExpressWrite</h5>
             <h6>Donate</h6>
             <span style="display:flex;gap:10px;">
-              <a href="https://cash.app/CJS90" target="_blank">
+              <a href="https://cash.app/CJS90" rel="noopener noreferrer" target="_blank">
                 <img style="border-radius: 100%; width: 50px" src="https://cl-helper-development.s3.amazonaws.com/cashapp.png" />
               </a> 
-              <a href="https://venmo.com/clarence-james-1" target="_blank">
+              <a href="https://venmo.com/clarence-james-1" rel="noopener noreferrer" target="_blank">
                 <img style="border-radius: 100%; width: 50px" src="https://cl-helper-development.s3.amazonaws.com/venmo.png" />
               </a> 
             </span>
             <h6>Share</h6>  
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.expresswrite.ai%2F&text=ExpressWrite%20is%20a%20project%20built%20by%20one%20developer.%20Test%20it%20out%20for%20free%21" target="_blank">
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.expresswrite.ai%2F&text=ExpressWrite%20is%20a%20project%20built%20by%20one%20developer.%20Test%20it%20out%20for%20free%21" target="_blank" rel="noopener noreferrer">
               <img src="https://cl-helper-development.s3.amazonaws.com/linkedin-share-button-icon.png" />
             </a> 
             <br/>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.expresswrite.ai%2F" target="_blank">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.expresswrite.ai%2F" target="_blank" rel="noopener noreferrer">
               <img src="https://cl-helper-development.s3.amazonaws.com/facebook-share-button-icon.png" />
             </a>
           </div>
