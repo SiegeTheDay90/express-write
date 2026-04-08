@@ -15,8 +15,8 @@ Rails.application.routes.draw do
 
   # Temp Letter
   get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
-  get '/letters', to: 'letters#index', as: 'letters'
-  get '/letters/:id', to: 'letters#show', as: 'letter'
+  # get '/letters', to: 'letters#index', as: 'letters'
+  # get '/letters/:id', to: 'letters#show', as: 'letter'
 
   # Resumes
   # get '/resume-tool', to: 'resumes#new'
@@ -36,8 +36,8 @@ Rails.application.routes.draw do
   get '/url-check', to: 'application#valid_url?', as: 'valid_url'
 
   # Testing Routes
-  get '/ads', to: 'application#ads'
   unless Rails.env.production?
+    get '/ads', to: 'application#ads'
     get '/err-test', to: 'application#err_test' # raises uncaught error "Test Error: Date.today"
     get '/test', to: 'application#test' # Test route generates letter using GPT-4 or other test model
     get '/stress-test', to: 'application#stress_test' # Makes multiple Async requests. Default backend maxes out at 3 concurrent processes.
