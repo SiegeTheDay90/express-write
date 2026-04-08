@@ -117,6 +117,8 @@ class ApplicationController < ActionController::Base
   end
 
   def splash
+    # flash["errors"] = ["Please enter a valid URL."]
+    # flash["messages"] = ["Welcome to ExpressWrite! Enter a URL to get started."]
     render layout: 'empty'
   end
 
