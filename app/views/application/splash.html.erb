@@ -151,7 +151,7 @@
     <a href="/sites#trades-jobs" class="btn btn-outline-primary btn-sm mx-1">Trades</a>
     <a href="/sites#general-jobs" class="btn btn-outline-primary btn-sm mx-1">General</a>
 </div> 
-<div style="background-color: #eef" class="px-4 pb-5 mb-5 text-center" id="t-height">
+<div style="background-color: #eef" class="px-4 text-center" id="t-height">
     <h2 class="display-5 fw-bold mb-1 text-body-emphasis">Express Write</h2>
     <small>Get a cover letter now, no account needed.</small><br/>
     <div class="d-flex justify-content-center">
@@ -227,17 +227,15 @@
                             ></textarea><div class="char-counter w-100 text-end">0/250</div>
                     </details>
 
-
                     <span class="d-flex align-items-center">
-<input type="submit" value="Generate" id="express-submit" class="btn btn-success" disabled><span id="status" class="m-1">
-<!--Currently out of order. We'll be back soon!-->
-</span></span>
+                        <input type="submit" value="Generate" id="express-submit" class="btn btn-success" disabled>
+                    </span>
                 </form>
             </div>
         </div>
         <div class="col-lg-2">
             <div class="gap-2 d-sm-flex justify-content-sm-center">
-                <%= image_tag "letter.gif", id:"letter-gif", class:"w-75" %>
+                <%= image_tag "letter.gif", id:"letter-gif", class:"w-75", alt:"Cover Letter GIF" %>
             </div>
         </div>
     </div>

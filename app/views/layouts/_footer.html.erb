@@ -1,0 +1,82 @@
+<footer id="bug-report" class="d-flex flex-column">
+  <span class="text-end"><%= link_to "Feedback/Report", bug_report_url %> 🐞</span>
+  <span><%= link_to "Stats for Nerds", stats_url %> 📊</span>
+</footer>
+
+<footer class="bg-light text-dark pt-4 pb-3 border-top" role="contentinfo">
+  <div class="container">
+    <div class="row text-start">
+
+      <!-- Brand / About -->
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">ExpressWrite</h5>
+        <p class="small mb-2">
+          AI-powered cover letter generation. Fast, free, and no account required.
+        </p>
+        <p class="small text-muted mb-0">
+          © <%= Time.current.year %> Clarence Smith. All rights reserved.
+        </p>
+        <p class="small text-muted">
+          Last updated: April 2026
+        </p>
+      </div>
+
+      <!-- Product Links -->
+      <div class="col-md-4 mb-3">
+        <h6 class="fw-bold">Product</h6>
+        <ul class="list-unstyled small">
+          <li><a href="/sites" class="text-decoration-none">Job Boards</a></li>
+          <li><a href="/bug-report" class="text-decoration-none">Feedback</a></li>
+          <li><a href="/privacy" class="text-decoration-none">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <!-- Developer / Contact -->
+      <div class="col-md-4 mb-3">
+        <h6 class="fw-bold">Developer</h6>
+        <ul class="list-unstyled small">
+          <li>
+            Built by 
+            <a href="https://www.linkedin.com/in/clarence-smith-nyc/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="text-decoration-none">
+              Clarence Smith
+            </a>
+          </li>
+          <li>
+            <p class="text-decoration-none">
+              Contact: ClarenceSmith90@gmail.com
+            </p>
+          </li>
+          <li>
+            <a href="https://www.expresswrite.ai"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="text-decoration-none">
+              www.expresswrite.ai
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<span id="alert-container">
+  <h3>Notifications</h3>
+  <% if flash["errors"] %>
+    <% flash["errors"].each do |error|%>
+      <meta class="balloon-message" data-type="error" data-text="<%= error %>">
+    <% end %>
+  <% end %>
+
+  <%# <meta class="balloon-message" data-type="error" data-text="THIS IS A TEST.">
+  <meta class="balloon-message" data-type="notice" data-text="THIS IS A TEST."> %>
+  <% if flash["messages"] %>
+    <% flash["messages"].each do |message|%>
+      <meta class="balloon-message" data-type="notice" data-text="<%= message %>">
+    <% end %>
+  <% end %>
+</span>

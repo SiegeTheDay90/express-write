@@ -19,9 +19,41 @@
         }, 2000);
 
     }
-</script>
-<script>
+    function copyLink(){
+        const text = window.location.origin+"/temp/<%= @letter.secure_id %>";
+        navigator.clipboard.writeText(text);
+        const message = document.getElementById("link-message");
+        message.style.display = "block";
+        message.style.opacity = 1;
 
+        setTimeout(() => {
+            const interval = setInterval(() => {
+                message.style.opacity -= 0.05;
+                if(message.style.opacity <= 0){
+                    message.style.display = "none";
+                    clearInterval(interval);
+                }
+            }, 50);
+        }, 2000);
+
+    }
+    async function deleteLetter(){
+        if(confirm("Are you sure you want to delete this letter? This action cannot be undone.")){
+            response = await fetch("/letters/<%= @letter.secure_id %>", {
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                }
+            })
+            data = await response.json();
+            if(data.ok){
+                alert("Letter deleted successfully.");
+                window.location.href = "/";
+            } else {
+                alert("Error deleting letter: " + data.message);
+            }
+        }
+    }
     function toggleEditor(){
         const editor = document.getElementById("editor");
         const body = document.getElementById("letter-body");
@@ -50,18 +82,24 @@
 
 <main class="pl-1 pt-2 mx-auto">
     <div class="btn-group mb-3">
+        <a href="/" class="btn btn-primary" id="home-btn">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
         <button class="btn btn-primary" id="edit-btn" onClick="toggleEditor()">
             <i class="fa-solid fa-feather-pointed"></i> Edit
         </button>
-        <button class="btn btn-primary" id="save-docx-btn" onClick="">
+        <button class="btn btn-secondary position-relative" id="copy-btn" onClick="copyBody()">
+            <div id="copy-message" class="bg-secondary">Letter copied</div><i class="fa-regular fa-clipboard"></i> Copy
+        </button>
+        <button class="btn btn-secondary position-relative" id="link-btn" onClick="copyLink()">
+            <div id="link-message" class="bg-secondary">Link copied</div><i class="fa-solid fa-link"></i> Secure Link
+        </button>
+        <button class="btn btn-secondary" id="save-docx-btn" onClick="">
             <i class="fa-solid fa-download"></i> DocX
         </button>
-        <button class="btn btn-secondary position-relative" id="copy-btn" onClick="copyBody()">
-            <div id="copy-message" class="bg-secondary">Copied to Clipboard</div><i class="fa-regular fa-clipboard"></i> Copy
+        <button class="btn btn-danger position-relative" id="delete-btn" onClick="deleteLetter()">
+            <i class="fa-solid fa-trash"></i> Delete
         </button>
-        <a href="/" class="btn btn-danger" id="home-btn">
-            <i class="fa-solid fa-house"></i> Home
-        </a>
     </div>
 
     <%= form_with scope: :letter, id: "editor", class: "me-5 my-3 hidden" do |form|%>
