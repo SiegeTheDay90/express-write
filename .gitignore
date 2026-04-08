@@ -42,6 +42,7 @@ defunct/
 
 /node_modules
 /docx_test
+src/scripts/resume-builder-X/
 
 .byebug_history
 app/javascript/application.js.LICENSE.txt
