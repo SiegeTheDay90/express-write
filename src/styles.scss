@@ -31,7 +31,6 @@
 
 #main.splash{
   background-color: rgb(70, 70, 180);
-  padding-bottom: 50px;
 }
 
 #splash{
@@ -181,7 +180,7 @@ background-color: transparent;
 main{
   position: relative;
   width: 95%;
-  padding-bottom: 100px;
+  // padding-bottom: 100px;
   margin: 0 auto;
 }
 #bug-report{
@@ -305,14 +304,16 @@ display: block;
   }
 }
 
-#copy-message{
+#copy-message, #link-message{
   position: absolute;
   top: 101%;
   left: 0;
+  width: 100%;
+  padding: 5px 10px;
   border-radius: 0 0 8px 8px;
   z-index: 2;
   display: none;
-  font-size: 75%;
+  font-size: 0.75em;
 }
 
 
