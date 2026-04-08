@@ -13,8 +13,12 @@ Rails.application.routes.draw do
   # Sites Page
   get '/sites', to: 'application#sites', as: 'sites'
 
+  # Privacy Policy
+  get '/privacy', to: 'application#privacy', as: 'privacy'
+
   # Temp Letter
-  get '/temp/:id', to: 'letters#temp', as: 'temp_letter'
+  get '/temp/:secure_id', to: 'letters#temp', as: 'temp_letter'
+  delete '/letters/:secure_id', to: 'letters#destroy'
   # get '/letters', to: 'letters#index', as: 'letters'
   # get '/letters/:id', to: 'letters#show', as: 'letter'
 

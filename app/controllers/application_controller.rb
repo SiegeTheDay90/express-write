@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_csrf_exception
   before_action :snake_case_params, :attach_authenticity_token, :track_session
   helper_method :days_since_last_error, :requests_this_week
+  before_action :insert_notifications if !Rails.env.production?
+  
 
   def csrf
     headers['X-CSRF-Token'] = masked_authenticity_token
@@ -122,6 +124,9 @@ class ApplicationController < ActionController::Base
     render layout: 'empty'
   end
 
+  def privacy
+  end
+
   def test
     OpenAI.configure do |config|
       config.access_token = ENV['GPT4']
@@ -155,6 +160,11 @@ class ApplicationController < ActionController::Base
 
 
   private
+
+  def insert_notifications
+    flash["errors"] = ["Please enter a valid URL.", "Second Error."]
+    flash["messages"] = ["Welcome to ExpressWrite! Enter a URL to get started.", "Second Message!"]
+  end
 
   def snake_case_params
     params.deep_transform_keys!(&:underscore)

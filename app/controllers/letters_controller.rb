@@ -79,14 +79,22 @@ class LettersController < ApplicationController
         else
           tone = helpers.docx_to_text(params["tone"].to_io)
         end
+      rescue NoMethodError => e
+        errors = ["The file was corrupt or incompatible. Please try plain text."]
+        BugReport.create!(
+          body: e.to_s,
+          user_agent: "Letters#express:82"
+        )        
+        req.update!(ok: false, complete: true, messages: errors)
+        render json: { ok: false, errors:, id: req.id } and return
       rescue StandardError => e
         errors = ["Error: #{e.to_s}"]
         BugReport.create!(
           body: e.to_s,
           user_agent: "Letters#express:82"
-          )        
-          req.update!(ok: false, complete: true, messages: errors)
-          render json: { ok: false, errors:, id: req.id } and return
+        )        
+        req.update!(ok: false, complete: true, messages: errors)
+        render json: { ok: false, errors:, id: req.id } and return
       end
     end
     ExpressJob.perform_later(req, @resume, @listing_payload, params['listing_type'], user_prompt, tone, @custom_tone)
@@ -101,7 +109,16 @@ class LettersController < ApplicationController
     render :show
   end
   def temp
-    @letter = TempLetter.find_by(secure_id: params['id'])
+    @letter = TempLetter.find_by(secure_id: params['secure_id'])
+  end
+  def destroy
+    @letter = TempLetter.find_by(secure_id: params['secure_id'])
+    if @letter
+      @letter.destroy
+      render json: { ok: true, message: 'Letter Deleted' }
+    else
+      render json: { ok: false, message: 'Letter Not Found' }, status: 404
+    end
   end
   # def index
   #   # @letters = TempLetter.all
