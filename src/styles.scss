@@ -1,8 +1,8 @@
+@use './styles/hamburger.scss';
+@use './styles/header.scss';
+// @use './styles/sidebar.scss';
+@use './styles/NoticeBalloon.scss';
 @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
-@import './styles/hamburger.scss';
-@import './styles/header.scss';
-// @import './styles/sidebar.scss';
-@import './styles/NoticeBalloon.scss';
 
 .tool-tip{
   position: relative;
@@ -94,7 +94,7 @@
 #splash-logo{
   color: whitesmoke;
   font-family: 'Allura', cursive;
-  font-size: 20vh;
+  font-size: 15vw;
   text-overflow: ellipsis;
   user-select: none;
   display: flex;
@@ -117,38 +117,7 @@
   top: 100%;
 }
 
-#logo-img{
-  box-sizing: border-box;
-  height: 80%;
-  border-radius: 50%;
-  box-shadow: 0 0 5px 1px rgb(255, 255, 255);
-  opacity: 0.85;
-  margin-right: 1vw;
-  transform: rotate(70deg);
-  z-index: 2;
-}
 
-#logo-text{
-  position: relative;
-  --clip: 110%;
-  height: 100%;
-  &::before{
-    position: absolute;
-    right: -10%;
-    top: 0;
-    height: 100%;
-    width: var(--clip);
-    background-color: rgb(70, 70, 180);
-    content: ' ';
-  }
-
-}
-
-#logo-img.splash{
-  box-shadow: none;
-  margin: -1%;
-  height: 25vh;
-}
 
 .btn {
 height: min-content;

@@ -13,3 +13,36 @@
     position: sticky;
     top: 0;
 }
+
+#logo-img{
+  box-sizing: border-box;
+  height: 80%;
+  border-radius: 50%;
+  box-shadow: 0 0 5px 1px rgb(255, 255, 255);
+  opacity: 0.85;
+  margin-right: 1vw;
+  transform: rotate(70deg);
+  z-index: 2;
+}
+
+#logo-text{
+  position: relative;
+  --clip: 110%;
+  height: 100%;
+  &::before{
+    position: absolute;
+    right: -10%;
+    top: 0;
+    height: 100%;
+    width: var(--clip);
+    background-color: rgb(70, 70, 180);
+    content: ' ';
+  }
+
+}
+
+#logo-img.splash{
+  box-shadow: none;
+  max-height: 18vw;
+  margin: 0;
+}
