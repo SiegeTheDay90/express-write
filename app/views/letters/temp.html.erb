@@ -54,24 +54,45 @@
             }
         }
     }
-    function toggleEditor(){
+    async function toggleEditor(){
         const editor = document.getElementById("editor");
         const body = document.getElementById("letter-body");
         const saveButton = document.getElementById("save-docx-btn");
         const copyButton = document.getElementById("copy-btn");
         const editButton = document.getElementById("edit-btn");
-        window.showEditor = !window.showEditor;
-        editor.classList.toggle('hidden');
-        body.classList.toggle('hidden');
-        saveButton.classList.add('disabled');
-        copyButton.classList.add('disabled');
-        editButton.innerHTML = "<i class=\"fa-solid fa-floppy-disk\"></i> Save"
 
-        if(window.showEditor === false){
-            body.innerHTML = editor.querySelectorAll("[type=hidden]")[1].value.replace("&nbsp;", "");
-            saveButton.classList.remove('disabled');
-            copyButton.classList.remove('disabled');
-            editButton.innerHTML = "<i class=\"fa-solid fa-feather-pointed\"></i> Edit";
+        if(window.showEditor === true){ // Save the letter and remove the editor
+            const holder = document.createElement("div");
+            let grabText = editor.querySelectorAll("[type=hidden]")[1].value.replaceAll("&nbsp;", "");
+            grabText = grabText.replaceAll("<div>", "").replaceAll("</div>", "").replaceAll("<br>", "\n");
+            // debugger;
+            const response = await fetch("/letters/<%= @letter.secure_id %>", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({ body: grabText })
+            })
+            const data = await response.json();
+            if(!data.ok){
+                alert("Error saving letter: " + data.message);
+            } else {
+                body.innerHTML = editor.querySelectorAll("[type=hidden]")[1].value.replace("&nbsp;", "");
+                saveButton.classList.remove('disabled');
+                copyButton.classList.remove('disabled');
+                editButton.innerHTML = "<i class=\"fa-solid fa-feather-pointed\"></i> Edit";
+                window.showEditor = false;
+                editor.classList.toggle('hidden');
+                body.classList.toggle('hidden');
+            }
+        } else {
+            window.showEditor = true;
+            editor.classList.toggle('hidden');
+            body.classList.toggle('hidden');
+            saveButton.classList.add('disabled');
+            copyButton.classList.add('disabled');
+            editButton.innerHTML = "<i class=\"fa-solid fa-floppy-disk\"></i> Save"
         }
     }
 </script>

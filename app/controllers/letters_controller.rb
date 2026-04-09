@@ -101,6 +101,19 @@ class LettersController < ApplicationController
     render json: { ok: true, message: 'Letter Started', id: req.id }
   end
 
+  def update
+    @letter = TempLetter.find_by(secure_id: params['secure_id'])
+    begin
+      if @letter
+        @letter.update!(body: params["body"])
+        render json: { ok: true, message: 'Letter Updated' }
+      else
+        render json: { ok: false, message: 'Letter Not Found' }, status: 404
+      end
+    rescue StandardError => e
+      render json: { ok: false, message: "Error: #{e.to_s}" }, status: 500
+    end
+  end
   def show
     @letter = TempLetter.find_by(secure_id: params['id'])
   end
