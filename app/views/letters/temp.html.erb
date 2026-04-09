@@ -65,7 +65,6 @@
             const holder = document.createElement("div");
             let grabText = editor.querySelectorAll("[type=hidden]")[1].value.replaceAll("&nbsp;", "");
             grabText = grabText.replaceAll("<div>", "").replaceAll("</div>", "").replaceAll("<br>", "\n");
-            // debugger;
             const response = await fetch("/letters/<%= @letter.secure_id %>", {
                 method: "PATCH",
                 headers: {
