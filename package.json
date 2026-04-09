@@ -12,6 +12,7 @@
     "docx": "^8.5.0",
     "ejs": ">=3.1.10",
     "file-saver": "^2.0.5",
+    "firebase": "^12.11.0",
     "gsap": "^3.12.5",
     "ip": ">=2.0.1",
     "mini-css-extract-plugin": "^2.7.6",
