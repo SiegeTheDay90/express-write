@@ -1,7 +1,6 @@
 
 <meta name="hit-counter-name" 
-      content="<%= 
-      Rails.env.production? ? "EW" : "EW-DEV" + request.path.gsub('/', '-') %>" />
+      content="<%= (Rails.env.production? ? "EW" : "EW-DEV") + request.path.gsub('/', '-') %>" />
 <footer id="bug-report" class="d-flex flex-column">
   <span class="text-end"><%= link_to "Feedback/Report", bug_report_url %> 🐞</span>
   <span><%= link_to "Stats for Nerds", stats_url %> 📊</span>
