@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # Stats Page
   get '/stats', to: 'application#stats', as: 'stats'
 
-  # Sites Page
+  # Jobs Page
   get '/sites', to: 'application#sites', as: 'sites'
 
   # Privacy Policy
@@ -19,25 +19,20 @@ Rails.application.routes.draw do
   # Temp Letter
   get '/temp/:secure_id', to: 'letters#temp', as: 'temp_letter'
   delete '/letters/:secure_id', to: 'letters#destroy'
+  patch '/letters/:secure_id', to: 'letters#update'
+  post '/express', to: 'letters#express', as: 'express_letter'
   # get '/letters', to: 'letters#index', as: 'letters'
   # get '/letters/:id', to: 'letters#show', as: 'letter'
-
-  # Resumes
-  # get '/resume-tool', to: 'resumes#new'
-  # post '/resumes', to: 'resumes#create'
-
+  
+  
   # AJAX Polling
+  get '/url-check', to: 'application#valid_url?', as: 'valid_url'
   get '/check/:id', to: 'requests#check', as: 'check'
 
   # Bug Report
   get  '/bug-report', to: 'bug_reports#new', as: 'bug_report'
   post '/bug-report', to: 'bug_reports#create'
   get  '/bug-reports', to: 'bug_reports#index', as: 'bug_reports'
-
-  # Generators
-  # get '/bullets', to: 'resumes#suggest_bullets', as: 'suggest_bullets'
-  post '/express', to: 'letters#express', as: 'express_letter'
-  get '/url-check', to: 'application#valid_url?', as: 'valid_url'
 
   # Testing Routes
   unless Rails.env.production?
