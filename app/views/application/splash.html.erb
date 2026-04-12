@@ -189,6 +189,7 @@
                     </div>
 
                     <h6 class="my-1">Choose Your Tone</h6>
+                    <div>We'll generate 4 letters with various tones.</div>
                     <div id="tone-section" class="form-section w-100 mb-2 text-start">                       
                         
                         <div id="tone-upload-type" class="py-1 mb-1 hidden" onChange="uploadChange(event)" data-type="tone">
@@ -199,7 +200,7 @@
                         </div>                       
                         
                         <input type="file" name="custom_tone" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">
-                        <label><input type="checkbox" onChange="handleTone(event)"/> Use the tone from my own letter <span class="text-info fw-bold">Beta</span></label>
+                        <label class="me-1"><input type="checkbox" onChange="handleTone(event)" class="me-2"/>Use the tone from my own letter.</label><span class="tool-tip"><i class="fa-regular fa-circle-question tool-tip-icon"></i><span class="tool-tip-text">If this option isn't selected, we'll generate a basic professional letter.</span></span>
                     
                     </div>
 
