@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   patch '/letters/:secure_id', to: 'letters#update'
   post '/express', to: 'letters#express', as: 'express_letter'
   # get '/letters', to: 'letters#index', as: 'letters'
-  # get '/letters/:id', to: 'letters#show', as: 'letter'
+  get '/letters/:secure_id', to: 'letters#show', as: 'letter'
   
   
   # AJAX Polling

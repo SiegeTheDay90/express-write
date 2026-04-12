@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_20_002331) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_12_143018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -110,6 +110,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_20_002331) do
     t.datetime "updated_at", null: false
     t.string "resource_id"
     t.string "session_id"
+    t.integer "count", default: 0, null: false
   end
 
   create_table "resumes", force: :cascade do |t|
@@ -164,6 +165,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_20_002331) do
     t.string "secure_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tone", default: "", null: false
     t.index ["secure_id"], name: "index_temp_letters_on_secure_id"
   end
 

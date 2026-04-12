@@ -212,11 +212,7 @@ class LoadingBar {
         break;
 
         case "express#generate":
-          this.nextPath = `/temp/${id}`;
-        break;
-
-        case "express-member#generate":
-          this.nextPath=`/letters/${id}`
+          this.nextPath = `/letters/${id}`;
         break;
 
         default:

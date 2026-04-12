@@ -38,6 +38,12 @@ class Request < ApplicationRecord
     save!
   end
 
+  def incremement_count!(resource_id)
+    self.count = self.count + 1
+    self.resource_id ||= resource_id
+    save!
+  end
+
   def uptime
     (self.updated_at - self.created_at)
   end

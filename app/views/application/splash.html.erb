@@ -124,8 +124,6 @@
         document.getElementById('tone-upload-type').classList.toggle('d-flex');
         document.getElementById('tone-input').classList.toggle('hidden');
         document.getElementById('tone-input').required = !document.getElementById('tone-input').required;
-        document.getElementById('tone-select').classList.toggle('hidden');
-        document.querySelector('[for=tone-select]').classList.toggle('hidden');
 
     }
 
@@ -191,18 +189,7 @@
                     </div>
 
                     <h6 class="my-1">Choose Your Tone</h6>
-                    <div id="tone-section" class="form-section w-100 mb-2 text-start">
-     
-                        <label for="tone-select">Predefined Tone: </label> <%# Predefined Tone List Input%>
-                        
-                        <select class="mb-1" name="tone-select" id="tone-select" required>
-                            <option value="basic">Basic</option>
-                            <option value="passionate">Passionate</option>
-                            <option value="humorous">Humorous</option>
-                            <option value="admiration">Admiration</option>
-                            <option value="confident">Confidence</option>
-                        </select>
-                        
+                    <div id="tone-section" class="form-section w-100 mb-2 text-start">                       
                         
                         <div id="tone-upload-type" class="py-1 mb-1 hidden" onChange="uploadChange(event)" data-type="tone">
                             From:&nbsp;
@@ -211,7 +198,7 @@
                             <label class="ms-2">Plain Text <input type="radio" name="tone-upload-type" value="text"></label>
                         </div>                       
                         
-                        <input type="file" name="tone" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">
+                        <input type="file" name="custom_tone" id="tone-input" accept=".pdf, .doc, .docx, .txt" class="mb-3 form-control hidden">
                         <label><input type="checkbox" onChange="handleTone(event)"/> Use the tone from my own letter <span class="text-info fw-bold">Beta</span></label>
                     
                     </div>
@@ -229,6 +216,7 @@
 
                     <span class="d-flex align-items-center">
                         <input type="submit" value="Generate" id="express-submit" class="btn btn-success" disabled>
+                        <span id="status" class="ms-3"></span>
                     </span>
                 </form>
             </div>

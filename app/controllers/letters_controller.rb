@@ -1,111 +1,41 @@
 # frozen_string_literal: true
-
+require_relative './modules/letter_generator'
 class LettersController < ApplicationController
+  include LetterGenerator
   def express
-    
-    req = Request.create!(resource_type: 'temp_letter', session_id: @session.session_id)
+    tones = [:admiration, :confident, :humorous, :basic]
+
+    req = Request.create!(resource_type: 'temp_letter', session_id: @session.session_id, resource_id: SecureRandom.urlsafe_base64, count: 0)
 
     # Listing to Text Payload
-    if params['listing_type'] == 'url'
-      begin
-        http_response = HTTP.headers('User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36').get(params['listing'])
-      rescue StandardError => e
-        BugReport.create!(
-          body: "Error: #{e.to_s}",
-          user_agent: "LettersController#express"
-        )
-        errors = ["Error: #{e.to_s}\nConsider copy/pasting the listing as plain text."]
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      end
+    @listing_payload = get_listing_payload(params, req)
+    return if performed?
 
-      if http_response.status >= 400
-        errors = ['The link resulted in a 400+ error. Please check the url and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text.']
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      elsif http_response.status >= 300
-        errors = ['The link resulted in a redirect. Please use a direct link and ensure that viewing the listing does not require login. Consider copy/pasting the listing as plain text.']
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      elsif http_response.status != 200
-        errors = ['There was an unexpected error retrieving the listing. Please try again later. Consider copy/pasting the listing as plain text.']
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      else
-        @listing_payload = http_response.body.to_s
-      end
-    else
-      @listing_payload = params['listing']
-    end
-
-    # THIS NEEDS A REWRITE
     # Resume to Text Payload 
-    if params["resume_upload_type"] == "file"
-      begin
-        @resume = params['resume']        
-        if @resume.content_type == "application/pdf"
-          # PDF
-          @resume = helpers.pdf_to_text(@resume.to_io)
-        else
-          # DOC(x)
-          @resume = helpers.docx_to_text(@resume.to_io)
-        end
-      rescue StandardError => e
-        errors = ["Error: #{e.to_s}"]
-        BugReport.create!(
-          body: e.to_s,
-          user_agent: "Letters#express:54"
-        )        
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      end
-    else # Just plain text
-      @resume = params['text']
+    @resume = get_resume_payload(params, req)
+    return if performed?
+    
+    @custom_tone = get_custom_tone_payload(params, req)
+    return if performed?
+
+    @user_prompt = params['prompt'] || ""
+    
+    if @custom_tone
+      tones.pop
+      ExpressJob.perform_later(req.id, @resume, @listing_payload, params['listing_type'], @user_prompt, @custom_tone)
+    end
+    for tone in tones do
+      ExpressJob.perform_later(req.id, @resume, @listing_payload, params['listing_type'], @user_prompt, tone)
     end
 
-    
-    
-
-
-    user_prompt = params['prompt']
-    if params["tone_select"]
-      # Predefined tone
-      tone = params['tone_select']
-    else
-      @custom_tone = true
-      begin
-        if params["tone"].content_type == "application/pdf"
-          tone = helpers.pdf_to_text(params["tone"].to_io)
-        else
-          tone = helpers.docx_to_text(params["tone"].to_io)
-        end
-      rescue NoMethodError => e
-        errors = ["The file was corrupt or incompatible. Please try plain text."]
-        BugReport.create!(
-          body: e.to_s,
-          user_agent: "Letters#express:82"
-        )        
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      rescue StandardError => e
-        errors = ["Error: #{e.to_s}"]
-        BugReport.create!(
-          body: e.to_s,
-          user_agent: "Letters#express:82"
-        )        
-        req.update!(ok: false, complete: true, messages: errors)
-        render json: { ok: false, errors:, id: req.id } and return
-      end
-    end
-    ExpressJob.perform_later(req, @resume, @listing_payload, params['listing_type'], user_prompt, tone, @custom_tone)
-    render json: { ok: true, message: 'Letter Started', id: req.id }
+    render json: { ok: true, message: 'Letter Started', id: req.id } and return
   end
-
   def update
-    @letter = TempLetter.find_by(secure_id: params['secure_id'])
+    @letter = TempLetter.where(secure_id: params['secure_id']).find_by(tone: params[:tone])
+
     begin
       if @letter
-        @letter.update!(body: params["body"])
+        @letter.update!(body: params['body'])
         render json: { ok: true, message: 'Letter Updated' }
       else
         render json: { ok: false, message: 'Letter Not Found' }, status: 404
@@ -114,8 +44,10 @@ class LettersController < ApplicationController
       render json: { ok: false, message: "Error: #{e.to_s}" }, status: 500
     end
   end
+
   def show
-    @letter = TempLetter.find_by(secure_id: params['id'])
+    @letters = TempLetter.where(secure_id: params['secure_id']).order(:id)
+    @editor_letter = @letters.first || TempLetter.new
   end
 
   def index
@@ -125,7 +57,8 @@ class LettersController < ApplicationController
     @letter = TempLetter.find_by(secure_id: params['secure_id'])
   end
   def destroy
-    @letter = TempLetter.find_by(secure_id: params['secure_id'])
+    @letter = TempLetter.where(secure_id: params['secure_id']).find_by(tone: params[:tone])
+
     if @letter
       @letter.destroy
       render json: { ok: true, message: 'Letter Deleted' }

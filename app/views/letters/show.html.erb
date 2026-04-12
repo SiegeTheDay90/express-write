@@ -1,40 +1,244 @@
-<%# app/views/letters/show.html.erb %>
+<%= javascript_import_module_tag 'letterToDocx' %>
+
 <style>
-    pre {white-space: pre-wrap;}
+    .letter-tab.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+    .temp-letter-content {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
+        white-space: pre-wrap;
+    }
+    .message-bubble {
+        display: none;
+        position: absolute;
+        top: -32px;
+        left: 0;
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: white;
+        font-size: 0.85rem;
+    }
+    .message-bubble.bg-secondary {
+        background-color: #6c757d;
+    }
 </style>
-<% current = @letter || TempLetter.last %>
-<% prev = TempLetter.where("created_at < ? OR (created_at = ? AND id < ?)", current.created_at, current.created_at, current.id).order(created_at: :desc, id: :desc).first %>
-<% nxt  = TempLetter.where("created_at > ? OR (created_at = ? AND id > ?)", current.created_at, current.created_at, current.id).order(created_at: :asc, id: :asc).first %>
 
-<% if current %>
-    <div class="actions">
-        <% if prev %>
-            <%= link_to "← Previous", url_for(controller: 'letters', action: 'show', id: prev.secure_id), class: "btn" %>
-        <% else %>
-            <button disabled class="btn">← Previous</button>
-        <% end %>
+<script>
+    window.letters = <%= raw @letters.order(:id).map { |letter| { tone: letter.tone, body: letter.body, secure_id: letter.secure_id, created_at: letter.created_at.iso8601 } }.to_json %>;
+    window.currentLetterIndex = 0;
+    window.showEditor = false;
 
-        <% if nxt %>
-            <%= link_to "Next →", url_for(controller: 'letters', action: 'show', id: nxt.secure_id), class: "btn" %>
-        <% else %>
-            <button disabled class="btn">Next →</button>
-        <% end %>
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function renderLetter() {
+        const selected = window.letters[window.currentLetterIndex];
+        document.getElementById('letter-title').textContent = `TempLetter (ID: ${selected.secure_id}) — Letter ${window.currentLetterIndex + 1} of ${window.letters.length}`;
+        document.getElementById('letter-created').textContent = new Date(selected.created_at).toLocaleString();
+
+        const lines = selected.body.split('\n');
+        document.getElementById('letter-body').innerHTML = lines.map(line => `${escapeHtml(line)}<br>`).join('');
+        document.getElementById('selected-letter-number').textContent = `Variant ${window.currentLetterIndex + 1}`;
+
+        const tabs = document.querySelectorAll('.letter-tab');
+        tabs.forEach((tab, index) => {
+            tab.classList.toggle('active', index === window.currentLetterIndex);
+        });
+    }
+
+    function setActiveLetter(index) {
+        if (index === window.currentLetterIndex) return;
+        window.currentLetterIndex = index;
+        window.showEditor = false;
+        document.getElementById('editor').classList.add('hidden');
+        document.getElementById('letter-body').classList.remove('hidden');
+        document.getElementById('edit-btn').innerHTML = '<i class="fa-solid fa-feather-pointed"></i> Edit';
+        document.getElementById('copy-btn').classList.remove('disabled');
+        document.getElementById('save-docx-btn').classList.remove('disabled');
+        renderLetter();
+    }
+
+    function setEditorBody(body) {
+        const input = document.querySelector('#editor input[type="hidden"]');
+        const trixEditor = document.querySelector('trix-editor');
+        if (input) {
+            input.value = body;
+        }
+        trixEditor.editor.loadHTML(body.replace(/\n/g, '<br>'));
+    }
+
+    function getEditorBody() {
+        const trixEditor = document.querySelector('trix-editor');
+        return trixEditor.editor.getDocument().toString();
+    }
+
+    function copyBody() {
+        const text = window.letters[window.currentLetterIndex].body;
+        navigator.clipboard.writeText(text);
+        const message = document.getElementById('copy-message');
+        message.style.display = 'block';
+        message.style.opacity = 1;
+
+        setTimeout(() => {
+            const interval = setInterval(() => {
+                message.style.opacity -= 0.05;
+                if (message.style.opacity <= 0) {
+                    message.style.display = 'none';
+                    clearInterval(interval);
+                }
+            }, 50);
+        }, 2000);
+    }
+
+    function copyLink() {
+        const text = window.location.origin + '/letters/' + window.letters[0].secure_id;
+        navigator.clipboard.writeText(text);
+        const message = document.getElementById('link-message');
+        message.style.display = 'block';
+        message.style.opacity = 1;
+
+        setTimeout(() => {
+            const interval = setInterval(() => {
+                message.style.opacity -= 0.05;
+                if (message.style.opacity <= 0) {
+                    message.style.display = 'none';
+                    clearInterval(interval);
+                }
+            }, 50);
+        }, 2000);
+    }
+
+    async function deleteLetter() {
+        if (!confirm('Are you sure you want to delete this letter? This action cannot be undone.')) return;
+
+        const selected = window.letters[window.currentLetterIndex];
+        const response = await fetch(`/letters/${selected.secure_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ secure_id: selected.secure_id, tone: selected.tone })
+        });
+
+        const data = await response.json();
+        if (data.ok) {
+            alert('Letter deleted successfully.');
+            window.location.reload();
+        } else {
+            alert('Error deleting letter: ' + data.message);
+        }
+    }
+
+    async function toggleEditor() {
+        const editor = document.getElementById('editor');
+        const body = document.getElementById('letter-body');
+        const saveButton = document.getElementById('save-docx-btn');
+        const copyButton = document.getElementById('copy-btn');
+        const editButton = document.getElementById('edit-btn');
+        const selected = window.letters[window.currentLetterIndex];
+
+        if (window.showEditor === true) {
+            const grabText = getEditorBody();
+            const response = await fetch(`/letters/${selected.secure_id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ body: grabText, secure_id: selected.secure_id, tone: selected.tone  })
+            });
+
+            const data = await response.json();
+            if (!data.ok) {
+                alert('Error saving letter: ' + data.message);
+            } else {
+                window.letters[window.currentLetterIndex].body = grabText;
+                renderLetter();
+                saveButton.classList.remove('disabled');
+                copyButton.classList.remove('disabled');
+                editButton.innerHTML = '<i class="fa-solid fa-feather-pointed"></i> Edit';
+                window.showEditor = false;
+                editor.classList.add('hidden');
+                body.classList.remove('hidden');
+            }
+        } else {
+            window.showEditor = true;
+            setEditorBody(window.letters[window.currentLetterIndex].body);
+            editor.classList.remove('hidden');
+            body.classList.add('hidden');
+            saveButton.classList.add('disabled');
+            copyButton.classList.add('disabled');
+            editButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.letters.length > 0) {
+            renderLetter();
+        }
+    });
+</script>
+
+<%= stylesheet_link_tag 'actiontext' %>
+<%= javascript_import_module_tag 'trix' %>
+
+<% if @letters.present? %>
+<main class="pl-1 pt-2 mx-auto">
+    <div class="btn-group mb-3">
+        <a href="/" class="btn btn-primary" id="home-btn">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+        <button class="btn btn-primary" id="edit-btn" onClick="toggleEditor()">
+            <i class="fa-solid fa-feather-pointed"></i> Edit
+        </button>
+        <button class="btn btn-secondary position-relative" id="copy-btn" onClick="copyBody()">
+            <div id="copy-message" class="message-bubble bg-secondary">Letter copied</div><i class="fa-regular fa-clipboard"></i> Copy
+        </button>
+        <button class="btn btn-secondary position-relative" id="link-btn" onClick="copyLink()">
+            <div id="link-message" class="message-bubble bg-secondary">Link copied</div><i class="fa-solid fa-link"></i> Secure Link
+        </button>
+        <button class="btn btn-secondary" id="save-docx-btn" type="button">
+            <i class="fa-solid fa-download"></i> DocX
+        </button>
+        <button class="btn btn-danger position-relative" id="delete-btn" onClick="deleteLetter()">
+            <i class="fa-solid fa-trash"></i> Delete
+        </button>
     </div>
-    <h1>Latest TempLetter (ID: <%= current.secure_id %>)</h1>
-    <p><strong>Created:</strong> <%= current.created_at %></p>
 
-    <section class="temp-letter-content" width="100vw" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
-        <%# show common text fields if present, otherwise dump attributes except timestamps %>
-        <% if current.respond_to?(:body) %>
-            <pre><%= current.body %></pre>
-        <% elsif current.respond_to?(:content) %>
-            <pre><%= current.content %></pre>
-        <% else %>
-            <pre><%= current.attributes.except('created_at', 'updated_at').map { |k,v| "#{k}: #{v}" }.join("\n") %></pre>
-        <% end %>
+    <div class="mb-3">
+        <span id="letter-title" class="h5"></span>
+        <span id="selected-letter-number" class="badge bg-secondary ms-2"></span>
+        <p class="mb-0"><strong>Created:</strong> <span id="letter-created"></span></p>
+    </div>
+    <% if @letters.length > 1 %>
+        <h5 class="">Tone Variations:</h5>
+        <div class="btn-group mb-4" role="group" aria-label="Letter variants">
+            <% @letters.order(:id).each_with_index do |letter, index| %>
+                <button type="button" class="btn btn-outline-secondary letter-tab<%= ' active' if index.zero? %>" onclick="setActiveLetter(<%= index %>)">
+                    <%= letter.tone %>
+                </button>
+            <% end %>
+        </div>
+    <% end %>
+
+    <%= form_with model: @editor_letter, id: 'editor', class: 'me-5 my-3 hidden' do |form| %>
+        <%= form.trix_editor :content %>
+    <% end %>
+
+    <section class="w-75">
+        <div id="letter-body"></div>
     </section>
-
-    <%# find previous (older) and next (newer) relative to current by created_at then id %>
+</main>
 <% else %>
     <p>No TempLetters found.</p>
 <% end %>
