@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get '/privacy', to: 'application#privacy', as: 'privacy'
 
   # Temp Letter
-  # get '/temp/:secure_id', to: 'letters#temp', as: 'temp_letter'
+  get '/temp/:secure_id', to: 'letters#temp', as: 'temp_letter'
   delete '/letters/:secure_id/:tone', to: 'letters#destroy'
   patch '/letters/:secure_id/:tone', to: 'letters#update'
   post '/express', to: 'letters#express', as: 'express_letter'
