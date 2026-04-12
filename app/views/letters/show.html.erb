@@ -121,13 +121,12 @@
         if (!confirm('Are you sure you want to delete this letter? This action cannot be undone.')) return;
 
         const selected = window.letters[window.currentLetterIndex];
-        const response = await fetch(`/letters/${selected.secure_id}`, {
+        const response = await fetch(`/letters/${selected.secure_id}/${selected.tone}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ secure_id: selected.secure_id, tone: selected.tone })
+            }
         });
 
         const data = await response.json();
@@ -149,13 +148,13 @@
 
         if (window.showEditor === true) {
             const grabText = getEditorBody();
-            const response = await fetch(`/letters/${selected.secure_id}`, {
+            const response = await fetch(`/letters/${selected.secure_id}/${selected.tone}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ body: grabText, secure_id: selected.secure_id, tone: selected.tone  })
+                body: JSON.stringify({ body: grabText })
             });
 
             const data = await response.json();

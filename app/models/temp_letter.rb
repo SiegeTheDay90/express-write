@@ -15,7 +15,7 @@
 class TempLetter < ApplicationRecord
   validates :body, presence: true
   has_rich_text :content
-  before_validation :ensure_secure_id
+  before_validation :ensure_secure_id, :ensure_tone
 
   def body=(val)
     content.body = val.gsub("\n", '<br>')
@@ -24,5 +24,9 @@ class TempLetter < ApplicationRecord
 
   def ensure_secure_id
     self.secure_id ||= SecureRandom.urlsafe_base64
+  end
+
+  def ensure_tone
+    self.tone = "basic" if (!self.tone || self.tone.empty?)
   end
 end

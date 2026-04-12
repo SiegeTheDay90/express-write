@@ -12,10 +12,10 @@ class LettersControllerTest < ActionDispatch::IntegrationTest
   #   assert_equal response_body['ok'], true
   # end
   test 'delete existing temp letter' do
-    letter = TempLetter.create!(secure_id: 'test123', profile: 'Test Profile', body: 'Test Letter Content', listing: 'Test Listing')
-    delete "/letters/#{letter.secure_id}"
+    letter = TempLetter.create!(secure_id: 'test123', profile: 'Test Profile', body: 'Test Letter Content', listing: 'Test Listing', tone: "basic")
+    delete "/letters/#{letter.secure_id}/#{letter.tone}"
     assert_response :success
-    letter = TempLetter.find_by(secure_id: 'test123')
+    letter = TempLetter.find_by(secure_id: 'test123', tone: 'basic')
     assert_nil letter
   end
   test 'delete non-existing temp letter' do
