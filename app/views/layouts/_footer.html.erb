@@ -1,6 +1,9 @@
 
-<meta name="hit-counter-name" 
-      content="<%= (Rails.env.production? ? "EW" : "EW-DEV") + request.path.gsub('/', '-') %>" />
+<% if Rails.env.production? %>
+  <% hitcountertag = (Rails.env.production? ? "EW" : "EW-DEV") + request.path.gsub('/', '-') %>
+  <% hitcountertag = "EW-letters-" if hitcountertag.slice(0,11)=="EW-letters-" %>
+  <meta name="hit-counter-name" content="<%= hitcountertag %>" />
+<% end %>
 <footer id="bug-report" class="d-flex flex-column">
   <span class="text-end"><%= link_to "Feedback/Report", bug_report_url %> 🐞</span>
   <span><%= link_to "Stats for Nerds", stats_url %> 📊</span>

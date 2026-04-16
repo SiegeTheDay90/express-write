@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Incrememnts specific hit counters on page load
 import HitCounter from "./scripts/HitCounter";
-const meta_name = document.querySelector("meta[name='hit-counter-name']")?.content || "EW-NoMeta";
-const counter = HitCounter(meta_name);
-counter.inc();
+const meta_name = document.querySelector("meta[name='hit-counter-name']")?.content
+if(meta_name){
+    const counter = HitCounter(meta_name);
+    counter.inc();
+}
