@@ -37,7 +37,7 @@
     box-shadow: 0 0 12px 1px #4646b4;
 }
 
-#alert-container:not(:has(span)){
+#alert-container:not(:has(button)){
     display: none;
 };
 
