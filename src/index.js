@@ -10,14 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Display notice balloons for elements with class 'balloon-message'
     const alertContainer = document.getElementById("alert-container");
     Array.from(document.getElementsByClassName('balloon-message'))?.forEach((message) =>{
-        new NoticeBalloon(alertContainer, message.dataset.type, message.dataset.text)
+        new NoticeBalloon(alertContainer, message.dataset.type, message.dataset.text);
     })
 })
 
 // Incrememnts specific hit counters on page load
 import HitCounter from "./scripts/HitCounter";
-const meta_name = document.querySelector("meta[name='hit-counter-name']")?.content
+const meta_name = document.querySelector("meta[name='hit-counter-name']")?.content;
 if(meta_name){
-    const counter = HitCounter(meta_name);
-    counter.inc();
+    HitCounter(meta_name).inc();
+}
+
+// Special counter for vtx-btn
+const vtx_btn = document.getElementById("vtx-btn");
+if(vtx_btn){
+    vtx_btn.addEventListener("click", () => HitCounter("vtx_btn").inc());
 }
