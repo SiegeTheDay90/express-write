@@ -6,6 +6,7 @@
 
 app/javascript/*.LICENSE.txt
 .ruby-version
+.github/workflows
 
 # Ignore bundler config.
 /.bundle

@@ -5,8 +5,8 @@ class StressTestJob < ApplicationJob
 
   def perform(number)
     start = Time.now
-    sleep(rand(3..8))
+    sleep(1)
     finish = Time.now
-    logger.debug("Job #{number} complete @ #{Time.now} in #{finish - start} seconds. \n")
+    logger.info("Job #{number} complete @ #{Time.now} in #{(finish - start).round(4)} seconds. \n")
   end
 end

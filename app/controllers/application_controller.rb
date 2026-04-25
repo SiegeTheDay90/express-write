@@ -158,7 +158,16 @@ class ApplicationController < ActionController::Base
     raise "Test Error: #{Date.today}"
   end
 
+  def stress_test
+    stress = params['amount'] || 10
 
+    stress.times do |i|
+      StressTestJob.perform_later(i)
+    end
+
+    render plain: "Stressing with #{stress} jobs. Check server logs."
+  end
+ 
   private
 
   def insert_notifications
@@ -193,17 +202,6 @@ class ApplicationController < ActionController::Base
         render json: { error: @message }
       end
     end
-  end
-
-  def stress_test
-    stress = params['amount'] || 10
-
-    stres
-    s.times do |i|
-      StressTestJob.perform_later(i)
-    end
-
-    render plain: "Stressing with #{stress} jobs. Check server logs."
   end
 
   def days_since_last_error
