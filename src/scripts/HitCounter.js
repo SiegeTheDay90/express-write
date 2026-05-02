@@ -24,7 +24,7 @@
         // Increment existing or create new counter
         // Counters are organized by App then by Date
         HitCounter.inc = async function inc(){
-            const date = new Date().toLocaleDateString("en-US").replaceAll("/", "-");
+            const date = new Date().toISOString().slice(0, 10);
             const docRef = await doc(db, "Hits", document_name);
             let fetchedDoc = await getDoc(docRef);
 
@@ -32,8 +32,7 @@
             data[date] ||= 0;
             data[date] += 1;
 
-            setDoc(docRef, data)
-            .catch((error) => console.error(error, `Hit Counter Send Error for ${document_name}`));
+            setDoc(docRef, data).catch((error) => console.error(error, `Hit Counter Send Error for ${document_name}`));
         }
 
         return HitCounter;
