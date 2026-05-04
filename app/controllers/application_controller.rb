@@ -56,8 +56,8 @@ class ApplicationController < ActionController::Base
 
     doc = firestore.doc Rails.env.production? ? "Hits/expresswrite-job-board" : "Hits/EW-DEV-sites"
     data = doc.get.fields.to_a
-              .sort_by{|entry| Date.new(*entry[0].split("-").map(&:to_i))}
-    weekly = data.group_by{|entry| Date.new(*entry[0].split("-").map(&:to_i)).cweek}
+              .sort_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i))}
+    weekly = data.group_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i)).cweek}
     
     @job_board_weekly_labels ||= []
     @job_board_weekly_values ||= []
