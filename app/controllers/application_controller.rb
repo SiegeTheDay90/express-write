@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
       @values << entry[1].to_i # Number
     end
 
-    doc = firestore.doc Rails.env.production? ? "Hits/expresswrite-job-board" : "Hits/EW-DEV-sites"
+    doc = firestore.doc Rails.env.production? ? "Hits/EW-sites" : "Hits/EW-DEV-sites"
     data = doc.get.fields.to_a
               .sort_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i))}
     weekly = data.group_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i)).cweek}
