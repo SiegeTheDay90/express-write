@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       "universe_domain" => "googleapis.com"
     } : "./keyfile.json"
 
-    doc = firestore.doc Rails.env.production? ? "Hits/write-wise-splash" : "Hits/EW-DEV-"
+    doc = firestore.doc Rails.env.production? ? "Hits/EW-" : "Hits/EW-DEV-"
     data = doc.get.fields.to_a
               .sort_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i))}.last(178)
     weekly = data.group_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i)).cweek}
