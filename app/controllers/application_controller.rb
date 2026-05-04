@@ -33,8 +33,8 @@ class ApplicationController < ActionController::Base
 
     doc = firestore.doc Rails.env.production? ? "Hits/write-wise-splash" : "Hits/EW-DEV-"
     data = doc.get.fields.to_a
-              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}.last(178)
-    weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
+              .sort_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i))}.last(178)
+    weekly = data.group_by{|entry| Date.new(*entry[0].to_s.split("-").map(&:to_i)).cweek}
     
     @weekly_labels ||= []
     @weekly_values ||= []
@@ -56,8 +56,8 @@ class ApplicationController < ActionController::Base
 
     doc = firestore.doc Rails.env.production? ? "Hits/expresswrite-job-board" : "Hits/EW-DEV-sites"
     data = doc.get.fields.to_a
-              .sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
-    weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
+              .sort_by{|entry| Date.new(*entry[0].split("-").map(&:to_i))}
+    weekly = data.group_by{|entry| Date.new(*entry[0].split("-").map(&:to_i)).cweek}
     
     @job_board_weekly_labels ||= []
     @job_board_weekly_values ||= []
@@ -78,8 +78,14 @@ class ApplicationController < ActionController::Base
     end
 
     letters = TempLetter.last(100)
-    data = letters.group_by{|letter| letter.created_at.to_date.strftime("%m-%d-%Y")}.map{|date, letters| [date, letters.count]}.sort_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y')}
-    weekly = data.group_by{|entry| Date.strptime(entry[0].to_s, '%m-%d-%Y').cweek}
+    data = letters.group_by{|letter| letter.created_at.to_date.strftime("%Y-%m-%d")}
+    .map do |date, letters| 
+      [date, letters.count]
+    end
+    .sort_by do |entry| 
+      Date.strptime(entry[0], '%Y-%m-%d')
+    end
+    weekly = data.group_by{|entry| Date.strptime(entry[0], '%Y-%m-%d').cweek}
     
     @letters_generated_weekly_labels ||= []
     @letters_generated_weekly_values ||= []

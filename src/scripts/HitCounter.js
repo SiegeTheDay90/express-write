@@ -35,6 +35,25 @@
             setDoc(docRef, data).catch((error) => console.error(error, `Hit Counter Send Error for ${document_name}`));
         }
 
+        HitCounter.dateRewrite = async function dateRewrite(){
+            const docRef = await doc(db, "Hits", document_name);
+            let fetchedDoc = await getDoc(docRef);
+
+            const data = fetchedDoc?.data() || {};
+            const new_data = {};
+            // console.log("CHECK") 
+            console.log("document_name: ", document_name);
+            console.log("data: ", JSON.stringify(data));
+            console.log("Entries: ", Object.entries(data));
+            Object.entries(data).forEach(([key, value]) => {
+                debugger
+                const [month, date, year] = key.split("-");
+                new_data[`${year}-${month}-${date}`] = value;
+
+            }) ;
+            setDoc(docRef, new_data).catch((error) => console.error(error, `Hit Counter Send Error for ${document_name}`));
+        }
+
         return HitCounter;
     }
 
