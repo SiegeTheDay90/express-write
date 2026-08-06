@@ -36,5 +36,10 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch --mode=development --node-env=production"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.0": true,
+    "@parcel/watcher@2.5.1": true,
+    "protobufjs@7.6.5": true
   }
 }
