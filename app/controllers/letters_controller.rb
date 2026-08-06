@@ -4,7 +4,7 @@ class LettersController < ApplicationController
     begin
       return http_response = HTTP.headers('User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36').get(params['listing'])
     rescue StandardError => e
-      render_error(e)
+      render_error(e, nil)
     end
   end
   
@@ -12,7 +12,7 @@ class LettersController < ApplicationController
     errors = ["Error: #{e.to_s}\nConsider copy/pasting the listing as plain text."]
     BugReport.create!(
       body: "Error: #{e.to_s}",
-      user_agent: "LettersController#express"
+      user_agent: "LettersController#express:#{id_num}"
     )
     render json: { ok: false, errors:, id: id_num } and return
   end

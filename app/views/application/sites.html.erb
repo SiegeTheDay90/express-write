@@ -57,6 +57,16 @@
 </nav>
 
 <div class="categories ps-4 pe-4">
+    <div class="category border border-primary rounded-3 m-4 p-3">
+        <h2 id=vertex-jobs>Vertex Partnership Academies</h2>
+        <p>NYC High School</p>
+        <div class="websites-list">
+            <div class="website-card">
+                <h4><a href="https://www.vertexacademies.org/hiring/who-we-are" target="_blank" rel="noopener noreferrer">Hiring – Who We Are</a></h4>
+                <p>Developing internationally-minded, tenacious learners.</p>
+            </div>
+        </div>
+    </div>
     <% @categories.each do |category| %>
         <div class="category border border-primary rounded-3 m-4 p-3">
             <h2 id="<%= category.downcase.gsub(/\s+/, '-') %>-jobs"><%= category %></h2>
@@ -72,3 +82,7 @@
         </div>
     <% end %>
 </div>
+
+<a href="https://www.vertexacademies.org/hiring/ready-to-join-us" target="_blank" id="vtx-btn" class="btn px-2 my-1">
+    Vertex Partnership Academies
+</a>
