@@ -15,5 +15,5 @@
 #  user_agent        :text
 #
 class BugReport < ApplicationRecord
-  validates :body, length: { minimum: 25 }
+  validates :body, length: { minimum: 5 }
 end

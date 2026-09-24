@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 app/javascript/*.LICENSE.txt
+app/controllers/modules/letter_generator.rb
 .ruby-version
 .github/workflows
 

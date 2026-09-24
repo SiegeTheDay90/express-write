@@ -21,10 +21,8 @@
     "style-loader": "^3.3.3"
   },
   "devDependencies": {
-    "@webpack-cli/generators": "^3.0.7",
     "braces": ">=3.0.3",
     "ejs": ">=3.1.10",
-    "ip": ">=2.0.1",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
