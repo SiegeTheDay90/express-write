@@ -1,0 +1,58 @@
+<style>
+	.generated-letter-body {
+		white-space: pre-wrap;
+	}
+</style>
+
+<main class="container py-3" id="letters-index">
+	<h1 class="h3 mb-3">Generated Letters</h1>
+
+	<% if @letters.any? %>
+		<nav class="d-flex align-items-center gap-3 mb-4" aria-label="Letter navigation">
+			<button type="button" class="btn btn-outline-secondary" id="previous-letter" disabled>
+				&larr; Previous
+			</button>
+			<span id="letter-position" aria-live="polite">1 of <%= @letters.length %></span>
+			<button type="button" class="btn btn-outline-secondary" id="next-letter" <%= 'disabled' if @letters.one? %>>
+				Next &rarr;
+			</button>
+		</nav>
+
+		<section aria-label="Generated letter">
+			<% @letters.each_with_index do |letter, index| %>
+				<article class="generated-letter<%= ' d-none' unless index.zero? %>" data-letter-index="<%= index %>">
+					<h2 class="h5"><%= letter.tone %> letter</h2>
+					<p><strong>Generated:</strong> <time datetime="<%= letter.created_at.iso8601 %>"><%= letter.created_at.to_fs(:long) %></time></p>
+					<div class="generated-letter-body"><%= letter.body %></div>
+				</article>
+			<% end %>
+		</section>
+	<% else %>
+		<p>No generated letters found.</p>
+	<% end %>
+</main>
+
+<% if @letters.many? %>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const letters = Array.from(document.querySelectorAll('.generated-letter'));
+			const previousButton = document.getElementById('previous-letter');
+			const nextButton = document.getElementById('next-letter');
+			const position = document.getElementById('letter-position');
+			let currentIndex = 0;
+
+			function showLetter(index) {
+				currentIndex = index;
+				letters.forEach((letter, letterIndex) => {
+					letter.classList.toggle('d-none', letterIndex !== currentIndex);
+				});
+				position.textContent = `${currentIndex + 1} of ${letters.length}`;
+				previousButton.disabled = currentIndex === 0;
+				nextButton.disabled = currentIndex === letters.length - 1;
+			}
+
+			previousButton.addEventListener('click', () => showLetter(currentIndex - 1));
+			nextButton.addEventListener('click', () => showLetter(currentIndex + 1));
+		});
+	</script>
+<% end %>

@@ -22,4 +22,19 @@ class LettersControllerTest < ActionDispatch::IntegrationTest
     delete "/letters/test123"
     assert_response :not_found
   end
+
+  test 'index displays generated letters with navigation' do
+    TempLetter.create!(secure_id: 'first-letter', profile: 'Test Profile', body: 'First letter', listing: 'Test Listing', tone: 'basic')
+    TempLetter.create!(secure_id: 'second-letter', profile: 'Test Profile', body: 'Second letter', listing: 'Test Listing', tone: 'confident')
+
+    get '/letters'
+
+    assert_response :success
+    assert_select '#previous-letter[disabled]'
+    assert_select '#next-letter:not([disabled])'
+    assert_select '#letter-position', '1 of 2'
+    assert_select '.generated-letter', 2
+    assert_includes response.body, 'First letter'
+    assert_includes response.body, 'Second letter'
+  end
 end

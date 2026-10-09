@@ -147,9 +147,7 @@ class LettersController < ApplicationController
     end
   end
   def index
-    @letters = TempLetter.all
-    @editor_letter = @letters.first || TempLetter.new
-    render :show
+    @letters = TempLetter.order(:id)
   end
 
   # def helpful
