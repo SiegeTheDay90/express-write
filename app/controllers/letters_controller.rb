@@ -133,9 +133,6 @@ class LettersController < ApplicationController
     @editor_letter = @letters.first || TempLetter.new
   end
 
-  def index
-    render :show
-  end
   def temp
     @letter = TempLetter.find_by(secure_id: params['secure_id'])
   end
@@ -150,7 +147,8 @@ class LettersController < ApplicationController
     end
   end
   def index
-    # @letters = TempLetter.all
+    @letters = TempLetter.all
+    @editor_letter = @letters.first || TempLetter.new
     render :show
   end
 
