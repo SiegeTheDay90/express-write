@@ -149,10 +149,10 @@ class LettersController < ApplicationController
       render json: { ok: false, message: 'Letter Not Found' }, status: 404
     end
   end
-  # def index
-  #   # @letters = TempLetter.all
-  #   render :show
-  # end
+  def index
+    # @letters = TempLetter.all
+    render :show
+  end
 
   # def helpful
   #     @letter = Letter.find_by(id: params[:id])
