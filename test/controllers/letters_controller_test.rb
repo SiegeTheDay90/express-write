@@ -30,10 +30,12 @@ class LettersControllerTest < ActionDispatch::IntegrationTest
     get '/letters'
 
     assert_response :success
-    assert_select '#previous-letter[disabled]'
-    assert_select '#next-letter:not([disabled])'
-    assert_select '#letter-position', '1 of 2'
+    assert_select '#previous-letter:not([disabled])'
+    assert_select '#next-letter[disabled]'
+    assert_select '#letter-position', '2 of 2'
     assert_select '.generated-letter', 2
+    assert_select '.generated-letter:not(.d-none) .generated-letter-body', 'Second letter'
+    assert_select '.generated-letter.d-none .generated-letter-body', 'First letter'
     assert_includes response.body, 'First letter'
     assert_includes response.body, 'Second letter'
   end

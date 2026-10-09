@@ -9,18 +9,18 @@
 
 	<% if @letters.any? %>
 		<nav class="d-flex align-items-center gap-3 mb-4" aria-label="Letter navigation">
-			<button type="button" class="btn btn-outline-secondary" id="previous-letter" disabled>
+			<button type="button" class="btn btn-outline-secondary" id="previous-letter" <%= 'disabled' if @letters.one? %>>
 				&larr; Previous
 			</button>
-			<span id="letter-position" aria-live="polite">1 of <%= @letters.length %></span>
-			<button type="button" class="btn btn-outline-secondary" id="next-letter" <%= 'disabled' if @letters.one? %>>
+			<span id="letter-position" aria-live="polite"><%= @letters.length %> of <%= @letters.length %></span>
+			<button type="button" class="btn btn-outline-secondary" id="next-letter" disabled>
 				Next &rarr;
 			</button>
 		</nav>
 
 		<section aria-label="Generated letter">
 			<% @letters.each_with_index do |letter, index| %>
-				<article class="generated-letter<%= ' d-none' unless index.zero? %>" data-letter-index="<%= index %>">
+				<article class="generated-letter<%= ' d-none' unless index == @letters.length - 1 %>" data-letter-index="<%= index %>">
 					<h2 class="h5"><%= letter.tone %> letter</h2>
 					<p><strong>Generated:</strong> <time datetime="<%= letter.created_at.iso8601 %>"><%= letter.created_at.to_fs(:long) %></time></p>
 					<div class="generated-letter-body"><%= letter.body %></div>
@@ -39,7 +39,7 @@
 			const previousButton = document.getElementById('previous-letter');
 			const nextButton = document.getElementById('next-letter');
 			const position = document.getElementById('letter-position');
-			let currentIndex = 0;
+			let currentIndex = letters.length - 1;
 
 			function showLetter(index) {
 				currentIndex = index;
