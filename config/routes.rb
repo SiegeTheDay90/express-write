@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   delete '/letters/:secure_id/:tone', to: 'letters#destroy'
   patch '/letters/:secure_id/:tone', to: 'letters#update'
   post '/express', to: 'letters#express', as: 'express_letter'
-  # get '/letters', to: 'letters#index', as: 'letters'
+  get '/letters', to: 'letters#index', as: 'letters'
   get '/letters/:secure_id', to: 'letters#show', as: 'letter'
   
   
@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     get '/err-test', to: 'application#err_test' # raises uncaught error "Test Error: Date.today"
     get '/test', to: 'application#test' # Test route generates letter using GPT-4 or other test model
     get '/stress-test', to: 'application#stress_test' # Makes multiple Async requests. Default backend maxes out at 3 concurrent processes.
+    get '/game', to: 'application#game' # MiniGame test page
   end
 
   # Catch-all
